@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import BgAuth from "../../../../assets/logo.png"
 import './login.css'
-import {loginUser} from 'redux/actions/authActions';
+import {loginUser} from '../../../../redux/actions/authActions';
 import Swal from 'sweetalert2'
-import {HEADERS} from 'redux/actions/_constants'
+import {HEADERS} from '../../../../redux/actions/_constants'
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            email: '',
+            username: '',
             password: '',
             // disableButton:false,
             // server_price:0,
@@ -76,12 +76,12 @@ class Login extends Component {
 
     submitHandelar = (event)=>{
         event.preventDefault();
-        const {email,password} = this.state;
-        if(email!==''&&password!==''){
+        const {username,password} = this.state;
+        if(username!==''&&password!==''){
             const user = {
-                email: email,
+                username: username,
                 password: password
-            }
+            };
             this.props.loginUser(user);
         }else{
             Swal.fire(
@@ -103,7 +103,7 @@ class Login extends Component {
     }
 
     render() {
-        const {email,password, errors,disableButton} = this.state;
+        const {username,password, errors,disableButton} = this.state;
         return (
         <div className="limiter">
             <div className="container-login100">
@@ -117,10 +117,10 @@ class Login extends Component {
                                 </span>
                                 <div className="wrap-input100 rs1 validate-input" data-validate="Username is required">
                                     <input type="text" readOnly={disableButton}
-                                           className={email !== '' ? 'input100 has-val' : 'input100'}
+                                           className={username !== '' ? 'input100 has-val' : 'input100'}
                                            placeholder="Username"
-                                           name="email"
-                                           value={email}
+                                           name="username"
+                                           value={username}
                                            onChange={this.handleInputChange}/>
                                     <span className="label-input100">Username</span>
                                     {errors.email && (<div className="invalid-feedback">{errors.email}</div>)}

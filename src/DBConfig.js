@@ -1,5 +1,5 @@
 export const DBConfig = {
-    name: 'backoffice_kahve',
+    name: 'sangku_bo',
     version: 1,
     objectStoresMeta: [
         {
@@ -9,11 +9,11 @@ export const DBConfig = {
                 { name: 'id',keypath:'id',options:{unique:false}},
                 { name: 'token',keypath:'token',options:{unique:false}},
                 { name: 'name',keypath:'name',options:{unique:false}},
-                { name: 'email',keypath:'email',options:{unique:false}},
-                { name: 'status',keypath:'status',options:{unique:false}},
+                { name: 'username',keypath:'username',options:{unique:false}},
                 { name: 'foto',keypath:'foto',options:{unique:false}},
-                { name: 'created_at',keypath:'created_at',options:{unique:false}}
-                
+                { name: 'level',keypath:'level',options:{unique:false}},
+                { name: 'access_level',keypath:'access_level',options:{unique:false}},
+                { name: 'status',keypath:'status',options:{unique:false}},
             ]
         },
     ]

@@ -9,7 +9,6 @@ import {HEADERS} from "./_constants";
 
 // Login user -- get token
 export const loginUser = (userData) => async dispatch =>{
-        destroy('sess');
         Swal.fire({
             title: 'Please Wait.',
             html: 'Checking your account.',
@@ -19,7 +18,7 @@ export const loginUser = (userData) => async dispatch =>{
             onClose: () => {}
         })
 
-        axios.post(HEADERS.URL+'auth', userData)
+        axios.post(HEADERS.URL+'auth/bo', userData)
         .then(res=>{
             setTimeout(
             function () {
@@ -31,10 +30,11 @@ export const loginUser = (userData) => async dispatch =>{
                     id: res.data.result.id,
                     token: token,
                     name: res.data.result.name,
-                    email: res.data.result.email,
-                    status: res.data.result.status,
+                    username: res.data.result.username,
                     foto: res.data.result.foto,
-                    created_at: res.data.result.created_at,
+                    level: res.data.result.level,
+                    access_level: res.data.result.access_level,
+                    status: res.data.result.status,
                 })
                 //
                 // // Set token to Auth Header
@@ -45,7 +45,7 @@ export const loginUser = (userData) => async dispatch =>{
             },800)
 
         }).catch(err =>{
-            Swal.close() 
+            Swal.close()
             if (err.message === 'Network Error') {
                  Swal.fire(
                      'Server tidak tersambung!.',

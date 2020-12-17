@@ -1,6 +1,6 @@
 
 
-import {COIN_TYPE} from "../../actions/_constants";
+import {BARANG} from "../../actions/_constants";
 
 const initialState = {
     isLoading: true,
@@ -13,37 +13,37 @@ const initialState = {
     detail:[]
 }
 
-export const coinTypeReducer = (state = initialState, action) => {
+export const barangReducer = (state = initialState, action) => {
     switch (action.type) {
-        case COIN_TYPE.SUCCESS:
+        case BARANG.SUCCESS:
             return Object.assign({}, state, {
                 status: action.data.status,
                 msg: action.data.msg,
                 data: action.data.result,
             });
-        case COIN_TYPE.EDIT:
+        case BARANG.EDIT:
             return Object.assign({}, state, {
                 edit: action.data.result,
             });
-        case COIN_TYPE.DETAIL:
+        case BARANG.DETAIL:
             return Object.assign({}, state, {
                 detail: action.data.result,
             });
-        case COIN_TYPE.FAILED:
+        case BARANG.FAILED:
             return Object.assign({}, state, {
                 status: action.data.status,
                 msg: action.data.msg,
                 data: action.data.data,
             });
-        case COIN_TYPE.LOADING:
+        case BARANG.LOADING:
             return Object.assign({}, state, {
                 isLoading: action.load
             });
-        case COIN_TYPE.LOADING_POST:
+        case BARANG.LOADING_POST:
             return Object.assign({}, state, {
                 isLoadingPost: action.load
             });
-        case COIN_TYPE.IS_ERROR:
+        case BARANG.IS_ERROR:
             return Object.assign({}, state, {
                 isError: action.load
             });

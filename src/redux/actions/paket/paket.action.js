@@ -1,59 +1,60 @@
 import axios from "axios"
 import Swal from "sweetalert2";
-import {COIN_TYPE, HEADERS, NOTIF_ALERT} from "../_constants";
+import {PAKET, HEADERS, NOTIF_ALERT} from "../_constants";
 import {ModalToggle} from "../modal.action";
 
 
 export function setLoading(load) {
     return {
-        type: COIN_TYPE.LOADING,
+        type: PAKET.LOADING,
+        load
+    }
+}
+
+export function setLoadingDetail(load) {
+    return {
+        type: PAKET.LOADING_DETAIL,
         load
     }
 }
 export function setLoadingPost(load) {
     return {
-        type: COIN_TYPE.LOADING_POST,
+        type: PAKET.LOADING_POST,
         load
     }
 }
 export function setIsError(load) {
     return {
-        type: COIN_TYPE.IS_ERROR,
+        type: PAKET.IS_ERROR,
         load
     }
 }
 
-export function setCoinType(data = []) {
+export function setData(data = []) {
     return {
-        type: COIN_TYPE.SUCCESS,
+        type: PAKET.SUCCESS,
         data
     }
 }
 
-export function setCoinTypeEdit(data = []) {
+export function setDataDetail(data = []) {
     return {
-        type: COIN_TYPE.EDIT,
-        data
-    }
-}
-export function setCoinTypeDetail(data = []) {
-    return {
-        type: COIN_TYPE.DETAIL,
+        type: PAKET.DETAIL,
         data
     }
 }
 
-export function setCoinTypeFailed(data = []) {
+export function setDataFailed(data = []) {
     return {
-        type: COIN_TYPE.FAILED,
+        type: PAKET.FAILED,
         data
     }
 }
 
-export const FetchCoinType = (where) => {
+export const fetchPaket = (where) => {
     return (dispatch) => {
         dispatch(setLoading(true));
-        let url = 'coin_type';
+        let url = 'package';
         if(where){
             url+=`?${where}`;
         }
@@ -61,11 +62,10 @@ export const FetchCoinType = (where) => {
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
-                dispatch(setCoinType(data));
+                dispatch(setData(data));
                 dispatch(setLoading(false));
             })
             .catch(function (error) {
-                // handle error
                 dispatch(setLoading(false));
                 if (error.message === 'Network Error') {
                     Swal.fire(
@@ -78,11 +78,39 @@ export const FetchCoinType = (where) => {
 
     }
 };
+export const detailPaket = (id,where) => {
+    return (dispatch) => {
+        dispatch(setLoadingDetail(true));
+        let url = `package/${id}`;
 
-export const storeCoinType = (data) => {
+        axios.get(HEADERS.URL + `${url}`)
+            .then(function (response) {
+                const data = response.data;
+                dispatch(setDataDetail(data));
+                dispatch(setLoadingDetail(false));
+            })
+            .catch(function (error) {
+                // handle error
+                dispatch(setLoadingDetail(false));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Network Failed!.',
+                        'Please check your connection',
+                        'error'
+                    );
+
+                }
+            })
+
+    }
+};
+
+
+export const postPaket = (data) => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
-        const url = HEADERS.URL + `coin_type`;
+        dispatch(setIsError(false));
+        const url = HEADERS.URL + `package`;
         axios.post(url,data)
             .then(function (response) {
                 const data = (response.data);
@@ -94,7 +122,7 @@ export const storeCoinType = (data) => {
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
-                    dispatch(FetchCoinType('page=1'));
+                    dispatch(fetchPaket('page=1'));
                 } else {
                     Swal.fire({
                         title: 'failed',
@@ -134,10 +162,11 @@ export const storeCoinType = (data) => {
             })
     }
 }
-export const putCoinType = (data,id) => {
+export const putPaket = (data,id) => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
-        const url = HEADERS.URL + `coin_type/${id}`;
+        dispatch(setIsError(false));
+        const url = HEADERS.URL + `package/${id}`;
         axios.put(url,data)
             .then(function (response) {
                 const data = (response.data);
@@ -149,7 +178,7 @@ export const putCoinType = (data,id) => {
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
-                    dispatch(FetchCoinType('page=1'));
+                    dispatch(fetchPaket('page=1'));
                 } else {
                     Swal.fire({
                         title: 'failed',
@@ -191,4 +220,59 @@ export const putCoinType = (data,id) => {
 }
 
 
+export const deletePaket = (id) => async dispatch =>{
+    Swal.fire({
+        title: 'Tunggu sebentar.',
+        html: NOTIF_ALERT.CHECKING,
+        onBeforeOpen: () => {
+            Swal.showLoading()
+        },
+        onClose: () => {}
+    })
 
+    axios.delete(HEADERS.URL+`package/${id}`)
+        .then(response=>{
+            setTimeout(
+                function () {
+                    Swal.close() ;
+                    const data = (response.data);
+                    if (data.status === 'success') {
+                        Swal.fire({
+                            title: 'Success',
+                            icon: 'success',
+                            text: NOTIF_ALERT.SUCCESS,
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'failed',
+                            icon: 'error',
+                            text: NOTIF_ALERT.FAILED,
+                        });
+                    }
+                    dispatch(setLoading(false));
+                    dispatch(fetchPaket('page=1'));
+                },800)
+
+        }).catch(error =>{
+        Swal.close()
+        dispatch(setLoading(false));
+        if (error.message === 'Network Error') {
+            Swal.fire(
+                'Network Failed!.',
+                'Please check your connection',
+                'error'
+            );
+        }
+        else {
+            Swal.fire({
+                title: 'failed',
+                icon: 'error',
+                text: error.response.data.msg,
+            });
+            if (error.response) {
+
+            }
+        }
+
+    });
+}

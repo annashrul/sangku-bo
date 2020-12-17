@@ -14,10 +14,11 @@ import axios from 'axios';
 
 initDB(DBConfig);
 // Check token in localStorage
-axios.defaults.headers.common['identities'] = `${HEADERS.USERNAME}`;
-axios.defaults.headers.common['sercet-id'] = `${HEADERS.PASSWORD}`;
-axios.defaults.headers.common['connectifity-agent'] = `backoffice`;
+axios.defaults.headers.common['username'] = `${HEADERS.USERNAME}`;
+axios.defaults.headers.common['password'] = `${HEADERS.PASSWORD}`;
+axios.defaults.headers.common['myconnection'] = `backoffice`;
 axios.defaults.headers.common['Content-Type'] = `application/x-www-form-urlencoded`;
+
   if (localStorage.npos) {
     setAuthToken(atob(localStorage.npos));
     store.dispatch(setLoggedin(true));

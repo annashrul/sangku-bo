@@ -10,7 +10,7 @@ class SideMenu extends Component {
     constructor(props){
         super(props);
         this.state ={
-            isPengguna:false,
+            isPaket:false,
             isAdmin:false,
             isUser:false,
             isLog:false,
@@ -26,9 +26,9 @@ class SideMenu extends Component {
     changeMenu(e,param){
         e.preventDefault();
 
-        if(param === 'isPengguna'){
+        if(param === 'isPaket'){
             this.setState({
-                isPengguna : !this.state.isPengguna,
+                isPaket : !this.state.isPaket,
             });
         }
         if(param === 'isLog'){
@@ -38,7 +38,7 @@ class SideMenu extends Component {
         }
 
         this.forceUpdate();
-        
+
     }
     getProps(param){
         if (param.auth.user) {
@@ -48,17 +48,11 @@ class SideMenu extends Component {
     componentDidMount(){
         this.getProps(this.props);
         const path = this.props.location.pathname;
-        if(path==='/admin' || path==='/user'){
+        if(path==='/paket' || path==='/barang'){
             this.setState({
-                isPengguna:true
+                isPaket:true
             })
         }
-        if(path==='/log_activity' || path==='/log_auth'||path==='/log_transaction'){
-            this.setState({
-                isLog:true
-            })
-        }
-
 
     }
     componentWillReceiveProps = (nextProps) => {
@@ -75,7 +69,7 @@ class SideMenu extends Component {
         return 'none';
         }, 500);
     }
-    
+
     handleLogout = (e) => {
         e.preventDefault();
         Swal.fire({
@@ -94,22 +88,6 @@ class SideMenu extends Component {
     };
     render() {
         const path = this.props.location.pathname;
-        let pathArray=path.split("/");
-        let sub = pathArray.length;
-        let isActiveInv=false;
-        let isActiveWit=false;
-        if(pathArray[1]==='investment'){
-            isActiveInv=true;
-            if(pathArray[2]&&pathArray[3]!==undefined){
-                isActiveInv=true;
-            }
-        }
-        if(pathArray[1]==='withdraw'){
-            isActiveWit=true;
-            if(pathArray[2]&&pathArray[3]!==undefined){
-                isActiveWit=true;
-            }
-        }
         return (
             <nav>
                 <ul className="sidebar-menu" data-widget="tree">
@@ -118,54 +96,14 @@ class SideMenu extends Component {
                     {/* DASHBOARD MODUL END */}
 
                     {/* USER MODUL START */}
-                    <li className={"treeview" +(this.state.isPengguna===true || path==='/admin' || path==='/user' ?" active menu-open" : "")}>
-                        <a href="!#" onClick={(e) => this.changeMenu(e,'isPengguna')}><i className="fa fa-gears" /> <span>Users</span> <i className="fa fa-angle-right" /></a>
-                        <ul className={"treeview-menu"} style={{display:this.state.isPengguna===true?"block":"none"}}>
-                            <li className={path==='/admin'?"active":''}><Link to="/admin" style={{width:'fit-content'}}> Admin</Link></li>
-                            <li className={path==='/user'?"active":''}><Link to="/user" style={{width:'fit-content'}}> Member</Link></li>
+                    <li className={"treeview" +(this.state.isPaket===true || path==='/paket' || path==='/barang' ?" active menu-open" : "")}>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isPaket')}><i className="fa fa-list" /> <span>Paket</span> <i className="fa fa-angle-right" /></a>
+                        <ul className={"treeview-menu"} style={{display:this.state.isPaket===true?"block":"none"}}>
+                            <li className={path==='/paket'?"active":''}><Link to="/paket" style={{width:'fit-content'}}> Paket</Link></li>
+                            <li className={path==='/barang'?"active":''}><Link to="/barang" style={{width:'fit-content'}}> Barang</Link></li>
                         </ul>
                     </li>
                     {/* USER MODUL END */}
-
-                    {/* COIN TYPE MODUL START */}
-                    <li  className={path==='/coin_type'?"active":''}><Link to="/coin_type"> <i className="fa fa-bitcoin" /><span> Coin Type</span></Link></li>
-                    {/* COIN TYPE MODUL END */}
-
-                    {/* FAQ MODUL START */}
-                    <li  className={path==='/faq'?"active":''}><Link to="/faq"> <i className="fa fa-info-circle" /><span> Faq</span></Link></li>
-                    {/* FAQ MODUL END */}
-
-                    {/* INBOX MODUL START */}
-                    <li  className={path==='/contact'?"active":''}><Link to="/contact"> <i className="fa fa-inbox" /><span> Contact</span></Link></li>
-                    {/* INBOX MODUL END */}
-
-                    {/* DEPOSIT MODUL START */}
-                    <li  className={isActiveInv?"active":''}><Link to="/investment"> <i className="fa fa-history" /><span> Investment</span></Link></li>
-                    {/* DEPOSIT MODUL END */}
-
-                    {/* PENARIKAN MODUL START */}
-                    <li  className={isActiveWit?"active":''}><Link to="/withdraw"> <i className="fa fa-history" /><span> Withdraw</span></Link></li>
-                    {/* PENARIKAN MODUL END */}
-
-                    {/* TRANSACTION MODUL START */}
-                    <li  className={path==='/transaction'?"active":''}><Link to="/transaction"> <i className="fa fa-history" /><span> Transaction</span></Link></li>
-                    {/* TRANSACTION MODUL END */}
-
-                    {/* PENGATURAN MODUL START */}
-                    <li  className={path==='/setting'?"active":''}><Link to="/setting"> <i className="fa fa-cogs" /><span> Setting</span></Link></li>
-                    {/* PENGATURAN MODUL END */}
-
-                    {/* LOG MODUL START */}
-                    <li className={"treeview" +(this.state.isLog===true || path==='/log_activity' || path==='/log_auth'|| path==='/log_transaction' ?" active menu-open" : "")}>
-                        <a href="!#" onClick={(e) => this.changeMenu(e,'isLog')}><i className="fa fa-eye" /> <span>Log</span> <i className="fa fa-angle-right" /></a>
-                        <ul className={"treeview-menu"} style={{display:this.state.isLog===true?"block":"none"}}>
-                            <li className={path==='/log_activity'?"active":''}><Link to="/log_activity" style={{width:'fit-content'}}>Activity</Link></li>
-                            <li className={path==='/log_auth'?"active":''}><Link to="/log_auth" style={{width:'fit-content'}}>Auth</Link></li>
-                            <li className={path==='/log_transaction'?"active":''}><Link to="/log_transaction" style={{width:'fit-content'}}>Transaction</Link></li>
-                        </ul>
-                    </li>
-                    {/* LOG MODUL END */}
-
 
                     {/* LOGOUT MODUL START */}
                     <li><a href={null} style={{cursor:'pointer',color:'#a6b6d0'}} onClick={(event)=>this.handleLogout(event)}> <i className="fa fa-sign-out" /><span> Logout</span></a></li>

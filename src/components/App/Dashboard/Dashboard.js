@@ -5,7 +5,7 @@ import moment from 'moment';
 import {toRp} from "helper";
 import {FetchStock} from 'redux/actions/dashboard/dashboard.action'
 import 'bootstrap-daterangepicker/daterangepicker.css';
-import socketIOClient from "socket.io-client";
+// import socketIOClient from "socket.io-client";
 import {HEADERS} from 'redux/actions/_constants'
 import ReactApexChart from "react-apexcharts";
 
@@ -14,8 +14,8 @@ import Cards from './src/Cards'
 import Filter from './src/Filter'
 import Info from './src/Info'
 import Clock from "../../common/clock";
-import {CheckDaily, storeDailyProfit} from "../../../redux/actions/transaction/transaction.action";
-const socket = socketIOClient(HEADERS.URL);
+// import {CheckDaily, storeDailyProfit} from "../../../redux/actions/transaction/transaction.action";
+// const socket = socketIOClient(HEADERS.URL);
 
 class Dashboard extends Component {
     constructor(props) {
@@ -88,19 +88,19 @@ class Dashboard extends Component {
 
         };
 
-        socket.on('refresh_dashboard',(data)=>{
-            this.refreshData();
-        })
+        // socket.on('refresh_dashboard',(data)=>{
+        //     this.refreshData();
+        // })
         
-        socket.on("set_dashboard", (data) => {
-            this.setState({
-                series:data.series,
-                totalBalance:data.total_balance,
-                totalInvest:data.total_invest,
-                totalWD:data.total_wd,
-                totalMember:data.total_member,
-            })
-        });
+        // socket.on("set_dashboard", (data) => {
+        //     this.setState({
+        //         series:data.series,
+        //         totalBalance:data.total_balance,
+        //         totalInvest:data.total_invest,
+        //         totalWD:data.total_wd,
+        //         totalMember:data.total_member,
+        //     })
+        // });
         this.HandleChangeLokasi = this.HandleChangeLokasi.bind(this);
     }
     generateDayWiseTimeSeries(baseval, count, yrange) {
@@ -144,15 +144,15 @@ class Dashboard extends Component {
       }
 
     refreshData(start=null,end=null){
-        socket.emit('get_dashboard', {
-            datefrom: start!==null?start:this.state.startDate,
-            dateto: end!==null?end:this.state.endDate,
-        })
+        // socket.emit('get_dashboard', {
+        //     datefrom: start!==null?start:this.state.startDate,
+        //     dateto: end!==null?end:this.state.endDate,
+        // })
     }
 
     componentWillMount(){
         this.refreshData();
-        this.props.dispatch(CheckDaily());
+        // this.props.dispatch(CheckDaily());
     }
 
     componentWillUnmount(){
@@ -176,7 +176,7 @@ class Dashboard extends Component {
 
     handleDailyProfit(e){
         e.preventDefault();
-        this.props.dispatch(storeDailyProfit());
+        // this.props.dispatch(storeDailyProfit());
     }
 
     handleSubmit = (event) => {
@@ -282,8 +282,8 @@ const mapStateToProps = (state) =>{
      return{
        auth: state.auth,
        stock: state.dashboardReducer.data,
-        skipped: state.transactionReducer.skipped,
-        isLoadingCheck: state.transactionReducer.isLoadingCheck,
+        // skipped: state.transactionReducer.skipped,
+        // isLoadingCheck: state.transactionReducer.isLoadingCheck,
      }
 }
 export default connect(mapStateToProps)(Dashboard);

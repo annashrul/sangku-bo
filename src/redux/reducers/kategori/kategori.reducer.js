@@ -1,64 +1,49 @@
 
 
-import {USER_MEMBER} from "../../actions/_constants";
+import {KATEGORI} from "../../actions/_constants";
 
 const initialState = {
     isLoading: true,
     isLoadingPost: false,
-    isLoadingDetail: false,
-    isLoadingSend: false,
     isError: false,
     status: "",
     msg: "",
     data: [],
-    dataAll: [],
     edit:[],
     detail:[]
 }
 
-export const userMemberReducer = (state = initialState, action) => {
+export const kategoriReducer = (state = initialState, action) => {
     switch (action.type) {
-        case USER_MEMBER.SUCCESS:
+        case KATEGORI.SUCCESS:
             return Object.assign({}, state, {
                 status: action.data.status,
                 msg: action.data.msg,
                 data: action.data.result,
             });
-        case USER_MEMBER.SUCCESS_ALL:
-            return Object.assign({}, state, {
-                dataAll: action.data.result,
-            });
-        case USER_MEMBER.EDIT:
+        case KATEGORI.EDIT:
             return Object.assign({}, state, {
                 edit: action.data.result,
             });
-        case USER_MEMBER.DETAIL:
+        case KATEGORI.DETAIL:
             return Object.assign({}, state, {
                 detail: action.data.result,
             });
-        case USER_MEMBER.FAILED:
+        case KATEGORI.FAILED:
             return Object.assign({}, state, {
                 status: action.data.status,
                 msg: action.data.msg,
                 data: action.data.data,
             });
-        case USER_MEMBER.LOADING:
+        case KATEGORI.LOADING:
             return Object.assign({}, state, {
                 isLoading: action.load
             });
-        case USER_MEMBER.LOADING_POST:
+        case KATEGORI.LOADING_POST:
             return Object.assign({}, state, {
                 isLoadingPost: action.load
             });
-        case USER_MEMBER.LOADING_DETAIL:
-            return Object.assign({}, state, {
-                isLoadingDetail: action.load
-            });
-        case USER_MEMBER.LOADING_SEND:
-            return Object.assign({}, state, {
-                isLoadingSend: action.load
-            });
-        case USER_MEMBER.IS_ERROR:
+        case KATEGORI.IS_ERROR:
             return Object.assign({}, state, {
                 isError: action.load
             });

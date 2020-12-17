@@ -20,7 +20,6 @@ import {
 import Default from 'assets/default.png';
 import socketIOClient from "socket.io-client";
 
-import {putInbox} from "../../redux/actions/inbox/inbox.action";
 
 const socket = socketIOClient(HEADERS.URL);
 
@@ -666,7 +665,6 @@ Header.propTypes = {
     auth: PropTypes.object,
     triggerEcaps: PropTypes.bool,
     triggerMobileEcaps: PropTypes.bool,
-    putInbox:PropTypes.func.isRequired
 };
 
 const mapStateToProps = ({auth,siteReducer}) =>{
@@ -679,4 +677,4 @@ const mapStateToProps = ({auth,siteReducer}) =>{
 }
 
 
-export default connect(mapStateToProps,{logoutUser,setEcaps,setMobileEcaps,putInbox})(Header);
+export default connect(mapStateToProps,{logoutUser,setEcaps,setMobileEcaps})(Header);
