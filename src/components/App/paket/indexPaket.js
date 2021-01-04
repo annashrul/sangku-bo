@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {connect} from "react-redux";
 import Layout from 'components/Layout';
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
-import Paginationq, {rangeDate, statusQ, toRp} from "../../../helper";
+import Paginationq, {noImage, rangeDate, statusQ, toRp} from "../../../helper";
 import moment from "moment";
 import {deletePaket, detailPaket, fetchPaket} from "../../../redux/actions/paket/paket.action";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
@@ -92,7 +92,7 @@ class IndexPaket extends Component{
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
         this.props.dispatch(ModalType("formPaket"));
-        this.props.dispatch(fetchBarang("page=1"));
+        // this.props.dispatch(fetchBarang("page=1"));
         this.props.dispatch(fetchKategori("barang_registrasi"));
         if(param!==''){
             this.props.dispatch(detailPaket(param));
@@ -219,14 +219,16 @@ class IndexPaket extends Component{
                                                     return (
                                                         <tr key={i}>
                                                             <td style={headStyle}>
-                                                                <span class="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
+                                                                <span className="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
                                                             </td>
                                                             <td style={headStyle}>
                                                                 <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} onClick={(e)=>this.handleDelete(e,v.id)}><i className={"fa fa-trash"}/></button>
                                                                 <button style={{marginRight:"5px"}} className={"btn btn-info btn-sm"} onClick={(e)=>this.handleModal(e,v.id)}><i className={"fa fa-pencil"}/></button>
                                                             </td>
                                                             <td style={headStyle}>
-                                                                <img className="img-fluid" style={{height:"30px",width:"30px"}} src={NOTIF_ALERT.NO_DATA}/>
+                                                                <img className="img-fluid" src={v.foto} style={{height:"30px",width:"30px"}} onError={(e)=>{e.target.onerror = null; e.target.src=`${noImage()}`}} alt="member image"/>
+
+                                                                {/*<img className="img-fluid" style={{height:"30px",width:"30px"}} src={NOTIF_ALERT.NO_DATA}/>*/}
                                                             </td>
                                                             <td style={headStyle}>{v.title}</td>
                                                             <td style={headStyle}>{v.kategori}</td>
@@ -291,7 +293,7 @@ class IndexPaket extends Component{
                     this.props.isOpen===true?<FormPaket
                         detail={this.state.detail}
                         paketDetail={this.props.dataDetail}
-                        barang={this.props.barang}
+                        // barang={this.props.barang}
                         kategori={this.props.kategori}
                     />:null
                 }
@@ -310,7 +312,7 @@ const mapStateToProps = (state) => {
         data:state.paketReducer.data,
         dataDetail:state.paketReducer.detail,
         kategori:state.kategoriReducer.data,
-        barang:state.barangReducer.data,
+        // barang:state.barangReducer.data,
     }
 }
 

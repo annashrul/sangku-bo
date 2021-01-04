@@ -1,16 +1,15 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
 import Layout from 'components/Layout';
-import Paginationq, {noImage, rmHtml, statusQ, toCurrency} from "../../../helper";
-import {NOTIF_ALERT} from "../../../redux/actions/_constants";
+import {noImage, rmHtml, statusQ, toCurrency} from "../../../helper";
 import Skeleton from 'react-loading-skeleton';
 import moment from "moment";
-import DetailAlamat from "../modals/masterdata/member/detail_alamat"
-import DetailBank from "../modals/masterdata/member/detail_bank"
-import UncontrolledButtonDropdown from "reactstrap/es/UncontrolledButtonDropdown";
-import DropdownToggle from "reactstrap/es/DropdownToggle";
-import DropdownMenu from "reactstrap/es/DropdownMenu";
-import DropdownItem from "reactstrap/es/DropdownItem";
+import {
+    UncontrolledButtonDropdown,
+    DropdownMenu,
+    DropdownItem,
+    DropdownToggle, Dropdown
+} from 'reactstrap';
 import {deleteContent, getContent} from "../../../redux/actions/konten/konten.action";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import FormBerita from "../modals/konten/berita/form_berita"
@@ -30,6 +29,7 @@ class IndexBerita extends Component{
         this.handleSearch   = this.handleSearch.bind(this);
         this.handleDelete   = this.handleDelete.bind(this);
     }
+
 
     componentWillMount(){
         this.props.dispatch(getContent('berita',`page=1`));
@@ -156,6 +156,7 @@ class IndexBerita extends Component{
                                             <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleModal(e,'')}><i className="fa fa-plus"/></button>
                                         </div>
                                     </div>
+
                                 </div>
                                 <div className="row">
                                     {
@@ -170,13 +171,17 @@ class IndexBerita extends Component{
                                                                     <h5 className="card-title">{v.title} <span className={"badge badge-success"}>{v.category}</span></h5>
                                                                 </div>
                                                                 <div className="col-md-3">
-                                                                    <UncontrolledButtonDropdown>
-                                                                        <DropdownToggle caret />
+
+                                                                    <UncontrolledButtonDropdown nav>
+                                                                        <DropdownToggle className="d-inline-block">
+                                                                            <i className="fa fa-bars"/>
+                                                                        </DropdownToggle>
                                                                         <DropdownMenu>
                                                                             <DropdownItem onClick={(e)=>this.handleModal(e,i)}>Ubah</DropdownItem>
                                                                             <DropdownItem onClick={(e)=>this.handleDelete(e,v.id)}>Hapus</DropdownItem>
                                                                         </DropdownMenu>
                                                                     </UncontrolledButtonDropdown>
+
                                                                 </div>
                                                             </div>
                                                             <p className="card-text">{v.caption.length>20?rmHtml(v.caption).substr(0,20)+' ...':rmHtml(v.caption)}</p>

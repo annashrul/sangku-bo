@@ -53,11 +53,9 @@ export const fetchKategori = (where) => {
     return (dispatch) => {
         dispatch(setLoading(true));
         let url =  `category/${where}`;
-        console.log(url);
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
-                console.log(data);
                 dispatch(setData(data));
                 dispatch(setLoading(false));
             })

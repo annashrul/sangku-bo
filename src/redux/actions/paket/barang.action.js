@@ -57,7 +57,6 @@ export const fetchBarang = (where) => {
         if(where){
             url+=`?${where}`;
         }
-
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
