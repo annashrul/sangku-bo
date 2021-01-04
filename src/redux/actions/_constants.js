@@ -88,37 +88,97 @@ export const SITE = {
 /****************
  PAKET
  *****************/
+let prefPaket='PAKET';
 export const PAKET = {
-    LOADING: 'SET_PAKET_LOADING',
-    LOADING_POST: 'SET_PAKET_LOADING_POST',
-    LOADING_DETAIL: 'SET_PAKET_LOADING_DETAIL',
-    IS_ERROR: 'SET_PAKET_IS_ERROR',
-    SUCCESS: 'SUCCESS_PAKET',
-    FAILED: 'FAILED_PAKET',
-    DETAIL: 'DETAIL_PAKET',
+    LOADING: `SET_${prefPaket}_LOADING`,
+    LOADING_POST: `SET_${prefPaket}_LOADING_POST`,
+    LOADING_DETAIL: `SET_${prefPaket}_LOADING_DETAIL`,
+    IS_ERROR: `SET_${prefPaket}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefPaket}`,
+    FAILED: `FAILED_${prefPaket}`,
+    DETAIL: `DETAIL_${prefPaket}`,
 }
 /****************
  BARANG
  *****************/
+let prefBarang='BARANG';
 export const BARANG = {
-    LOADING: 'SET_BARANG_LOADING',
-    LOADING_POST: 'SET_BARANG_LOADING_POST',
-    IS_ERROR: 'SET_BARANG_IS_ERROR',
-    SUCCESS: 'SUCCESS_BARANG',
-    FAILED: 'FAILED_BARANG',
-    DETAIL: 'DETAIL_BARANG',
-    EDIT: 'EDIT_BARANG'
+    LOADING: `SET_${prefBarang}_LOADING`,
+    LOADING_POST: `SET_${prefBarang}_LOADING_POST`,
+    IS_ERROR: `SET_${prefBarang}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefBarang}`,
+    FAILED: `FAILED_${prefBarang}`,
+    DETAIL: `DETAIL_${prefBarang}`,
+    EDIT: `EDIT_${prefBarang}`
 }
 
 /****************
  KATEGORI
  *****************/
+let prefKategori='KATEGORI';
 export const KATEGORI = {
-    LOADING: 'SET_KATEGORI_LOADING',
-    LOADING_POST: 'SET_KATEGORI_LOADING_POST',
-    IS_ERROR: 'SET_KATEGORI_IS_ERROR',
-    SUCCESS: 'SUCCESS_KATEGORI',
-    FAILED: 'FAILED_KATEGORI',
-    DETAIL: 'DETAIL_KATEGORI',
-    EDIT: 'EDIT_KATEGORI'
+    LOADING: `SET_${prefKategori}_LOADING`,
+    LOADING_POST: `SET_${prefKategori}_LOADING_POST`,
+    IS_ERROR: `SET_${prefKategori}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefKategori}`,
+    FAILED: `FAILED_${prefKategori}`,
+    DETAIL: `DETAIL_${prefKategori}`,
+    EDIT: `EDIT_${prefKategori}`
+}
+/****************
+ PIN
+ *****************/
+let prefPin='PIN';
+export const PIN = {
+    LOADING: `SET_${prefPin}_LOADING`,
+    LOADING_POST: `SET_${prefPin}_LOADING_POST`,
+    IS_ERROR: `SET_${prefPin}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefPin}`,
+    FAILED: `FAILED_${prefPin}`,
+    DETAIL: `DETAIL_${prefPin}`,
+    EDIT: `EDIT_${prefPin}`
+}
+/****************
+ MEMBER
+ *****************/
+let prefMember='MEMBER';
+export const MEMBER = {
+    LOADING: `SET_${prefMember}_LOADING`,
+    LOADING_DETAIL: `SET_${prefMember}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefMember}_LOADING_POST`,
+    IS_ERROR: `SET_${prefMember}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefMember}`,
+    FAILED: `FAILED_${prefMember}`,
+    DETAIL: `DETAIL_${prefMember}`,
+    EDIT: `EDIT_${prefMember}`
+}
+/****************
+ ALAMAT
+ *****************/
+let prefAlamat='ALAMAT';
+export const ALAMAT = {
+    LOADING_DETAIL: `SET_${prefAlamat}_LOADING_DETAIL`,
+    DETAIL: `DETAIL_${prefAlamat}`,
+}
+/****************
+ ALAMAT
+ *****************/
+let prefBank='BANK';
+export const BANK = {
+    LOADING_DETAIL: `SET_${prefBank}_LOADING_DETAIL`,
+    DETAIL: `DETAIL_${prefBank}`,
+}
+/****************
+ CONTENT
+ *****************/
+let prefContent='CONTENT';
+export const CONTENT = {
+    LOADING: `SET_${prefContent}_LOADING`,
+    LOADING_DETAIL: `SET_${prefContent}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefContent}_LOADING_POST`,
+    IS_ERROR: `SET_${prefContent}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefContent}`,
+    FAILED: `FAILED_${prefContent}`,
+    DETAIL: `DETAIL_${prefContent}`,
+    EDIT: `EDIT_${prefContent}`
 }

@@ -2,16 +2,24 @@ import React,{Component} from 'react';
 import {connect} from "react-redux";
 import Layout from 'components/Layout';
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
-import Paginationq, {rangeDate, toCurrency, toRp} from "../../../helper";
-import moment from "moment";
+import Paginationq, {noImage, rangeDate, statusQ, toCurrency, toRp} from "../../../helper";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
-import {deleteBarang, fetchBarang} from "../../../redux/actions/paket/barang.action";
 import Skeleton from 'react-loading-skeleton';
-import FormBarang from "../modals/barang/form_barang"
+import moment from "moment";
+import DetailAlamat from "../modals/masterdata/member/detail_alamat"
+import DetailBank from "../modals/masterdata/member/detail_bank"
+import {getMember, putMember} from "../../../redux/actions/masterdata/member.action";
+import UncontrolledButtonDropdown from "reactstrap/es/UncontrolledButtonDropdown";
+import DropdownToggle from "reactstrap/es/DropdownToggle";
+import DropdownMenu from "reactstrap/es/DropdownMenu";
+import DropdownItem from "reactstrap/es/DropdownItem";
+import {getDetailAlamat} from "../../../redux/actions/masterdata/alamat.action";
+import {getDetailBank} from "../../../redux/actions/masterdata/bank.action";
 import * as Swal from "sweetalert2";
 
-class IndexBarang extends Component{
+
+class IndexMember extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -24,12 +32,16 @@ class IndexBarang extends Component{
         this.handleChange   = this.handleChange.bind(this);
         this.handlePage     = this.handlePage.bind(this);
         this.handleSearch   = this.handleSearch.bind(this);
-        this.handleAdd      = this.handleAdd.bind(this);
-        this.handleDelete      = this.handleDelete.bind(this);
+        this.handleAlamat   = this.handleAlamat.bind(this);
+        this.handleBank   = this.handleBank.bind(this);
+        this.handleUpdate   = this.handleUpdate.bind(this);
 
     }
+
     componentWillMount(){
-        this.props.dispatch(fetchBarang(`page=1`));
+        localStorage.removeItem("isAlamat");
+        localStorage.removeItem("isBank");
+        this.props.dispatch(getMember(`page=1`));
     }
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
@@ -37,12 +49,12 @@ class IndexBarang extends Component{
 
     handleValidate(){
         let where="";
-        let page = localStorage.getItem("pageBarang");
+        let page = localStorage.getItem("pageMember");
         let dateFrom = this.state.dateFrom;
         let dateTo = this.state.dateTo;
         let any = this.state.any;
-        localStorage.setItem("dateFromBarang",`${dateFrom}`);
-        localStorage.setItem("dateToBarang",`${dateTo}`);
+        localStorage.setItem("dateFromMember",`${dateFrom}`);
+        localStorage.setItem("dateToMember",`${dateTo}`);
 
         if(page!==null&&page!==undefined&&page!==""){
             where+=`page=${page}`;
@@ -61,9 +73,9 @@ class IndexBarang extends Component{
     }
 
     handlePage(pageNumber){
-        localStorage.setItem("pageBarang",pageNumber);
+        localStorage.setItem("pageMember",pageNumber);
         let where = this.handleValidate();
-        this.props.dispatch(fetchBarang(where));
+        this.props.dispatch(getMember(where));
 
     }
     handleEvent = (event, picker) => {
@@ -77,30 +89,40 @@ class IndexBarang extends Component{
     handleSearch(e){
         e.preventDefault();
         let where = this.handleValidate();
-        this.props.dispatch(fetchBarang(where));
+        this.props.dispatch(getMember(where));
     }
-
-    handleAdd(e){
+    handleBank(e,par){
+        e.preventDefault();
+        localStorage.setItem("isBank","true");
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
-        this.props.dispatch(ModalType("formBarang"));
-        this.setState({detail:{id:''}});
+        this.props.dispatch(ModalType("detailBank"));
+        this.setState({detail:{idUser:par}});
+        this.props.dispatch(getDetailBank(par));
     }
-    handleDelete(e,id){
+    handleAlamat(e,par){
+        e.preventDefault();
+        localStorage.setItem("isAlamat","true");
+        const bool = !this.props.isOpen;
+        this.props.dispatch(ModalToggle(bool));
+        this.props.dispatch(ModalType("detailAlamat"));
+        this.props.dispatch(getDetailAlamat(par));
+        // this.setState({detail:{idUser:par}});
+    }
+    handleUpdate(e,id,nama,status){
         e.preventDefault();
         Swal.fire({
             title: 'Perhatian !!!',
-            html:`anda yakin akan menghapus paket ini ??`,
+            html:`anda yakin akan mengubah status ${nama} ??`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: `Oke, Hapus`,
-            cancelButtonText: 'Cancel',
+            confirmButtonText: `Oke, Ubah`,
+            cancelButtonText: 'Batal',
         }).then((result) => {
             if (result.value) {
-                this.props.dispatch(deleteBarang(id));
-
+                this.props.dispatch(putMember({status:status},id));
             }
         })
     }
@@ -121,13 +143,14 @@ class IndexBarang extends Component{
             data
         } = this.props.data;
 
-
+        let totSaldo=0;
+        let totPenarikan=0;
         return(
-            <Layout page={"Paket"}>
+            <Layout page={"Member"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Paket</h5>
+                            <h5 className="mb-0 font-weight-bold">Member</h5>
                         </div>
                     </div>
                 </div>
@@ -155,7 +178,7 @@ class IndexBarang extends Component{
                                     <div className="col-2 col-xs-2 col-md-4">
                                         <div className="form-group">
                                             <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
-                                            <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleAdd(e,'')}><i className="fa fa-plus"/></button>
+                                            <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleModal(e,'')}><i className="fa fa-plus"/></button>
                                         </div>
                                     </div>
                                 </div>
@@ -165,44 +188,77 @@ class IndexBarang extends Component{
                                         <tr>
                                             <th className="text-black" style={headStyle}>No</th>
                                             <th className="text-black" style={headStyle}>#</th>
+                                            <th className="text-black" style={headStyle}>Foto</th>
                                             <th className="text-black" style={headStyle}>Nama</th>
-                                            <th className="text-black" style={headStyle}>Harga</th>
-                                            <th className="text-black" style={headStyle}>Stock</th>
-                                            <th className="text-black" style={headStyle}>PPN</th>
-                                            <th className="text-black" style={headStyle}>Satuan</th>
-                                            <th className="text-black" style={headStyle}>Berat</th>
+                                            <th className="text-black" style={headStyle}>Telepon</th>
+                                            <th className="text-black" style={headStyle}>Saldo</th>
+                                            <th className="text-black" style={headStyle}>Penarikan</th>
+                                            <th className="text-black" style={headStyle}>Sponsor</th>
+                                            <th className="text-black" style={headStyle}>PIN</th>
+                                            <th className="text-black" style={headStyle}>Kaki Kanan</th>
+                                            <th className="text-black" style={headStyle}>Kaki Kiri</th>
+                                            <th className="text-black" style={headStyle}>Status Member</th>
+                                            <th className="text-black" style={headStyle}>Kode Referral</th>
+                                            <th className="text-black" style={headStyle}>Status Aktif</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {
                                             typeof data === 'object' ? data.length > 0 ?
                                                 data.map((v, i) => {
+                                                totSaldo = totSaldo+parseInt(v.saldo,10);
+                                                totPenarikan = totPenarikan+parseInt(v.total_payment,10);
                                                     return (
                                                         <tr key={i}>
                                                             <td style={headStyle}>
                                                                 <span className="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
                                                             </td>
                                                             <td style={headStyle}>
-                                                                <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} onClick={(e)=>this.handleDelete(e,v.id)}><i className={"fa fa-trash"}/></button>
-                                                                {/*<button style={{marginRight:"5px"}} className={"btn btn-info btn-sm"} onClick={(e)=>this.handleAdd(e,i)}><i className={"fa fa-pencil"}/></button>*/}
+                                                                <div className="btn-group">
+                                                                    <UncontrolledButtonDropdown>
+                                                                        <DropdownToggle caret>
+                                                                            Aksi
+                                                                        </DropdownToggle>
+                                                                        <DropdownMenu>
+                                                                            <DropdownItem onClick={(e)=>this.handleAlamat(e,v.id)}>Alamat</DropdownItem>
+                                                                            <DropdownItem onClick={(e)=>this.handleBank(e,v.id)}>Bank</DropdownItem>
+                                                                            <DropdownItem onClick={(e)=>this.handleUpdate(e,v.id,v.full_name,v.status===0?1:0)}>Ubah Status</DropdownItem>
+                                                                        </DropdownMenu>
+                                                                    </UncontrolledButtonDropdown>
+                                                                </div>
                                                             </td>
-                                                            <td style={headStyle}>{v.title}</td>
-                                                            <td style={numberStyle}>Rp {toCurrency(v.harga)} .-</td>
-                                                            <td style={numberStyle}>{toCurrency(v.stock_barang)}</td>
-                                                            <td style={numberStyle}>{v.ppn} %</td>
-                                                            <td style={headStyle}>{v.satuan}</td>
-                                                            <td style={numberStyle}>{toCurrency(v.berat)} (gram)</td>
+                                                            <td style={headStyle}>
+                                                                <img style={{width:'30px'}} src={v.picture} onError={(e)=>{e.target.onerror = null; e.target.src=`${noImage()}`}} alt="member image"/>
+                                                            </td>
+                                                            <td style={headStyle}>{v.full_name}</td>
+                                                            <td style={headStyle}>{v.mobile_no}</td>
+                                                            <td style={numberStyle}>Rp {v.saldo==='0'?0:toCurrency(parseInt(v.saldo,10))} .-</td>
+                                                            <td style={numberStyle}>Rp {v.total_payment==='0'?0:toCurrency(parseInt(v.total_payment,10))} .-</td>
+                                                            <td style={numberStyle}>{v.sponsor}</td>
+                                                            <td style={numberStyle}>{v.pin}</td>
+                                                            <td style={numberStyle}>{v.left_pv}</td>
+                                                            <td style={numberStyle}>{v.right_pv}</td>
+                                                            <td style={headStyle}>{v.membership}</td>
+                                                            <td style={headStyle}>{v.referral_code}</td>
+                                                            <td style={headStyle}>{statusQ(v.status)}</td>
+
                                                         </tr>
                                                     );
                                                 })
                                                 : <tr>
-                                                    <td colSpan={7} style={headStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
+                                                    <td colSpan={14} style={headStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
                                                 </tr>
                                                 :(()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){
                                                         container.push(
                                                             <tr key={x}>
+                                                                <td>{<Skeleton/>}</td>
+                                                                <td>{<Skeleton/>}</td>
+                                                                <td>{<Skeleton/>}</td>
+                                                                <td>{<Skeleton/>}</td>
+                                                                <td>{<Skeleton/>}</td>
+                                                                <td>{<Skeleton/>}</td>
                                                                 <td>{<Skeleton/>}</td>
                                                                 <td>{<Skeleton/>}</td>
                                                                 <td>{<Skeleton/>}</td>
@@ -219,6 +275,15 @@ class IndexBarang extends Component{
 
                                         }
                                         </tbody>
+                                        <tfoot style={{backgroundColor:"#EEEEEE"}}>
+                                        <tr>
+                                            <td colSpan={5}>TOTAL PERPAGE</td>
+                                            <td style={numberStyle}>Rp {totSaldo===0?0:toCurrency(totSaldo)} .-</td>
+                                            <td style={numberStyle}>Rp {totPenarikan===0?0:toCurrency(totPenarikan)} .-</td>
+                                            <td colSpan={7}/>
+
+                                        </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                                 <div style={{"marginTop":"20px","marginBottom":"20px","float":"right"}}>
@@ -234,22 +299,28 @@ class IndexBarang extends Component{
                     </div>
                 </div>
                 {
-                    this.props.isOpen===true?<FormBarang
-                        detail={this.state.detail}
+                    localStorage.isAlamat === "true" ? <DetailAlamat
+                        detail={this.props.detailAlamat}
+                    /> : null
+                }
+                {
+                    localStorage.isBank === "true"?<DetailBank
+                    detail={this.props.detailBank}
                     />:null
                 }
-                {/*<FormPaket/>*/}
             </Layout>
         );
     }
 }
 const mapStateToProps = (state) => {
     return {
-        isLoading: state.barangReducer.isLoading,
+        isLoading: state.memberReducer.isLoading,
         isOpen:state.modalReducer,
-        data:state.barangReducer.data,
+        data:state.memberReducer.data,
+        detailAlamat:state.alamatReducer.data,
+        detailBank:state.bankReducer.data
     }
 }
 
 
-export default connect(mapStateToProps)(IndexBarang);
+export default connect(mapStateToProps)(IndexMember);

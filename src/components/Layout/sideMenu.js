@@ -11,13 +11,8 @@ class SideMenu extends Component {
         super(props);
         this.state ={
             isPaket:false,
-            isAdmin:false,
-            isUser:false,
-            isLog:false,
-            isLogActivity:false,
-            isLogAuth:false,
-            isLogTransaction:false,
-
+            isMasterdata:false,
+            isContent:false,
         }
         this.changeMenu = this.changeMenu.bind(this);
     }
@@ -25,15 +20,25 @@ class SideMenu extends Component {
 
     changeMenu(e,param){
         e.preventDefault();
-
         if(param === 'isPaket'){
             this.setState({
                 isPaket : !this.state.isPaket,
+                isMasterdata:false,
+                isContent:false,
             });
         }
-        if(param === 'isLog'){
+        if(param === 'isMasterdata'){
             this.setState({
-                isLog : !this.state.isLog,
+                isPaket:false,
+                isMasterdata : !this.state.isMasterdata,
+                isContent:false,
+            });
+        }
+        if(param === 'isContent'){
+            this.setState({
+                isPaket:false,
+                isMasterdata : false,
+                isContent:!this.state.isContent,
             });
         }
 
@@ -48,9 +53,19 @@ class SideMenu extends Component {
     componentDidMount(){
         this.getProps(this.props);
         const path = this.props.location.pathname;
-        if(path==='/paket' || path==='/barang'){
+        if(path==='/paket' || path==='/barang'||path==='/pin'){
             this.setState({
                 isPaket:true
+            })
+        }
+        if(path==='/member'){
+            this.setState({
+                isMasterdata:true
+            })
+        }
+        if(path==='/berita'){
+            this.setState({
+                isContent:true
             })
         }
 
@@ -63,13 +78,11 @@ class SideMenu extends Component {
             })
         }
     }
-
     getSortByClass(){
     setTimeout(() => {
         return 'none';
         }, 500);
     }
-
     handleLogout = (e) => {
         e.preventDefault();
         Swal.fire({
@@ -95,15 +108,36 @@ class SideMenu extends Component {
                     <li  className={path==='/'?"active":''}><Link to="/"> <i className="fa fa-area-chart" /><span> Dashboard</span></Link></li>
                     {/* DASHBOARD MODUL END */}
 
-                    {/* USER MODUL START */}
-                    <li className={"treeview" +(this.state.isPaket===true || path==='/paket' || path==='/barang' ?" active menu-open" : "")}>
+                    {/* PAKET MODUL START */}
+                    <li className={"treeview" +(this.state.isPaket===true || path==='/paket' || path==='/barang'|| path==='/pin' ?" active menu-open" : "")}>
                         <a href="!#" onClick={(e) => this.changeMenu(e,'isPaket')}><i className="fa fa-list" /> <span>Paket</span> <i className="fa fa-angle-right" /></a>
                         <ul className={"treeview-menu"} style={{display:this.state.isPaket===true?"block":"none"}}>
                             <li className={path==='/paket'?"active":''}><Link to="/paket" style={{width:'fit-content'}}> Paket</Link></li>
                             <li className={path==='/barang'?"active":''}><Link to="/barang" style={{width:'fit-content'}}> Barang</Link></li>
+                            <li className={path==='/pin'?"active":''}><Link to="/pin" style={{width:'fit-content'}}> PIN</Link></li>
                         </ul>
                     </li>
-                    {/* USER MODUL END */}
+                    {/* PAKET MODUL END */}
+                    {/* MASTERDATA MODUL START */}
+                    <li className={"treeview" +(this.state.isMasterdata===true || path==='/member' ?" active menu-open" : "")}>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isMasterdata')}><i className="fa fa-list" /> <span>Masterdata</span> <i className="fa fa-angle-right" /></a>
+                        <ul className={"treeview-menu"} style={{display:this.state.isMasterdata===true?"block":"none"}}>
+                            <li className={path==='/member'?"active":''}><Link to="/member" style={{width:'fit-content'}}> Member</Link></li>
+                            {/*<li className={path==='/bank'?"active":''}><Link to="/bank" style={{width:'fit-content'}}> Bank</Link></li>*/}
+                            {/*<li className={path==='/konten'?"active":''}><Link to="/konten" style={{width:'fit-content'}}> Konten</Link></li>*/}
+                        </ul>
+                    </li>
+                    {/* MASTERDATA MODUL END */}
+                    {/* MASTERDATA MODUL START */}
+                    <li className={"treeview" +(this.state.isContent===true || path==='/berita' ?" active menu-open" : "")}>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isContent')}><i className="fa fa-list" /> <span>Menejemen Konten</span> <i className="fa fa-angle-right" /></a>
+                        <ul className={"treeview-menu"} style={{display:this.state.isContent===true?"block":"none"}}>
+                            <li className={path==='/berita'?"active":''}><Link to="/berita" style={{width:'fit-content'}}> Berita</Link></li>
+                            {/*<li className={path==='/bank'?"active":''}><Link to="/bank" style={{width:'fit-content'}}> Bank</Link></li>*/}
+                            {/*<li className={path==='/konten'?"active":''}><Link to="/konten" style={{width:'fit-content'}}> Konten</Link></li>*/}
+                        </ul>
+                    </li>
+                    {/* MASTERDATA MODUL END */}
 
                     {/* LOGOUT MODUL START */}
                     <li><a href={null} style={{cursor:'pointer',color:'#a6b6d0'}} onClick={(event)=>this.handleLogout(event)}> <i className="fa fa-sign-out" /><span> Logout</span></a></li>

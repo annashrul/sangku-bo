@@ -209,8 +209,9 @@ class FormPaket extends Component{
     handleValidation(e){
         e.preventDefault();
         // let err = this.state.error;
-        let parseData = {};
         let detail=[];
+
+        let parseData = {};
         parseData['title'] = this.state.title;
         parseData['harga'] = this.state.harga;
         parseData['deskripsi'] = this.state.deskripsi;
@@ -221,41 +222,41 @@ class FormPaket extends Component{
         parseData['foto'] = this.state.foto!==""?this.state.foto.base64:'-';
 
         if(parseData['title']===''){
-            ToastQ.fire({icon:'warning',title:`title tidak boleh kosong`});
+            ToastQ.fire({icon:'error',title:`title tidak boleh kosong`});
             return;
         }
         if(parseData['harga']===''){
-            ToastQ.fire({icon:'warning',harga:`harga tidak boleh kosong`});
+            ToastQ.fire({icon:'error',title:`harga tidak boleh kosong`});
             return;
         }
         if(parseData['deskripsi']===''){
-            ToastQ.fire({icon:'warning',title:`deskripsi tidak boleh kosong`});
+            ToastQ.fire({icon:'error',title:`deskripsi tidak boleh kosong`});
             return;
         }
         if(parseData['id_kategori']===''){
-            ToastQ.fire({icon:'warning',title:`kategori tidak boleh kosong`});
+            ToastQ.fire({icon:'error',title:`kategori tidak boleh kosong`});
             return;
         }
         if(parseData['status']===''){
-            ToastQ.fire({icon:'warning',title:`status tidak boleh kosong`});
+            ToastQ.fire({icon:'error',title:`status tidak boleh kosong`});
             return;
         }
         if(parseData['point_volume']===''){
-            ToastQ.fire({icon:'warning',title:`PV tidak boleh kosong`});
+            ToastQ.fire({icon:'error',title:`PV tidak boleh kosong`});
             return;
         }
         if(parseData['type']===''){
-            ToastQ.fire({icon:'warning',title:`tipe tidak boleh kosong`});
+            ToastQ.fire({icon:'error',title:`tipe tidak boleh kosong`});
             return;
         }
         if(noBrgSelected===0){
-            ToastQ.fire({icon:'warning',title:`belum ada barang yang dipilih`});
+            ToastQ.fire({icon:'error',title:`belum ada barang yang dipilih`});
             return;
         }
         for(let i=0;i<this.state.barang_data.length;i++){
             if(this.state.barang_data[i].isSelected==="1"){
                 if(this.state.barang_data[i].qty==="0"){
-                    ToastQ.fire({icon:'warning',title:`qty ${this.state.barang_data[i].title} harus lebih dari nol`});
+                    ToastQ.fire({icon:'error',title:`qty ${this.state.barang_data[i].title} harus lebih dari nol`});
                     return;
                 }
                 detail.push({

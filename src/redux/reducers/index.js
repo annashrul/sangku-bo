@@ -7,6 +7,11 @@ import {siteReducer} from './site.reducer';
 import {paketReducer} from "./paket/paket.reducer";
 import {barangReducer} from "./paket/barang.reducer";
 import {kategoriReducer} from "./kategori/kategori.reducer";
+import {pinReducer} from "./paket/pin.reducer";
+import {memberReducer} from "./masterdata/member.reducer";
+import {alamatReducer} from "./masterdata/alamat.reducer";
+import {bankReducer} from "./masterdata/bank.reducer";
+import {contentReducer} from "./konten/konten.reducer";
 
 export default combineReducers({
     modalReducer,
@@ -15,7 +20,12 @@ export default combineReducers({
     siteReducer,
     paketReducer,
     barangReducer,
+    pinReducer,
+    memberReducer,
+    alamatReducer,
+    bankReducer,
     kategoriReducer,
+    contentReducer,
     auth: authReducer,
     errors : errorsReducer
 });

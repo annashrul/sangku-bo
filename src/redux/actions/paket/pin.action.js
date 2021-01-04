@@ -1,63 +1,63 @@
 import axios from "axios"
 import Swal from "sweetalert2";
-import {BARANG, HEADERS,NOTIF_ALERT} from "../_constants";
+import {PIN, HEADERS, NOTIF_ALERT} from "../_constants";
 import {ModalToggle} from "../modal.action";
 
 
 export function setLoading(load) {
     return {
-        type: BARANG.LOADING,
+        type: PIN.LOADING,
+        load
+    }
+}
+
+export function setLoadingDetail(load) {
+    return {
+        type: PIN.LOADING_DETAIL,
         load
     }
 }
 export function setLoadingPost(load) {
     return {
-        type: BARANG.LOADING_POST,
+        type: PIN.LOADING_POST,
         load
     }
 }
 export function setIsError(load) {
     return {
-        type: BARANG.IS_ERROR,
+        type: PIN.IS_ERROR,
         load
     }
 }
 
 export function setData(data = []) {
     return {
-        type: BARANG.SUCCESS,
+        type: PIN.SUCCESS,
         data
     }
 }
 
-export function setDataEdit(data = []) {
-    return {
-        type: BARANG.EDIT,
-        data
-    }
-}
 export function setDataDetail(data = []) {
     return {
-        type: BARANG.DETAIL,
+        type: PIN.DETAIL,
         data
     }
 }
 
 export function setDataFailed(data = []) {
     return {
-        type: BARANG.FAILED,
+        type: PIN.FAILED,
         data
     }
 }
 
-export const fetchBarang = (where) => {
+export const getPin = (where) => {
     return (dispatch) => {
         dispatch(setLoading(true));
-        let url = 'barang';
+        let url = 'pin';
         if(where){
             url+=`?${where}`;
         }
-
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
@@ -78,12 +78,11 @@ export const fetchBarang = (where) => {
     }
 };
 
-
-export const postBarang = (data) => {
+export const generatePin = (data) => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
         dispatch(setIsError(false));
-        const url = HEADERS.URL + `barang`;
+        const url = HEADERS.URL + `pin`;
         axios.post(url,data)
             .then(function (response) {
                 const data = (response.data);
@@ -95,7 +94,7 @@ export const postBarang = (data) => {
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
-                    dispatch(fetchBarang('page=1'));
+                    dispatch(getPin('page=1'));
                 } else {
                     Swal.fire({
                         title: 'failed',
@@ -134,60 +133,5 @@ export const postBarang = (data) => {
     }
 }
 
-export const deleteBarang = (id) => async dispatch =>{
-    Swal.fire({
-        title: 'Tunggu sebentar.',
-        html: NOTIF_ALERT.CHECKING,
-        onBeforeOpen: () => {
-            Swal.showLoading()
-        },
-        onClose: () => {}
-    })
 
-    axios.delete(HEADERS.URL+`barang/${id}`)
-        .then(response=>{
-            setTimeout(
-                function () {
-                    Swal.close() ;
-                    const data = (response.data);
-                    if (data.status === 'success') {
-                        Swal.fire({
-                            title: 'Success',
-                            icon: 'success',
-                            text: NOTIF_ALERT.SUCCESS,
-                        });
-                    } else {
-                        Swal.fire({
-                            title: 'failed',
-                            icon: 'error',
-                            text: NOTIF_ALERT.FAILED,
-                        });
-                    }
-                    dispatch(setLoading(false));
-                    dispatch(fetchBarang('page=1'));
-                },800)
-
-        }).catch(error =>{
-        Swal.close()
-        dispatch(setLoading(false));
-        if (error.message === 'Network Error') {
-            Swal.fire(
-                'Network Failed!.',
-                'Please check your connection',
-                'error'
-            );
-        }
-        else {
-            Swal.fire({
-                title: 'failed',
-                icon: 'error',
-                text: error.response.data.msg,
-            });
-            if (error.response) {
-
-            }
-        }
-
-    });
-}
 

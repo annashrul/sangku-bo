@@ -217,6 +217,10 @@ export const CapitalizeEachWord=(str)=>{
     }
     return splitStr.join(' ');
 }
+export const rmHtml = (str)=>{
+    let stripedHtml =str.replace(/<[^>]+>/g, '');
+    return stripedHtml;
+}
 
 
 class Paginationq extends Component{

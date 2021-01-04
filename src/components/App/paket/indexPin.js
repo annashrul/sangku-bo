@@ -3,15 +3,15 @@ import {connect} from "react-redux";
 import Layout from 'components/Layout';
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
 import Paginationq, {rangeDate, toCurrency, toRp} from "../../../helper";
-import moment from "moment";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
-import {deleteBarang, fetchBarang} from "../../../redux/actions/paket/barang.action";
 import Skeleton from 'react-loading-skeleton';
-import FormBarang from "../modals/barang/form_barang"
-import * as Swal from "sweetalert2";
+import {getPin} from "../../../redux/actions/paket/pin.action";
+import moment from "moment";
+import GeneratePin from "../modals/pin/generate_pin"
 
-class IndexBarang extends Component{
+
+class IndexPin extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -25,11 +25,10 @@ class IndexBarang extends Component{
         this.handlePage     = this.handlePage.bind(this);
         this.handleSearch   = this.handleSearch.bind(this);
         this.handleAdd      = this.handleAdd.bind(this);
-        this.handleDelete      = this.handleDelete.bind(this);
 
     }
     componentWillMount(){
-        this.props.dispatch(fetchBarang(`page=1`));
+        this.props.dispatch(getPin(`page=1`));
     }
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
@@ -37,12 +36,12 @@ class IndexBarang extends Component{
 
     handleValidate(){
         let where="";
-        let page = localStorage.getItem("pageBarang");
+        let page = localStorage.getItem("pagePin");
         let dateFrom = this.state.dateFrom;
         let dateTo = this.state.dateTo;
         let any = this.state.any;
-        localStorage.setItem("dateFromBarang",`${dateFrom}`);
-        localStorage.setItem("dateToBarang",`${dateTo}`);
+        localStorage.setItem("dateFromPin",`${dateFrom}`);
+        localStorage.setItem("dateToPin",`${dateTo}`);
 
         if(page!==null&&page!==undefined&&page!==""){
             where+=`page=${page}`;
@@ -61,9 +60,9 @@ class IndexBarang extends Component{
     }
 
     handlePage(pageNumber){
-        localStorage.setItem("pageBarang",pageNumber);
+        localStorage.setItem("pagePin",pageNumber);
         let where = this.handleValidate();
-        this.props.dispatch(fetchBarang(where));
+        this.props.dispatch(getPin(where));
 
     }
     handleEvent = (event, picker) => {
@@ -77,39 +76,19 @@ class IndexBarang extends Component{
     handleSearch(e){
         e.preventDefault();
         let where = this.handleValidate();
-        this.props.dispatch(fetchBarang(where));
+        this.props.dispatch(getPin(where));
     }
 
     handleAdd(e){
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
-        this.props.dispatch(ModalType("formBarang"));
-        this.setState({detail:{id:''}});
-    }
-    handleDelete(e,id){
-        e.preventDefault();
-        Swal.fire({
-            title: 'Perhatian !!!',
-            html:`anda yakin akan menghapus paket ini ??`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: `Oke, Hapus`,
-            cancelButtonText: 'Cancel',
-        }).then((result) => {
-            if (result.value) {
-                this.props.dispatch(deleteBarang(id));
-
-            }
-        })
+        this.props.dispatch(ModalType("generatePin"));
+        this.setState({detail:{}});
     }
 
 
     render(){
-        const headStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
-        const numberStyle ={verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
-        const stringStyle ={verticalAlign: "middle", textAlign: "left",whiteSpace: "nowrap"};
+        const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const {
             total,
             per_page,
@@ -123,11 +102,11 @@ class IndexBarang extends Component{
 
 
         return(
-            <Layout page={"Paket"}>
+            <Layout page={"PIN"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Paket</h5>
+                            <h5 className="mb-0 font-weight-bold">PIN</h5>
                         </div>
                     </div>
                 </div>
@@ -155,7 +134,7 @@ class IndexBarang extends Component{
                                     <div className="col-2 col-xs-2 col-md-4">
                                         <div className="form-group">
                                             <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
-                                            <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleAdd(e,'')}><i className="fa fa-plus"/></button>
+                                            <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleAdd(e)}><i className="fa fa-plus"/></button>
                                         </div>
                                     </div>
                                 </div>
@@ -163,14 +142,15 @@ class IndexBarang extends Component{
                                     <table className="table table-hover">
                                         <thead className="bg-light">
                                         <tr>
-                                            <th className="text-black" style={headStyle}>No</th>
-                                            <th className="text-black" style={headStyle}>#</th>
-                                            <th className="text-black" style={headStyle}>Nama</th>
-                                            <th className="text-black" style={headStyle}>Harga</th>
-                                            <th className="text-black" style={headStyle}>Stock</th>
-                                            <th className="text-black" style={headStyle}>PPN</th>
-                                            <th className="text-black" style={headStyle}>Satuan</th>
-                                            <th className="text-black" style={headStyle}>Berat</th>
+                                            <th className="text-black" style={columnStyle}>No</th>
+                                            <th className="text-black" style={columnStyle}>Kode</th>
+                                            <th className="text-black" style={columnStyle}>Paket</th>
+                                            <th className="text-black" style={columnStyle}>Pemilik</th>
+                                            <th className="text-black" style={columnStyle}>Harga</th>
+                                            <th className="text-black" style={columnStyle}>Tipe</th>
+                                            <th className="text-black" style={columnStyle}>Status</th>
+                                            <th className="text-black" style={columnStyle}>Tanggal Dibuat</th>
+                                            <th className="text-black" style={columnStyle}>Tanggal Expired</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -179,30 +159,29 @@ class IndexBarang extends Component{
                                                 data.map((v, i) => {
                                                     return (
                                                         <tr key={i}>
-                                                            <td style={headStyle}>
+                                                            <td style={columnStyle}>
                                                                 <span className="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
                                                             </td>
-                                                            <td style={headStyle}>
-                                                                <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} onClick={(e)=>this.handleDelete(e,v.id)}><i className={"fa fa-trash"}/></button>
-                                                                {/*<button style={{marginRight:"5px"}} className={"btn btn-info btn-sm"} onClick={(e)=>this.handleAdd(e,i)}><i className={"fa fa-pencil"}/></button>*/}
-                                                            </td>
-                                                            <td style={headStyle}>{v.title}</td>
-                                                            <td style={numberStyle}>Rp {toCurrency(v.harga)} .-</td>
-                                                            <td style={numberStyle}>{toCurrency(v.stock_barang)}</td>
-                                                            <td style={numberStyle}>{v.ppn} %</td>
-                                                            <td style={headStyle}>{v.satuan}</td>
-                                                            <td style={numberStyle}>{toCurrency(v.berat)} (gram)</td>
+                                                            <td style={columnStyle}>{v.kode}</td>
+                                                            <td style={columnStyle}>{v.paket_title}</td>
+                                                            <td style={columnStyle}>{v.pemilik}</td>
+                                                            <td style={columnStyle}>Rp {toCurrency(v.harga)} .-</td>
+                                                            <td style={columnStyle}>{v.type===0?'REGISTER':'RO'}</td>
+                                                            <td style={columnStyle}>{v.status}</td>
+                                                            <td style={columnStyle}>{moment(v.created_at).locale('id').format("ddd, Do MMM YYYY hh:mm:ss")}</td>
+                                                            <td style={columnStyle}>{moment(v.exp_date).locale('id').format("ddd, Do MMM YYYY")}</td>
                                                         </tr>
                                                     );
                                                 })
                                                 : <tr>
-                                                    <td colSpan={7} style={headStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
+                                                    <td colSpan={9} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
                                                 </tr>
                                                 :(()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){
                                                         container.push(
                                                             <tr key={x}>
+                                                                <td>{<Skeleton/>}</td>
                                                                 <td>{<Skeleton/>}</td>
                                                                 <td>{<Skeleton/>}</td>
                                                                 <td>{<Skeleton/>}</td>
@@ -234,7 +213,7 @@ class IndexBarang extends Component{
                     </div>
                 </div>
                 {
-                    this.props.isOpen===true?<FormBarang
+                    this.props.isOpen===true?<GeneratePin
                         detail={this.state.detail}
                     />:null
                 }
@@ -245,11 +224,11 @@ class IndexBarang extends Component{
 }
 const mapStateToProps = (state) => {
     return {
-        isLoading: state.barangReducer.isLoading,
+        isLoading: state.pinReducer.isLoading,
         isOpen:state.modalReducer,
-        data:state.barangReducer.data,
+        data:state.pinReducer.data,
     }
 }
 
 
-export default connect(mapStateToProps)(IndexBarang);
+export default connect(mapStateToProps)(IndexPin);
