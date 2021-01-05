@@ -1,60 +1,71 @@
 import axios from "axios"
 import Swal from "sweetalert2";
-import {KATEGORI, HEADERS, NOTIF_ALERT} from "../_constants";
+import {USER_LIST, HEADERS,NOTIF_ALERT} from "../_constants";
+import {ModalToggle} from "../modal.action";
 
 
 export function setLoading(load) {
     return {
-        type: KATEGORI.LOADING,
+        type: USER_LIST.LOADING,
+        load
+    }
+}
+
+
+export function setLoadingDetail(load) {
+    return {
+        type: USER_LIST.LOADING_DETAIL,
         load
     }
 }
 export function setLoadingPost(load) {
     return {
-        type: KATEGORI.LOADING_POST,
+        type: USER_LIST.LOADING_POST,
         load
     }
 }
 export function setIsError(load) {
     return {
-        type: KATEGORI.IS_ERROR,
+        type: USER_LIST.IS_ERROR,
         load
     }
 }
 
 export function setData(data = []) {
     return {
-        type: KATEGORI.SUCCESS,
+        type: USER_LIST.SUCCESS,
         data
     }
 }
 
-
 export function setDataEdit(data = []) {
     return {
-        type: KATEGORI.EDIT,
+        type: USER_LIST.EDIT,
         data
     }
 }
 export function setDataDetail(data = []) {
     return {
-        type: KATEGORI.DETAIL,
+        type: USER_LIST.DETAIL,
         data
     }
 }
 
 export function setDataFailed(data = []) {
     return {
-        type: KATEGORI.FAILED,
+        type: USER_LIST.FAILED,
         data
     }
 }
 
-export const fetchKategori = (where) => {
+export const getUserList = (where) => {
     return (dispatch) => {
         dispatch(setLoading(true));
-        let url =  `category/${where}`;
-        console.log(url);
+        let url = 'user';
+        if(where){
+            url+=`?${where}`;
+        }
+
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
@@ -76,11 +87,11 @@ export const fetchKategori = (where) => {
 };
 
 
-export const postKategori = (data,param) => {
+export const postUserList = (data) => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
         dispatch(setIsError(false));
-        const url = HEADERS.URL + `category`;
+        const url = HEADERS.URL + `user`;
         axios.post(url,data)
             .then(function (response) {
                 const data = (response.data);
@@ -91,13 +102,15 @@ export const postKategori = (data,param) => {
                         text: NOTIF_ALERT.SUCCESS,
                     });
                     dispatch(setIsError(true));
-                    dispatch(fetchKategori(`${param}?page=1`));
+                    dispatch(getUserList(`page=1`));
+                    dispatch(ModalToggle(false));
                 } else {
                     Swal.fire({
                         title: 'failed',
                         icon: 'error',
                         text: NOTIF_ALERT.FAILED,
                     });
+                    dispatch(ModalToggle(true));
                     dispatch(setIsError(false));
                 }
                 dispatch(setLoadingPost(false));
@@ -128,11 +141,11 @@ export const postKategori = (data,param) => {
     }
 }
 
-export const putKategori = (id,data,param) => {
+export const putUserList = (data,id) => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
         dispatch(setIsError(false));
-        const url = HEADERS.URL + `category/${id}`;
+        const url = HEADERS.URL + `user/${id}`;
         axios.put(url,data)
             .then(function (response) {
                 const data = (response.data);
@@ -143,13 +156,15 @@ export const putKategori = (id,data,param) => {
                         text: NOTIF_ALERT.SUCCESS,
                     });
                     dispatch(setIsError(true));
-                    dispatch(fetchKategori(`${param}?page=1`));
+                    dispatch(getUserList(`page=1`));
+                    dispatch(ModalToggle(false));
                 } else {
                     Swal.fire({
                         title: 'failed',
                         icon: 'error',
                         text: NOTIF_ALERT.FAILED,
                     });
+                    dispatch(ModalToggle(true));
                     dispatch(setIsError(false));
                 }
                 dispatch(setLoadingPost(false));
@@ -180,7 +195,8 @@ export const putKategori = (id,data,param) => {
     }
 }
 
-export const deleteKategori = (id,param) => async dispatch =>{
+
+export const deleteUserList = (id) => async dispatch =>{
     Swal.fire({
         title: 'Tunggu sebentar.',
         html: NOTIF_ALERT.CHECKING,
@@ -190,7 +206,7 @@ export const deleteKategori = (id,param) => async dispatch =>{
         onClose: () => {}
     })
 
-    axios.delete(HEADERS.URL+`category/${id}`)
+    axios.delete(HEADERS.URL+`user/${id}`)
         .then(response=>{
             setTimeout(
                 function () {
@@ -210,7 +226,7 @@ export const deleteKategori = (id,param) => async dispatch =>{
                         });
                     }
                     dispatch(setLoading(false));
-                    dispatch(fetchKategori(`${param}?page=1`));
+                    dispatch(getUserList(`page=1`));
                 },800)
 
         }).catch(error =>{
@@ -236,6 +252,3 @@ export const deleteKategori = (id,param) => async dispatch =>{
 
     });
 }
-
-
-

@@ -9,7 +9,10 @@ import Paket from '../App/paket/indexPaket';
 import Barang from '../App/paket/indexBarang';
 import Pin from '../App/paket/indexPin';
 import Member from '../App/masterdata/indexMember';
+import UserList from '../App/masterdata/indexUserList';
+import UserLevel from '../App/masterdata/indexUserLevel';
 import Berita from '../App/konten/indexBerita';
+import Testimoni from '../App/konten/indexTestimoni';
 
 const Routes = (
     <div>
@@ -25,10 +28,13 @@ const Routes = (
             <PrivateRoute path="/pin" exact strict component={Pin} />
             {/* PAKET SECTION END */}
             {/* MASTERDATA SECTION START */}
-            <PrivateRoute path="/member" exact strict component={Member} />
+            <PrivateRoute path="/user_list" exact strict component={UserList} />
+            <PrivateRoute path="/user_level" exact strict component={UserLevel} />
             {/* MASTERDATA SECTION END */}
             {/* MANAGEMENT CONTENT SECTION START */}
+            <PrivateRoute path="/member" exact strict component={Member} />
             <PrivateRoute path="/berita" exact strict component={Berita} />
+            <PrivateRoute path="/testimoni" exact strict component={Testimoni} />
             {/* MANAGEMENT CONTENT SECTION END */}
             <Route component={NotFound}/>
 

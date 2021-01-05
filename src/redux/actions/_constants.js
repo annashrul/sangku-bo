@@ -118,9 +118,11 @@ export const BARANG = {
 let prefKategori='KATEGORI';
 export const KATEGORI = {
     LOADING: `SET_${prefKategori}_LOADING`,
+    LOADING_TESTIMONI: `SET_${prefKategori}_LOADING_TESTIMONI`,
     LOADING_POST: `SET_${prefKategori}_LOADING_POST`,
     IS_ERROR: `SET_${prefKategori}_IS_ERROR`,
     SUCCESS: `SUCCESS_${prefKategori}`,
+    SUCCESS_TESTIMONI: `SUCCESS_${prefKategori}_TESTIMONI`,
     FAILED: `FAILED_${prefKategori}`,
     DETAIL: `DETAIL_${prefKategori}`,
     EDIT: `EDIT_${prefKategori}`
@@ -181,4 +183,46 @@ export const CONTENT = {
     FAILED: `FAILED_${prefContent}`,
     DETAIL: `DETAIL_${prefContent}`,
     EDIT: `EDIT_${prefContent}`
+}
+/****************
+ USER_LIST
+ *****************/
+let prefUserList='USER_LIST';
+export const USER_LIST = {
+    LOADING: `SET_${prefUserList}_LOADING`,
+    LOADING_DETAIL: `SET_${prefUserList}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefUserList}_LOADING_POST`,
+    IS_ERROR: `SET_${prefUserList}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefUserList}`,
+    FAILED: `FAILED_${prefUserList}`,
+    DETAIL: `DETAIL_${prefUserList}`,
+    EDIT: `EDIT_${prefUserList}`
+}
+/****************
+ USER_LEVEL
+ *****************/
+let prefUserLevel='USER_LEVEL';
+export const USER_LEVEL = {
+    LOADING: `SET_${prefUserLevel}_LOADING`,
+    LOADING_DETAIL: `SET_${prefUserLevel}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefUserLevel}_LOADING_POST`,
+    IS_ERROR: `SET_${prefUserLevel}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefUserLevel}`,
+    FAILED: `FAILED_${prefUserLevel}`,
+    DETAIL: `DETAIL_${prefUserLevel}`,
+    EDIT: `EDIT_${prefUserLevel}`
+}
+/****************
+ LAPORAN PENJUALAN
+ *****************/
+let prefPenjualan='PENJUALAN';
+export const PENJUALAN = {
+    LOADING: `SET_${prefPenjualan}_LOADING`,
+    LOADING_DETAIL: `SET_${prefPenjualan}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefPenjualan}_LOADING_POST`,
+    IS_ERROR: `SET_${prefPenjualan}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefPenjualan}`,
+    FAILED: `FAILED_${prefPenjualan}`,
+    DETAIL: `DETAIL_${prefPenjualan}`,
+    EDIT: `EDIT_${prefPenjualan}`
 }

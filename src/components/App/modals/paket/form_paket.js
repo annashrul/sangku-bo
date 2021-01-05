@@ -62,6 +62,9 @@ class FormPaket extends Component{
 
     handleChangeDynamic(e,i){
         // e.preventDefault();
+        this.setState({
+            isScroll:false
+        })
         let column = e.target.name;
         let value = e.target.value;
         let checked = e.target.checked;
@@ -88,7 +91,10 @@ class FormPaket extends Component{
     getProps(param){
         let kategori = typeof param.kategori.data === 'object' ? param.kategori.data : [];
         let barang=[];
+        console.log("typeof",typeof param.barang.data);
+
         if(typeof param.barang.data==='object'){
+            console.log("data",param.barang.data);
             if(param.barang.data.length>0){
                 for(let i=0;i<param.barang.data.length;i++){
                     barang.push({
@@ -323,14 +329,17 @@ class FormPaket extends Component{
     }
     handleLoadMore(){
         this.setState({
-            isScroll:true
+            isScroll:true,
+            isSelected:false
         });
         let perpage = parseInt(this.props.barang.per_page,10);
         let lengthBrg = parseInt(this.props.barang.data.length,10);
+
         if(perpage===lengthBrg || perpage<lengthBrg){
             this.props.dispatch(fetchBarang(`page=1&perpage=${this.state.perpage}`));
             this.setState({scrollPage:this.state.scrollPage+10});
         }
+
         else{
             Swal.fire({
                 allowOutsideClick: false,
@@ -347,6 +356,9 @@ class FormPaket extends Component{
         if (divToScrollTo) {
             divToScrollTo.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'end' })
         }
+        // this.setState({
+        //     isScroll:false,
+        // });
     }
 
 
