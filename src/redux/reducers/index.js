@@ -14,6 +14,8 @@ import {bankReducer} from "./masterdata/bank.reducer";
 import {contentReducer} from "./konten/konten.reducer";
 import {userListReducer} from "./masterdata/user_list.reducer";
 import {userLevelReducer} from "./masterdata/user_level.reducer";
+import {laporanPenjualanReducer} from "./laporan/laporan_penjualan.reducer";
+import {bonusReducer} from "./laporan/bonus.reducer";
 
 export default combineReducers({
     modalReducer,
@@ -30,6 +32,8 @@ export default combineReducers({
     userLevelReducer,
     kategoriReducer,
     contentReducer,
+    laporanPenjualanReducer,
+    bonusReducer,
     auth: authReducer,
     errors : errorsReducer
 });

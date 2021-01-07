@@ -285,7 +285,8 @@ class FormPaket extends Component{
     handleAddBarang(e,i){
         e.preventDefault();
         this.setState({
-            isSelected:true
+            isSelected:true,
+            isScroll:false
         });
         let data = this.state.detail;
         let hrg=parseInt(this.state.harga,10);
@@ -298,6 +299,7 @@ class FormPaket extends Component{
                 return;
             }
         }
+        hrg = hrg+parseInt(this.state.barang_data[i].harga,10);
         data.push({
             checked:false,
             qty:"1",
@@ -306,7 +308,6 @@ class FormPaket extends Component{
             bonus:"0",
             harga:this.props.barang.data[i].harga,
         });
-        hrg = hrg+parseInt(this.state.barang_data[i].harga,10);
         this.setState({detail:data,harga:hrg});
 
     }
@@ -370,7 +371,7 @@ class FormPaket extends Component{
                 <ModalHeader toggle={this.toggle}>{this.props.detail.id===''?"Tambah Paket":"Ubah Paket"}</ModalHeader>
                 <ModalBody>
                     <div className="row">
-                        <div className="col-md-3">
+                        <div className="col-5 col-xs-5 col-md-3 ">
                             <div className="form-group">
                                 <label>Pilih Barang</label>
                                 <div className="input-group mb-2">
@@ -382,7 +383,7 @@ class FormPaket extends Component{
                                     </div>
                                 </div>
                             </div>
-                            <div className="people-list" style={{zoom:"80%",height:'615px',maxHeight:'100%',overflowY:'scroll'}}>
+                            <div className="people-list" style={{zoom:"80%",height:'615px',maxHeight:'100%',overflowY:'auto'}}>
                                 <div id="chat_user_2">
                                     <ul className="chat-list list-unstyled">
                                         {
@@ -425,8 +426,8 @@ class FormPaket extends Component{
 
 
                         </div>
-                        <div className="col-md-5">
-                            <div  style={{zoom:"90%",height:'678px',maxHeight:'100%',overflowY:'scroll'}}>
+                        <div className="col-7 col-xs-7 col-md-5">
+                            <div  style={{zoom:"90%",height:'678px',maxHeight:'100%',overflowY:'auto'}}>
                                 <table className="table table-hover">
                                     <thead>
                                     <tr>
@@ -459,7 +460,7 @@ class FormPaket extends Component{
                                                     </td>
                                                     <td style={columnStyle}> {v.title}</td>
                                                     <td style={columnStyle}>
-                                                        <input style={{textAlign:"right"}} type="text" name="qty" className="form-control" value={toCurrency(v.qty)} onChange={(e)=>this.handleChangeDynamic(e,i)}/>
+                                                        <input style={{textAlign:"center",width:'100px'}} type="text" name="qty" className="form-control" value={toCurrency(v.qty)} onChange={(e)=>this.handleChangeDynamic(e,i)}/>
                                                         {
                                                             <small style={{color:"red",fontWeight:'bold'}}>{errQty}</small>
                                                         }

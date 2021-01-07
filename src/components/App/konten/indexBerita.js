@@ -19,6 +19,7 @@ import {
     putKategori
 } from "../../../redux/actions/kategori/kategori.action";
 import StickyBox from "react-sticky-box";
+import {BrowserView, MobileView,isBrowser, isMobile} from 'react-device-detect';
 
 moment.locale('id');// en
 
@@ -248,29 +249,28 @@ class IndexBerita extends Component{
                     </div>
                 </div>
                 <div className="row">
-                    <div style={{width:"75%",zoom:'85%',display: 'flex', alignItems: 'flex-start',marginRight:'5px'}}>
+                    <div style={{width:isMobile?"100%":"75%",zoom:'85%',display: 'flex', alignItems: 'flex-start',marginRight:'5px'}}>
                         <div className="card">
                             <div className="card-body">
                                 <div className="row">
-                                    <div className="col-12 col-xs-12 col-md-3">
+                                    <div className="col-8 col-xs-8 col-md-3">
                                         <div className="form-group">
                                             <label>Cari</label>
                                             <input type="text" className="form-control" name="any" placeholder={"cari disini"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
-                                    <div className="col-2 col-xs-2 col-md-4">
+                                    <div className="col-4 col-xs-4 col-md-4">
                                         <div className="form-group">
                                             <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
                                             <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleModal(e,'')}><i className="fa fa-plus"/></button>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div className="row">
                                     {
                                         typeof data === 'object' ? data.length>0 ? data.map((v,i)=>{
                                             return(
-                                                <div key={i} className="col-xl-3">
+                                                <div key={i} className="col-6 col-xs-6 col-md-3 col-lg-3" style={{marginBottom:'5px'}}>
                                                     <div className="card">
                                                         <img className="card-img-top" src={v.picture} onError={(e)=>{e.target.onerror = null; e.target.src=`${noImage()}`}} alt="member image"/>
                                                         <div className="card-body">
@@ -322,7 +322,7 @@ class IndexBerita extends Component{
                             </div>
                         </div>
                     </div>
-                    <div style={{width:"24%", zoom:"90%"}}>
+                    <div style={{width:isMobile?"100%":"24%", zoom:"90%"}}>
                         <StickyBox offsetTop={120} offsetBottom={20}>
                             <div className="card">
                                 <div className="card-body">

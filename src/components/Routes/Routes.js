@@ -13,6 +13,9 @@ import UserList from '../App/masterdata/indexUserList';
 import UserLevel from '../App/masterdata/indexUserLevel';
 import Berita from '../App/konten/indexBerita';
 import Testimoni from '../App/konten/indexTestimoni';
+import Penjualan from '../App/laporan/indexLaporanPenjualan';
+import Bonus from '../App/laporan/indexBonus';
+import PrintLaporanPenjualan from '../App/print/print_laporan_penjualan';
 
 const Routes = (
     <div>
@@ -36,6 +39,13 @@ const Routes = (
             <PrivateRoute path="/berita" exact strict component={Berita} />
             <PrivateRoute path="/testimoni" exact strict component={Testimoni} />
             {/* MANAGEMENT CONTENT SECTION END */}
+            {/* LAPORAN SECTION START */}
+            <PrivateRoute path="/bonus" exact strict component={Bonus} />
+            <PrivateRoute path="/penjualan" exact strict component={Penjualan} />
+            {/* LAPORAN SECTION END */}
+            {/* PRINT SECTION START */}
+            <PrivateRoute path="/print_laporan_penjualan" exact strict component={PrintLaporanPenjualan} />
+            {/* PRINT SECTION END */}
             <Route component={NotFound}/>
 
         </Switch>

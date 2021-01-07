@@ -18,10 +18,10 @@ import {
     DropdownToggle, Button, UncontrolledCollapse
 } from 'reactstrap';
 import Default from 'assets/default.png';
-import socketIOClient from "socket.io-client";
+// import socketIOClient from "socket.io-client";
 
 
-const socket = socketIOClient(HEADERS.URL);
+// const socket = socketIOClient(HEADERS.URL);
 
 class Header extends Component {
     constructor(props) {
@@ -51,80 +51,80 @@ class Header extends Component {
             isNotif:false,
 
         }
-        socket.on('set_notif',(data)=>{
-            let investData=[];
-            let withdrawData=[];
-            let userData=[];
-            let contactData=[];
-            for(let i=0;i<data.invest.length;i++){
-                investData.push(data.invest[i]);
-            }
-            for(let i=0;i<data.withdraw.length;i++){
-                withdrawData.push(data.withdraw[i]);
-            }
-            for(let i=0;i<data.users.length;i++){
-                userData.push(data.users[i]);
-            }
-            for(let i=0;i<data.inbox.length;i++){
-                contactData.push(data.inbox[i]);
-            }
-            this.setState({
-                invest:investData,
-                withdraw:withdrawData,
-                user:userData,
-                contact:contactData
-            });
-            // this.refreshDat/**/a();
-        });
-        socket.on('refresh_notif',(data)=>{
-            const audioEl = document.getElementsByClassName("audio-element")[0];
-            audioEl.play()
-            this.refreshData();
-            // this.setState({isNotif:!this.state.isNotif});
-            // this.forceUpdate();
-        })
+        // socket.on('set_notif',(data)=>{
+        //     let investData=[];
+        //     let withdrawData=[];
+        //     let userData=[];
+        //     let contactData=[];
+        //     for(let i=0;i<data.invest.length;i++){
+        //         investData.push(data.invest[i]);
+        //     }
+        //     for(let i=0;i<data.withdraw.length;i++){
+        //         withdrawData.push(data.withdraw[i]);
+        //     }
+        //     for(let i=0;i<data.users.length;i++){
+        //         userData.push(data.users[i]);
+        //     }
+        //     for(let i=0;i<data.inbox.length;i++){
+        //         contactData.push(data.inbox[i]);
+        //     }
+        //     this.setState({
+        //         invest:investData,
+        //         withdraw:withdrawData,
+        //         user:userData,
+        //         contact:contactData
+        //     });
+        //     // this.refreshDat/**/a();
+        // });
+        // socket.on('refresh_notif',(data)=>{
+        //     const audioEl = document.getElementsByClassName("audio-element")[0];
+        //     audioEl.play()
+        //     this.refreshData();
+        //     // this.setState({isNotif:!this.state.isNotif});
+        //     // this.forceUpdate();
+        // })
     }
 
     handleSetHeight(e,param){
-        e.preventDefault();
-        if(param==='invest'){
-            this.setState({
-                isSetHeightInvest:!this.state.isSetHeightInvest,
-                // isSetHeightWithdraw:false,
-                // isSetHeightUser:false,
-                // isSetHeightContact:false,
-
-            });
-        }
-        if(param==='withdraw'){
-            this.setState({
-                // isSetHeightInvest:false,
-                isSetHeightWithdraw:!this.state.isSetHeightWithdraw,
-                // isSetHeightUser:false,
-                // isSetHeightContact:false,
-
-            });
-        }
-        if(param==='user'){
-            this.setState({
-                // isSetHeightInvest:false,
-                // isSetHeightWithdraw:false,
-                isSetHeightUser:!this.state.isSetHeightUser,
-                // isSetHeightContact:false,
-
-            });        }
-        if(param==='contact'){
-            this.setState({
-                // isSetHeightInvest:false,
-                // isSetHeightWithdraw:false,
-                // isSetHeightUser:false,
-                isSetHeightContact:!this.state.isSetHeightContact,
-
-            });        }
+        // e.preventDefault();
+        // if(param==='invest'){
+        //     this.setState({
+        //         isSetHeightInvest:!this.state.isSetHeightInvest,
+        //         // isSetHeightWithdraw:false,
+        //         // isSetHeightUser:false,
+        //         // isSetHeightContact:false,
+        //
+        //     });
+        // }
+        // if(param==='withdraw'){
+        //     this.setState({
+        //         // isSetHeightInvest:false,
+        //         isSetHeightWithdraw:!this.state.isSetHeightWithdraw,
+        //         // isSetHeightUser:false,
+        //         // isSetHeightContact:false,
+        //
+        //     });
+        // }
+        // if(param==='user'){
+        //     this.setState({
+        //         // isSetHeightInvest:false,
+        //         // isSetHeightWithdraw:false,
+        //         isSetHeightUser:!this.state.isSetHeightUser,
+        //         // isSetHeightContact:false,
+        //
+        //     });        }
+        // if(param==='contact'){
+        //     this.setState({
+        //         // isSetHeightInvest:false,
+        //         // isSetHeightWithdraw:false,
+        //         // isSetHeightUser:false,
+        //         isSetHeightContact:!this.state.isSetHeightContact,
+        //
+        //     });        }
     }
 
     refreshData(){
-        socket.emit('get_notif', {})
+        // socket.emit('get_notif', {})
         // this.forceUpdate();
     }
     componentDidMount(){

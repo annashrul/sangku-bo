@@ -133,6 +133,9 @@ class SideMenu extends Component {
                     {/* PIN MODUL START */}
                     <li  className={path==='/member'?"active":''}><Link to="/member"> <i className="fa fa-area-chart" /><span> Member</span></Link></li>
                     {/* PIN MODUL END */}
+                    {/* BONUS MODUL START */}
+                    <li  className={path==='/bonus'?"active":''}><Link to="/bonus"> <i className="fa fa-area-chart" /><span> Bonus</span></Link></li>
+                    {/* BONUS MODUL END */}
 
                     {/* PAKET MODUL START */}
                     <li className={"treeview" +(this.state.isPaket===true || path==='/paket' || path==='/barang' ?" active menu-open" : "")}>

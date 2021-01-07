@@ -12,6 +12,7 @@ import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
 import {fetchBarang} from "../../../redux/actions/paket/barang.action";
 import {fetchKategori} from "../../../redux/actions/kategori/kategori.action";
+import {BrowserView, MobileView,isBrowser, isMobile} from 'react-device-detect';
 
 class IndexPaket extends Component{
     constructor(props){
@@ -179,17 +180,25 @@ class IndexPaket extends Component{
                                             </select>
                                         </div>
                                     </div>
-                                    <div className="col-12 col-xs-12 col-md-3">
+                                    <div className="col-9 col-xs-9 col-md-3">
                                         <div className="form-group">
                                             <label>Type something here ..</label>
                                             <input type="text" className="form-control" name="any" placeholder={"search by amount,wallet address"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
-                                    <div className="col-2 col-xs-2 col-md-4">
-                                        <div className="form-group">
-                                            <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
-                                            <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleModal(e,'')}><i className="fa fa-plus"/></button>
-                                        </div>
+                                    <div className="col-3 col-xs-3 col-md-4">
+                                        <BrowserView>
+                                            <div className="form-group">
+                                                <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                                <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleModal(e,'')}><i className="fa fa-plus"/></button>
+                                            </div>
+                                        </BrowserView>
+                                        <MobileView>
+                                            <div className="form-group text-right">
+                                                <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                                <button style={{marginTop:"27px"}} type="button" className="btn-fixed-bottom btn btn-primary" onClick={(e)=>this.handleModal(e,'')}><i className="fa fa-plus"/></button>
+                                            </div>
+                                        </MobileView>
                                     </div>
                                 </div>
                                 <div style={{overflowX: "auto",zoom:"80%"}}>

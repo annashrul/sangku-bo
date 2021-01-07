@@ -226,3 +226,32 @@ export const PENJUALAN = {
     DETAIL: `DETAIL_${prefPenjualan}`,
     EDIT: `EDIT_${prefPenjualan}`
 }
+
+/****************
+ LAPORAN DEPOSIT
+ *****************/
+let prefDeposit='DEPOSIT';
+export const DEPOSIT = {
+    LOADING: `SET_${prefDeposit}_LOADING`,
+    LOADING_DETAIL: `SET_${prefDeposit}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefDeposit}_LOADING_POST`,
+    IS_ERROR: `SET_${prefDeposit}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefDeposit}`,
+    FAILED: `FAILED_${prefDeposit}`,
+    DETAIL: `DETAIL_${prefDeposit}`,
+    EDIT: `EDIT_${prefDeposit}`
+}
+/****************
+ BONUS
+ *****************/
+let prefBonus='BONUS';
+export const BONUS = {
+    LOADING: `SET_${prefBonus}_LOADING`,
+    LOADING_DETAIL: `SET_${prefBonus}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefBonus}_LOADING_POST`,
+    IS_ERROR: `SET_${prefBonus}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefBonus}`,
+    FAILED: `FAILED_${prefBonus}`,
+    DETAIL: `DETAIL_${prefBonus}`,
+    EDIT: `EDIT_${prefBonus}`
+}

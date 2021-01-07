@@ -3,21 +3,19 @@ import {connect} from "react-redux";
 import Layout from 'components/Layout';
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
 import Paginationq, {noImage, rangeDate, statusQ, toCurrency, toRp} from "../../../helper";
-import {NOTIF_ALERT} from "../../../redux/actions/_constants";
-import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import moment from "moment";
 import DetailAlamat from "../modals/masterdata/member/detail_alamat"
 import DetailBank from "../modals/masterdata/member/detail_bank"
 import {getMember, putMember} from "../../../redux/actions/masterdata/member.action";
-import UncontrolledButtonDropdown from "reactstrap/es/UncontrolledButtonDropdown";
-import DropdownToggle from "reactstrap/es/DropdownToggle";
-import DropdownMenu from "reactstrap/es/DropdownMenu";
-import DropdownItem from "reactstrap/es/DropdownItem";
-import {getDetailAlamat} from "../../../redux/actions/masterdata/alamat.action";
-import {getDetailBank} from "../../../redux/actions/masterdata/bank.action";
-import * as Swal from "sweetalert2";
-
+import Image1 from '../../../assets/dollar.svg';
+import Image2 from '../../../assets/pack_delivery.svg';
+import Image3 from '../../../assets/truck.svg';
+import Image4 from '../../../assets/truck_clock.svg';
+import Image5 from '../../../assets/pack_delivered.svg';
+import {getLaporanPenjualan} from "../../../redux/actions/laporan/laporan_penjualan.action";
+import ReactToPrint from "react-to-print";
+import Link from "react-router-dom/es/Link";
 
 class IndexLaporanPenjualan extends Component{
     constructor(props){
@@ -26,21 +24,61 @@ class IndexLaporanPenjualan extends Component{
             detail:{},
             any:"",
             dateFrom:moment(new Date()).format("yyyy-MM-DD"),
-            dateTo:moment(new Date()).format("yyyy-MM-DD")
+            dateTo:moment(new Date()).format("yyyy-MM-DD"),
+            isCheckedPrintAll:false,
+            isLoading:true,
+            dataPenjualan:[]
         };
         this.handleEvent    = this.handleEvent.bind(this);
         this.handleChange   = this.handleChange.bind(this);
         this.handlePage     = this.handlePage.bind(this);
         this.handleSearch   = this.handleSearch.bind(this);
+        this.handlePrint   = this.handlePrint.bind(this);
     }
 
     componentWillMount(){
-        this.props.dispatch(getMember(`page=1`));
-    }
-    handleChange = (event) => {
-        this.setState({[event.target.name]: event.target.value});
+        this.props.dispatch(getLaporanPenjualan());
     }
 
+    componentWillReceiveProps(nextProps){
+        let isLoading=true;
+        let data=[];
+        if(typeof nextProps.data.data === 'object'){
+            if(nextProps.data.data.length>0){
+                for(let i=0;i<nextProps.data.data.length;i++){
+                    data.push(Object.assign(nextProps.data.data[i],{isChecked:false,resi_no:''}));
+                }
+                isLoading=false;
+            }
+        }
+        this.setState({isLoading:isLoading,dataPenjualan:data});
+    }
+
+    handleChange = (e,i=null) => {
+        let column = e.target.name;
+        let value = e.target.value;
+        let checked = e.target.checked;
+        let dataPenjualan = [...this.state.dataPenjualan];
+        if(column==='isCheckedPrintAll'){
+            // dataPenjualan[i] = {...dataPenjualan[i], isChecked: checked};
+            console.log("DATA",dataPenjualan);
+            dataPenjualan.map((v,i)=>{
+                v.isChecked=checked;
+            });
+            this.setState({[column]:checked,dataPenjualan:dataPenjualan});
+            return;
+        }
+        if(column==='isChecked'){
+            dataPenjualan[i] = {...dataPenjualan[i], [column]: checked};
+            this.setState({dataPenjualan:dataPenjualan});
+            return;
+        }
+        dataPenjualan[i] = {...dataPenjualan[i], [column]: value};
+        this.setState({dataPenjualan:dataPenjualan});
+        // this.setState({dataPenjualan:dataPenjualan});
+
+
+    }
     handleValidate(){
         let where="";
         let page = localStorage.getItem("pageMember");
@@ -84,13 +122,35 @@ class IndexLaporanPenjualan extends Component{
         let where = this.handleValidate();
         this.props.dispatch(getMember(where));
     }
-
+    handlePrint() {
+        var content = document.getElementById('printarea');
+        var pri = document.getElementById('ifmcontentstoprint').contentWindow;
+        pri.document.open();
+        pri.document.write(content.innerHTML);
+        pri.document.close();
+        pri.focus();
+        pri.print();
+    }
 
 
     render(){
         const headStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const numberStyle ={verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
         const stringStyle ={verticalAlign: "middle", textAlign: "left",whiteSpace: "nowrap"};
+        const lnr ={borderBottom: '1px dashed #ddd',paddingBottom:'5px',marginBottom:'15px'};
+        const trStatus={
+            width:'50px',
+            height:'50px',
+            display:'inlineBlock',
+            borderRadius:'50%',
+            marginRight:'6px',
+            marginBottom:'6px',
+            textAlign:'center',
+            paddingTop:'8px',
+            border:'2px solid #34b471',
+            // backgroundColor:'#34b471',
+            float:'left'
+        };
         const {
             total,
             per_page,
@@ -101,23 +161,22 @@ class IndexLaporanPenjualan extends Component{
             from,
             data
         } = this.props.data;
-
         let totSaldo=0;
         let totPenarikan=0;
         return(
-            <Layout page={"Member"}>
+            <Layout page={"Laporan Penjualan"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Member</h5>
+                            <h5 className="mb-0 font-weight-bold">Laporan Penjualan</h5>
                         </div>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-12 box-margin">
-                        <div className="card">
+                    <div className="col-md-12">
+                        <div className="card" style={{zoom:"90%"}}>
                             <div className="card-body">
-                                <div className="row" style={{zoom:"90%"}}>
+                                <div className="row">
                                     <div className="col-6 col-xs-6 col-md-2">
                                         <div className="form-group">
                                             <label>Periode </label>
@@ -128,134 +187,267 @@ class IndexLaporanPenjualan extends Component{
                                         </div>
                                     </div>
 
-                                    <div className="col-12 col-xs-12 col-md-3">
+                                    <div className="col-6 col-xs-6 col-md-3">
                                         <div className="form-group">
                                             <label>Cari</label>
                                             <input type="text" className="form-control" name="any" placeholder={"cari disini"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
-                                    <div className="col-2 col-xs-2 col-md-4">
-                                        <div className="form-group">
-                                            <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
-                                            <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleModal(e,'')}><i className="fa fa-plus"/></button>
+                                </div>
+                                <div className="row">
+                                    <div className="col-4 col-xs-4 col-md-2 box-margin">
+                                        <div className="card" style={{backgroundColor:'red'}}>
+                                            <div className="card-body">
+                                                <center><i style={{fontSize:'60px',color:'white'}} className={"fa fa-files-o"}/><br/><br/>
+                                                    <h4 style={{fontSize:'14px',color:'white'}}>SEMUA</h4>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-4 col-xs-4 col-md-2 box-margin">
+                                        <div className="card" style={{backgroundColor:'purple'}}>
+                                            <div className="card-body">
+                                                <center>
+                                                    <img style={{height:'60px'}} src="https://thaibah.com/admin/public/icon/pack_delivery2.svg" alt=""/><br/><br/>
+                                                    <h4 style={{fontSize:'14px',color:'white'}}>DIPROSES</h4>
+
+                                                </center>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-4 col-xs-4 col-md-2 box-margin">
+                                        <div className="card" style={{backgroundColor:'#ffd600'}}>
+                                            <div className="card-body">
+                                                <center><i style={{fontSize:'60px',color:'white'}} className={"fa fa-file-text"}/><br/><br/>
+                                                    <h4 style={{fontSize:'14px',color:'white'}}>BELUM ADA RESI</h4>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-4 col-xs-4 col-md-2 box-margin">
+                                        <div className="card" style={{backgroundColor:'blue'}}>
+                                            <div className="card-body">
+                                                <center><i style={{fontSize:'60px',color:'white'}} className={"fa fa-search"}/><br/><br/>
+                                                    <h4 style={{fontSize:'14px',color:'white'}}>BELUM DILACAK</h4>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-4 col-xs-4 col-md-2 box-margin">
+                                        <div className="card" style={{backgroundColor:'#00bcd4'}}>
+                                            <div className="card-body">
+                                                <center>
+                                                    <img style={{height:'60px'}} src="https://thaibah.com/admin/public/icon/truck-2.svg" alt=""/><br/><br/>
+                                                    <h4 style={{fontSize:'14px',color:'white'}}>DIKIRIM</h4>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-4 col-xs-4 col-md-2 box-margin">
+                                        <div className="card" style={{backgroundColor:'green'}}>
+                                            <div className="card-body">
+                                                <center>
+                                                    <img style={{height:'60px'}} src="https://thaibah.com/admin/public/icon/pack_delivered2.svg" alt=""/><br/><br/>
+                                                    <h4 style={{fontSize:'14px',color:'white'}}>DITERIMA</h4>
+                                                </center>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div style={{overflowX: "auto",zoom:"80%"}}>
-                                    <table className="table table-hover">
-                                        <thead className="bg-light">
-                                        <tr>
-                                            <th className="text-black" style={headStyle}>No</th>
-                                            <th className="text-black" style={headStyle}>#</th>
-                                            <th className="text-black" style={headStyle}>Foto</th>
-                                            <th className="text-black" style={headStyle}>Nama</th>
-                                            <th className="text-black" style={headStyle}>Telepon</th>
-                                            <th className="text-black" style={headStyle}>Saldo</th>
-                                            <th className="text-black" style={headStyle}>Penarikan</th>
-                                            <th className="text-black" style={headStyle}>Sponsor</th>
-                                            <th className="text-black" style={headStyle}>PIN</th>
-                                            <th className="text-black" style={headStyle}>Kaki Kanan</th>
-                                            <th className="text-black" style={headStyle}>Kaki Kiri</th>
-                                            <th className="text-black" style={headStyle}>Status Member</th>
-                                            <th className="text-black" style={headStyle}>Kode Referral</th>
-                                            <th className="text-black" style={headStyle}>Status Aktif</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {
-                                            typeof data === 'object' ? data.length > 0 ?
-                                                data.map((v, i) => {
-                                                    totSaldo = totSaldo+parseInt(v.saldo,10);
-                                                    totPenarikan = totPenarikan+parseInt(v.total_payment,10);
-                                                    return (
-                                                        <tr key={i}>
-                                                            <td style={headStyle}>
-                                                                <span className="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
-                                                            </td>
-                                                            <td style={headStyle}>
-                                                                <div className="btn-group">
-                                                                    <UncontrolledButtonDropdown>
-                                                                        <DropdownToggle caret>
-                                                                            Aksi
-                                                                        </DropdownToggle>
-                                                                        <DropdownMenu>
-                                                                            <DropdownItem onClick={(e)=>this.handleAlamat(e,v.id)}>Alamat</DropdownItem>
-                                                                            <DropdownItem onClick={(e)=>this.handleBank(e,v.id)}>Bank</DropdownItem>
-                                                                            <DropdownItem onClick={(e)=>this.handleUpdate(e,v.id,v.full_name,v.status===0?1:0)}>Ubah Status</DropdownItem>
-                                                                        </DropdownMenu>
-                                                                    </UncontrolledButtonDropdown>
-                                                                </div>
-                                                            </td>
-                                                            <td style={headStyle}>
-                                                                <img style={{width:'30px'}} src={v.picture} onError={(e)=>{e.target.onerror = null; e.target.src=`${noImage()}`}} alt="member image"/>
-                                                            </td>
-                                                            <td style={headStyle}>{v.full_name}</td>
-                                                            <td style={headStyle}>{v.mobile_no}</td>
-                                                            <td style={numberStyle}>Rp {v.saldo==='0'?0:toCurrency(parseInt(v.saldo,10))} .-</td>
-                                                            <td style={numberStyle}>Rp {v.total_payment==='0'?0:toCurrency(parseInt(v.total_payment,10))} .-</td>
-                                                            <td style={numberStyle}>{v.sponsor}</td>
-                                                            <td style={numberStyle}>{v.pin}</td>
-                                                            <td style={numberStyle}>{v.left_pv}</td>
-                                                            <td style={numberStyle}>{v.right_pv}</td>
-                                                            <td style={headStyle}>{v.membership}</td>
-                                                            <td style={headStyle}>{v.referral_code}</td>
-                                                            <td style={headStyle}>{statusQ(v.status)}</td>
-
-                                                        </tr>
-                                                    );
-                                                })
-                                                : <tr>
-                                                    <td colSpan={14} style={headStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
-                                                </tr>
-                                                :(()=>{
-                                                    let container =[];
-                                                    for(let x=0; x<10; x++){
-                                                        container.push(
-                                                            <tr key={x}>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                            </tr>
-                                                        )
-                                                    }
-                                                    return container;
-                                                })()
-
-                                        }
-                                        </tbody>
-                                        <tfoot style={{backgroundColor:"#EEEEEE"}}>
-                                        <tr>
-                                            <td colSpan={5}>TOTAL PERPAGE</td>
-                                            <td style={numberStyle}>Rp {totSaldo===0?0:toCurrency(totSaldo)} .-</td>
-                                            <td style={numberStyle}>Rp {totPenarikan===0?0:toCurrency(totPenarikan)} .-</td>
-                                            <td colSpan={7}/>
-
-                                        </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                                <div style={{"marginTop":"20px","marginBottom":"20px","float":"right"}}>
-                                    <Paginationq
-                                        current_page={current_page}
-                                        per_page={per_page}
-                                        total={total}
-                                        callback={this.handlePage}
-                                    />
+                            </div>
+                        </div>
+                        <br/>
+                        <div className="card">
+                            <div className="card-body">
+                                <div className="row">
+                                    <div className="col-10 col-xs-10 col-md-11">
+                                        <Link to='/print_laporan_penjualan' style={{pointerEvents:this.state.isCheckedPrintAll===false?'none':''}}>
+                                            <button className={"btn btn-info btn-block"} style={{letterSpacing:'3px'}}> <i className={'fa fa-print'}/> PRINT LABEL PENGIRIMAN</button>
+                                        </Link>
+                                    </div>
+                                    <div className="col-2 col-xs-2 col-md-1">
+                                        <input style={{height:'35px',width:'35px'}} name={"isCheckedPrintAll"} checked={this.state.isCheckedPrintAll} type="checkbox" onChange={(e)=>this.handleChange(e,null)} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <br/>
+
+                        {
+                            this.state.isLoading===false?this.state.dataPenjualan.length>0?this.state.dataPenjualan.map((v,i)=>{
+                                let sts = v.status;
+                                return(
+                                    <div key={i} id={'printarea'} className="card" style={{backgroundColor:v.isChecked?'#EEEEEE':'white',zoom:'90%',marginBottom:'10px'}}>
+                                        <div className="card-body">
+                                            <div className="row">
+                                                <div className="col-md-3">
+                                                    <h4 style={lnr}>
+                                                        {v.kd_trx}
+                                                    </h4>
+                                                    <small>Dikirim Kepada</small>
+                                                    <p style={lnr}><span>{v.full_name}</span></p>
+
+                                                    <p style={lnr}><small>Tgl Pemesanan</small><br/>{moment(v.created_at).format('LLLL')}</p>
+                                                    <small>Alamat</small>
+                                                    <p style={lnr}><span>{v.main_address}</span></p>
+                                                    <small>Telepon</small>
+                                                    <p style={lnr}><span>{v.no_hp}</span></p>
+
+                                                </div>
+                                                <div className="col-md-3">
+                                                    <div className="scrollbar"  style={{height:'390px',maxHeight:'100%',overflowY:'auto'}}>
+                                                        <div style={lnr}><small>Produk</small><br/>
+                                                            {
+                                                                v.detail.length>0?v.detail.map((val,key)=>{
+                                                                    return(
+                                                                        <div key={key} className="media" style={{backgroundColor:'#cfd8dc',borderRadius:'10px',marginBottom:'5px'}}>
+                                                                            <img style={{backgroungSize:'cover'}} src={val.foto} className="mr-3 media-thumb" alt="..."/>
+                                                                            <div className="media-body text-danger" style={{paddingRight:'10px'}}>
+                                                                                <h5 className="font-17 text-success" style={{marginTop:'8px'}}>{val.paket}</h5>
+                                                                                <small style={{float:'left'}}>Rp {toCurrency(val.price)} .-</small>
+                                                                                <small style={{float:'right'}}>{val.qty} barang</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    );
+                                                                }):''
+                                                            }
+                                                        </div>
+                                                        <p style={lnr}><small>Ongkir</small><br/>Rp {toCurrency(v.ongkir)} .-</p>
+                                                        <p style={lnr}><small>Ongkir</small><br/>Rp {toCurrency(v.ongkir)} .-</p>
+                                                        <p style={lnr}><small>Metode Pembayaran</small><br/>{v.metode_pembayaran}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-3">
+                                                    <div className="alert alert-success">
+                                                        <center>
+                                                            <p style={{color:'white',letterSpacing:'3px'}}>TOTAL PEMBAYARAN</p>
+                                                            <hr/>
+                                                            <h5 className="med" data-toggle="tooltip" data-placement="top" title="sudah bayar">
+                                                                <span style={{color:'white',letterSpacing:'5px'}}>Rp {toCurrency(v.grand_total)} .-</span>
+                                                            </h5>
+                                                            <hr/>
+                                                        </center>
+
+                                                    </div>
+                                                    <button className={"btn btn-block btn-outline-primary"}>
+                                                        <i className={"fa fa-upload"}/><br/>
+                                                        Upload Bukti Transfer
+                                                    </button>
+                                                </div>
+                                                <div className="col-md-3">
+                                                    <p className="mbtm-10">Status Transaksi</p>
+                                                    <div className="tr-status" style={{display: 'flex', alignItems: 'flex-start'}}>
+                                                        <ul style={{listStyle:'none',padding:'0',marginBottom:'20px'}}>
+                                                            <li className="done" data-toggle="tooltip" data-placement="top" title={'Menunggu Pembayaran'} data-original-title={'Menunggu Pembayaran'}>
+                                                                <img style={{maxWidth:'30px', maxHeight:'30px'}} id="dollar" className="svg icon" src={Image1}/>
+                                                            </li>
+                                                            <li className={sts===1||sts>1?'done':'undone'} data-toggle="tooltip" data-placement="top" title={'Dikemas'} data-original-title={'Dikemas'}>
+                                                                <img style={{maxWidth:'30px', maxHeight:'30px'}} id="dollar" className="svg icon" src={Image2}/>
+                                                            </li>
+                                                            <li className={sts===2||sts>2?'done':'undone'} data-toggle="tooltip" data-placement="top" title={'Dikirim'} data-original-title={'Dikirim'}>
+                                                                <img style={{maxWidth:'30px', maxHeight:'30px'}} id="dollar" className="svg icon" src={Image3}/>
+                                                            </li>
+                                                            <li className={sts===3||sts>3?'done':'undone'} data-toggle="tooltip" data-placement="top" title={'Selesai'} data-original-title={'Selesai'}>
+                                                                <img style={{maxWidth:'30px', maxHeight:'30px'}} id="dollar" className="svg icon" src={Image4}/>
+                                                            </li>
+                                                            <li className={sts===4||sts>4?'done':'undone'} data-toggle="tooltip" data-placement="top" title={'Dibatalkan'} data-original-title={'Dibatalkan'}>
+                                                                <img style={{maxWidth:'30px', maxHeight:'30px'}} id="dollar" className="svg icon" src={Image5}/>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <small>Expedisi</small>
+                                                    <p style={lnr}><span>{v.layanan_pengiriman}</span></p>
+                                                    <small>No.Resi</small>
+                                                    <p>
+                                                        <span style={{float:'left'}}>{v.resi}</span>
+                                                        {
+                                                            v.resi!=='-'?(
+                                                                <span style={{float:'right'}}>
+                                                                    <a href={''}>Lacak Resi</a>
+                                                                </span>
+                                                            ):''
+                                                        }
+                                                    </p>
+                                                    <p style={lnr}/>
+                                                    <div className="form-group">
+                                                        <div className="input-group mb-2">
+                                                            <input disabled={v.resi!=='-'} type="text" className="form-control" name="resi_no" placeholder={"masukan no resi disini ....."} value={v.resi_no} onChange={(e)=>this.handleChange(e,i)}/>
+                                                            <div className="input-group-prepend">
+                                                                <button disabled={v.resi!=='-'} className="btn btn-primary" onClick={(event)=>this.handleSearch(event)}>
+                                                                    <i className="fa fa-send"/>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <input name={"isChecked"} checked={v.isChecked} type="checkbox" onChange={(e)=>this.handleChange(e,i)} />
+                                                    <button className="btn btn-sm btn-info" style={{marginLeft:'10px'}}>
+                                                        <span className="fa fa-print"/> PRINT LABEL PENGIRIMAN
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                );
+                            }):'':(()=>{
+                                let container =[];
+                                for(let i=0; i<1; i++){
+                                    container.push(
+                                        <div key={i} className="card" style={{zoom:'90%',marginBottom:'10px'}}>
+                                            <div className="card-body">
+                                                <div className="row">
+                                                    <div className="col-md-3">
+                                                        <h4 style={lnr}><Skeleton/></h4>
+                                                        <small><Skeleton/></small>
+                                                        <p style={lnr}><span><Skeleton/></span></p>
+                                                        <p style={lnr}><small><Skeleton/></small><br/><Skeleton/></p>
+                                                        <small><Skeleton/></small>
+                                                        <p style={lnr}><span><Skeleton/></span></p>
+                                                        <small><Skeleton/></small>
+                                                        <p style={lnr}><span><Skeleton/></span></p>
+                                                    </div>
+                                                    <div className="col-md-3">
+                                                        <h4 style={lnr}><Skeleton/></h4>
+                                                        <small><Skeleton/></small>
+                                                        <p style={lnr}><span><Skeleton/></span></p>
+                                                        <p style={lnr}><small><Skeleton/></small><br/><Skeleton/></p>
+                                                        <small><Skeleton/></small>
+                                                        <p style={lnr}><span><Skeleton/></span></p>
+                                                        <small><Skeleton/></small>
+                                                        <p style={lnr}><span><Skeleton/></span></p>
+                                                    </div>
+                                                    <div className="col-md-3">
+                                                        <h4 style={lnr}><Skeleton/></h4>
+                                                        <small><Skeleton/></small>
+                                                        <p style={lnr}><span><Skeleton/></span></p>
+                                                        <p style={lnr}><small><Skeleton/></small><br/><Skeleton/></p>
+                                                        <small><Skeleton/></small>
+                                                        <p style={lnr}><span><Skeleton/></span></p>
+                                                        <small><Skeleton/></small>
+                                                        <p style={lnr}><span><Skeleton/></span></p>
+                                                    </div>
+                                                    <div className="col-md-3">
+                                                        <h4 style={lnr}><Skeleton/></h4>
+                                                        <small><Skeleton/></small>
+                                                        <p style={lnr}><span><Skeleton/></span></p>
+                                                        <p style={lnr}><small><Skeleton/></small><br/><Skeleton/></p>
+                                                        <small><Skeleton/></small>
+                                                        <p style={lnr}><span><Skeleton/></span></p>
+                                                        <small><Skeleton/></small>
+                                                        <p style={lnr}><span><Skeleton/></span></p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                                return container;
+                            })()
+                        }
+
                     </div>
+
                 </div>
                 {
                     localStorage.isAlamat === "true" ? <DetailAlamat
@@ -273,11 +465,9 @@ class IndexLaporanPenjualan extends Component{
 }
 const mapStateToProps = (state) => {
     return {
-        isLoading: state.memberReducer.isLoading,
+        isLoading: state.laporanPenjualanReducer.isLoading,
         isOpen:state.modalReducer,
-        data:state.memberReducer.data,
-        detailAlamat:state.alamatReducer.data,
-        detailBank:state.bankReducer.data
+        data:state.laporanPenjualanReducer.data,
     }
 }
 

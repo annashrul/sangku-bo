@@ -31,7 +31,99 @@
 
 
   <style>
+    .btn-fixed-bottom {
+      z-index: 99;
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: auto;
+      padding: 15px;
+      /*top:10px;*/
+      margin:0 auto;
+      -webkit-box-shadow: 0 8px 6px -6px #333;
+      -moz-box-shadow: 0 8px 6px -6px #333;
+      box-shadow: 0 8px 6px -6px #333;
+      /*margin-top: 20px;*/
+      /*background-color: red;*/
+      /*color: white;*/
+      /*text-align: center;*/
+    }
+    .py{
+      padding: 1rem 0;
+    }
+    .bb-1{
+      border-bottom: 1px solid #222;
+    }
+    .bl-1{
+      border-left: 1px solid #222;
+    }
+    .logo{
+      border-left: 1px solid #222;
+      width: 80px;
+      padding: .5rem;
+    }
+    .exp{
+      border-left: 1px solid #222;
+      text-align: center;
+      width: 80px;
+    }
+    .lead{
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .p-0{
+      padding: 0;
+    }
+    .ls-1{
+      letter-spacing: 1px;
+    }
+    .pb-025{
+      padding-bottom: .25rem;
+    }
+    .ttu{
+      text-transform: uppercase;
+    }
+    td.to{
+      width: 20px;
+      vertical-align: top;
+      padding-right: 0 !important;
+    }
 
+    /*#printable td.plabel{*/
+      /*padding-top: 20px;*/
+      /*padding-left: 20px;*/
+    /*}*/
+    #printable td.fragile{
+      /*padding: 0;*/
+    }
+    .fragile{
+      /*border-left: 2px solid #000;*/
+      /*padding: 0;*/
+      /*display: none;*/
+    }
+    .fragile h2{
+      text-align: center;
+      padding: 10px;
+      font-size: 28px;
+      line-height: 1;
+      margin: 0;
+      font-weight: 700;
+    }
+    .fragile p{
+      text-align: center;
+      padding: 0 10px 10px;
+      font-size: 16px;
+      margin: 0;
+      font-weight: 700;
+    }
+    .img-fragile{
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+      margin-top: 10px;
+    }
     .btn-fixed-bottom {
       z-index: 99;
       position: fixed;
@@ -210,10 +302,35 @@
       width: 40px;
       /*float: left;*/
     }
+  .done{
+    width:50px;
+    height:50px;
+    display:inline-block;
+    border-radius:50%;
+    margin-right:6px;
+    margin-bottom:6px;
+    text-align:center;
+    padding-top:8px;
+    border:2px solid #34b471;
+    background-color:#34b471;
+    float:left;
+  }
+    .undone{
+      width:50px;
+      height:50px;
+      display:inline-block;
+      border-radius:50%;
+      margin-right:6px;
+      margin-bottom:6px;
+      text-align:center;
+      padding-top:8px;
+      border:2px solid #ddd;
+      /*background-color:#34b471;*/
+      float:left;
+    }
 
   </style>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqD1Z03FoLnIGJTbpAgRvjcchrR-NiICk&libraries=places"
-    async defer></script>
+  <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqD1Z03FoLnIGJTbpAgRvjcchrR-NiICk&libraries=places" async defer></script>-->
 
 </head>
 <script>
@@ -234,6 +351,7 @@
 //            return false;
 //        }
 //    }
+
 </script>
 <!--<body onContextMenu="return false" class="load" style="zoom:90%">-->
 <body class="load" style="zoom:90%">
