@@ -6,11 +6,10 @@ import Paginationq, {rangeDate,noImage, rmComma, ToastQ, toCurrency, toRp} from 
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
-import {getPin} from "../../../redux/actions/paket/pin.action";
 import moment from "moment";
 import GeneratePin from "../modals/pin/generate_pin"
 import {getBonus, postPenarikan} from "../../../redux/actions/laporan/bonus.action";
-
+import FormPenarikanBonus from '../modals/laporan/form_penarikan_bonus';
 
 class IndexBonus extends Component{
     constructor(props){
@@ -23,8 +22,7 @@ class IndexBonus extends Component{
             data:[],
             isLoading:true
         };
-        this.handleChange   = this.handleChange.bind(this);
-        this.handleSubmit      = this.handleSubmit.bind(this);
+        this.handleModal      = this.handleModal.bind(this);
 
     }
     componentWillMount(){
@@ -35,160 +33,101 @@ class IndexBonus extends Component{
         let data=[];
         if(nextProps.data.length>0){
            for(let i=0;i<nextProps.data.length;i++){
-               data.push(Object.assign(nextProps.data[i],{amount:'0'}));
-               isLoading=false;
+               data.push(nextProps.data[i]);
            }
+           isLoading=false;
+        }
+        else{
+            data=[];
         }
         this.setState({isLoading:isLoading,data:data});
     }
 
-    handleChange = (e,i=null) => {
-        let column = e.target.name;
-        let value = e.target.value;
-        let checked = e.target.checked;
-        let data = [...this.state.data];
-        if(column === 'checked'){
-            data[i] = {...data[i], [column]: checked};
-        }
-        else{
-            data[i] = {...data[i], [column]: value};
-            this.setState({data:data});
-        }
-    }
 
 
-
-    handleSubmit(e,i){
-        e.preventDefault();
-        if(this.state.data[i].amount===''||this.state.data[i].amount==='0'){
-            ToastQ.fire({icon:'error',title:`silahkan masukan nominal yang akan ditarik`});
-            return;
-        }
-        else{
-            this.props.dispatch(postPenarikan({
-                "kode":this.state.data[i].kode,
-                "amount":rmComma(this.state.data[i].amount)
-            }));
-        }
+    handleModal(e,kode){
+        const bool = !this.props.isOpen;
+        this.props.dispatch(ModalToggle(bool));
+        this.props.dispatch(ModalType("formPenarikanBonus"));
+        this.setState({detail:{kode:kode}});
     }
 
 
     render(){
         const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
+        const numStyle ={verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
         // const data = this.state.data;
-
+        let totTrxIn=0;
+        let totTrxOut=0;
+        let totTrxSaldo=0;
+        console.log(this.state.data.length);
         return(
-            <Layout page={"PIN"}>
+            <Layout page={"Bonus"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">PIN</h5>
+                            <h5 className="mb-0 font-weight-bold">Bonus</h5>
                         </div>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-12 box-margin">
-                        <div className="card">
-                            <div className="card-body">
-                                <div className="row" style={{zoom:"90%"}}>
-                                    <div className="col-6 col-xs-6 col-md-2">
-                                        <div className="form-group">
-                                            <label>Periode </label>
-                                            <DateRangePicker
-                                                autoUpdateInput={true} showDropdowns={true} style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onApply={this.handleEvent}>
-                                                <input type="text" readOnly={true} className="form-control" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
-                                            </DateRangePicker>
+                    {
+                        this.state.isLoading===false ? this.state.data.length > 0 ?
+                            this.state.data.map((v, i) => {
+                                totTrxIn = totTrxIn+parseInt(v.trx_in);
+                                totTrxOut = totTrxIn+parseInt(v.trx_out);
+                                totTrxSaldo = totTrxIn+parseInt(v.total);
+
+                                return (
+                                    <div className="col-md-6 col-xl-4 box-margin">
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <div className="bg-primary p-3 text-center text-white font-30">{v.kode}</div>
+                                                <p className="d-flex align-items-center justify-content-between font-16">Transaksi Masuk<span className="float-right font-12 success-text">Rp {parseInt(v.trx_in)===0?0:toCurrency(v.trx_in)} .-</span></p>
+                                                <p className="d-flex align-items-center justify-content-between font-16">Transaksi Keluar<span className="float-right font-12 success-text">Rp {parseInt(v.trx_out)===0?0:toCurrency(v.trx_out)} .-</span></p>
+                                                <p className="d-flex align-items-center justify-content-between font-16">Persantase<span className="float-right font-12 success-text">{v.percentage} %</span></p>
+                                                <hr/>
+                                                <p className="font-12 d-flex align-items-center justify-content-between">
+                                                    <span>Catatan : {v.note}</span>
+                                                    <span>Saldo : Rp {parseInt(v.total)===0?0:toCurrency(v.total)} .-</span>
+                                                </p>
+                                                <hr/>
+                                                <button onClick={(e)=>this.handleModal(e,v.kode)} className={"btn btn-secondary btn-block"}>
+                                                    Penarikan
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <div className="col-12 col-xs-12 col-md-3">
-                                        <div className="form-group">
-                                            <label>Cari</label>
-                                            <input type="text" className="form-control" name="any" placeholder={"cari disini"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
+                                );
+                            })
+                            : <tr>
+                                <td colSpan={7} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
+                            </tr>
+                            :(()=>{
+                                let container =[];
+                                for(let x=0; x<10; x++){
+                                    container.push(
+                                        <div key={x} className="col-md-6 col-xl-4 box-margin">
+                                            <div className="card">
+                                                <div className="card-body">
+                                                    <h5 className="mb-30"><Skeleton/></h5>
+                                                    <p className="d-flex align-items-center justify-content-between font-16"><Skeleton width={100}/><span className="float-right font-18 success-text"><Skeleton width={100}/></span></p>
+                                                    <div className="progress h-8">
+                                                        <div className="progress-bar bg-default" role="progressbar" style={{width:'100%'}} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"/>
+                                                    </div>
+                                                    <p className="mt-3 mb-0 font-16 d-block"><Skeleton/></p>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="col-2 col-xs-2 col-md-4">
-                                        <div className="form-group">
-                                            <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
-                                            <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleAdd(e)}><i className="fa fa-plus"/></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style={{overflowX: "auto",zoom:"80%"}}>
-                                    <table className="table table-hover">
-                                        <thead className="bg-light">
-                                        <tr>
-                                            <th className="text-black" style={columnStyle}>No</th>
-                                            <th className="text-black" style={columnStyle}>Penarikan</th>
-                                            <th className="text-black" style={columnStyle}>Kode</th>
-                                            <th className="text-black" style={columnStyle}>Trx In</th>
-                                            <th className="text-black" style={columnStyle}>Trx In</th>
-                                            <th className="text-black" style={columnStyle}>Total</th>
-                                            <th className="text-black" style={columnStyle}>Catatan</th>
-                                            <th className="text-black" style={columnStyle}>Persentase</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {
-                                            this.state.isLoading===false ? this.state.data.length > 0 ?
-                                                this.state.data.map((v, i) => {
-                                                    return (
-                                                        <tr key={i}>
-                                                            <td style={columnStyle}>
-                                                                <span className="circle">{i+1}</span>
-                                                            </td>
-                                                            <td>
-                                                                <div className="input-group mb-2">
-                                                                    <input type="text" className="form-control" name="amount" placeholder={"masukan nominal yang akan ditarik"} value={toCurrency(v.amount)} onChange={(e)=>this.handleChange(e,i)}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event,i);}}} />
-                                                                    <div className="input-group-prepend">
-                                                                        <button className="btn btn-primary" onClick={(event)=>this.handleSubmit(event,i)}>
-                                                                            <i className="fa fa-send"/>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td style={columnStyle}>{v.kode}</td>
-                                                            <td style={columnStyle}>Rp {parseInt(v.trx_in)===0?0:toCurrency(parseInt(v.trx_in))} .-</td>
-                                                            <td style={columnStyle}>Rp {parseInt(v.trx_out)===0?0:toCurrency(parseInt(v.trx_out))} .-</td>
-                                                            <td style={columnStyle}>Rp {parseInt(v.v)===0?0:toCurrency(parseInt(v.total))} .-</td>
-                                                            <td style={columnStyle}>{v.note}</td>
-                                                            <td style={columnStyle}>{v.percentage}</td>
-                                                        </tr>
-                                                    );
-                                                })
-                                                : <tr>
-                                                    <td colSpan={7} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
-                                                </tr>
-                                                :(()=>{
-                                                    let container =[];
-                                                    for(let x=0; x<10; x++){
-                                                        container.push(
-                                                            <tr key={x}>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                                <td>{<Skeleton/>}</td>
-                                                            </tr>
-                                                        )
-                                                    }
-                                                    return container;
-                                                })()
+                                    )
+                                }
+                                return container;
+                            })()
 
-                                        }
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
+                    }
                 </div>
                 {
-                    this.props.isOpen===true?<GeneratePin
+                    this.props.isOpen===true?<FormPenarikanBonus
                         detail={this.state.detail}
                     />:null
                 }

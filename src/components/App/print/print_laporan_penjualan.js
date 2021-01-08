@@ -1,9 +1,13 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {noImage} from "../../../helper";
+import {noImage, toCurrency} from "../../../helper";
 import PrintProvider, { Print, NoPrint } from 'react-easy-print';
 import './print.css'
+import {getLaporanPenjualan} from "../../../redux/actions/laporan/laporan_penjualan.action";
+import moment from 'moment';
+import Preloader from "../../../Preloader";
+
 class PrintLaporanPenjualan extends Component {
     constructor(props){
         super(props);
@@ -22,7 +26,12 @@ class PrintLaporanPenjualan extends Component {
         this.handleChange = this.handleChange.bind(this)
     }
     componentWillMount(){
-        document.title = `Print 3ply`;
+        document.title = `Print Laporan Penjualan`;
+        this.props.dispatch(getLaporanPenjualan(`invoice=${localStorage.kode_trx_penjualan}`));
+    }
+
+    componentWillReceiveProps(nextProps){
+        console.log(nextProps);
     }
 
     goBack() {
@@ -35,7 +44,7 @@ class PrintLaporanPenjualan extends Component {
     print(){
         document.getElementById("non-printable").style.display = "none";
         window.print()
-        document.getElementById("non-printable").style.display = "flex";
+        document.getElementById("non-printable").style.display = "block";
     }
     handleChange = e => {
         let column = e.target.name;
@@ -62,7 +71,7 @@ class PrintLaporanPenjualan extends Component {
             fontSize:'14px'
         };
         const lnr ={borderBottom: '1px dashed #ddd',paddingBottom:'5px',marginBottom:'15px',width:'90%'};
-
+        let grandTotal=0;
         return(
             <div>
                 <PrintProvider>
@@ -122,120 +131,136 @@ class PrintLaporanPenjualan extends Component {
 
                         <Print single name="printable" id="printable">
                             {
-                                this.state.cetak==='invoice'?(
-                                    <div id="print_3ply" className="card" style={{border:'1px dashed black'}} >
-                                        <div className="card-body">
-                                            <table id="print_3ply" width="100%" border="0" cellSpacing="0" className="print-data printInvoice" style={{display:'block',fontSize:'12px',opacity:'1',animation:' fadeIn 2s'}}>
-                                                <tr style={{margin:'0',padding:'20px'}}>
-                                                    <td style={{margin:'0'}} width="10%">
-                                                        <img className="img-logo" src="https://indokids.co.id/assets/images/site/Logo_Indokids_Baru-011.png" style={{verticalAlign:'center',width:'100%'}}/>
-                                                    </td>
-                                                    <td width={'1%'}/>
-                                                    <td colSpan="3" style={{margin:'0',verticalAlign:'center'}}>
-                                                        <h3 style={{padding:'0',margin:'0.5em 0 0'}}>PT NETINDO MEDIATAMA PERKASA</h3>
-                                                        <p>www.ptnetindo.com</p>
-                                                    </td>
-                                                    <td colSpan="2" style={{margin:'0',verticalAlign:'top'}}>
-                                                        <h5 style={{padding:'0',margin:'0.5em 0'}}>
-                                                            <strong>Tanggal:</strong>
-                                                            <span style={{clear:'both',display:'block',fontWeight:'normal'}}>2020</span>
-                                                        </h5>
-                                                        <h5 style={{padding:'0',margin:'0.5em 0'}}>
-                                                            <strong>Nomor Invoice:</strong>
-                                                            <span  style={{clear:'both',display:'block',fontWeight:'normal'}}>0XXXXXXXXXXXXX</span>
-                                                        </h5>
-                                                    </td>
-                                                </tr>
-                                                <tr style={{margin:'0',padding:'20px'}}>
-                                                    <td colSpan="4">
-                                                        <p style={{lineHeight:'1em',margin:'0',padding:'20px 0 0'}}>
-                                                            <strong>
-                                                                Kepada : &nbsp;
-                                                                <span style={{textTransform:'capitalize'}}>Annashrul Yusuf</span>
-                                                            </strong>
-                                                        </p>
-                                                        <p style={{fontSize:'12px',lineHeight:'2em'}}>Terima kasih telah berbelanja di www.ptnetindo.com. Berikut adalah rincian orderan Anda:</p>
-                                                    </td>
-                                                    <td colSpan="2" style={{fontSize:'0.85rem'}}>
-                                                    </td>
-                                                </tr>
-                                                <tr style={{margin:'0',background:'#555',lineHeight:'1em',fontSize:'12px',color:'#fff'}}>
-                                                    <td colSpan="2" style={{padding:'10px 20px',width:'45%'}}>Nama Produk</td>
-                                                    <td style={{padding:'10px 20px',width:'10%'}}>Jumlah</td>
-                                                    <td style={{padding:'10px 20px',width:'15%'}}>Berat</td>
-                                                    <td style={{padding:'10px 20px',width:'15%'}}>Harga</td>
-                                                    <td style={{padding:'10px 20px',width:'15%'}}>Subtotal</td>
-                                                </tr>
-                                                <tr style={{border:'1px solid #ddd',lineHeight:'1.25em',fontSize:'12px',verticalAlign:'middle'}}>
-                                                    <td colSpan="2" style={{padding:'10px 20px',width:'45%'}}>
-                                                        NAMA PRODUK <span className="sku-inv" style={{float:'right',display:'block'}}>KODE BARANG</span>
-                                                    </td>
-                                                    <td style={{padding:'10px 20px',width:'10%'}}>1 ITEM</td>
-                                                    <td style={{padding:'10px 20px',width:'15%'}}>10 Kg</td>
-                                                    <td style={{padding:'10px 20px',width:'15%'}}>Rp 1000</td>
-                                                    <td style={{padding:'10px 20px',width:'15%'}}>Rp 1000</td>
-                                                </tr>
+                                !this.props.isLoading?typeof this.props.data.data==='object'?this.props.data.data.length>0?
+                                    this.state.cetak==='invoice'?(
+                                        <div id="print_3ply">
+                                            {
+                                                this.props.data.data.map((v,i)=>{
+                                                    return(
+                                                        <div key={i} className={`card ${i % 2 === 0?'pagebreak':''}`} style={{marginBottom:'5px',border:'1px dashed black',animation:' fadeIn 2s'}} >
+                                                            <div className="card-body">
+                                                                <table id="print_3ply" width="100%" border="0" cellSpacing="0" className="print-data printInvoice" style={{display:'block',fontSize:'12px',opacity:'1',animation:' fadeIn 2s'}}>
+                                                                    <tr style={{margin:'0',padding:'20px'}}>
+                                                                        <td style={{margin:'0'}} width="10%">
+                                                                            <img style={{opacity:'1',animation:' fadeIn 2s',height:'120px',verticalAlign:'center',width:'70%'}} className="img-logo" src={this.props.data.data_perusahaan===undefined?'':this.props.data.data_perusahaan.logo} onError={(e)=>{e.target.onerror = null; e.target.src=`${noImage()}`}}/>
 
-                                                <tr style={{lineHeight:'1.25em',fontSize:'12px',verticalAlign:'middle'}}>
-                                                    <td colSpan="5" style={{padding:'10px 20px',width:'45%'}}>Kode unik</td>
-                                                    <td style={{padding:'10px 20px',width:'10%'}}>Rp 1000</td>
-                                                </tr>
-                                                <tr style={{lineHeight:'2em',fontSize:'12px'}}>
-                                                    <td style={{padding:'10px 20px',width:'45%'}} colSpan="5"><span style={{fontWeight:'700',fontSize:'1rem'}}>TOTAL</span></td>
-                                                    <td style={{padding:'10px 20px',width:'15%'}}><span style={{fontWeight:'700',fontSize:'1rem'}}>Rp 10000</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan="6">
-                                                        <hr style={{borderColor:'#ddd',borderStyle:'dotted'}}/>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style={{verticalAlign:'top',margin:'0',padding:'10px 0'}}>
-                                                        <p style={{lineHeight:'1em',margin:'0',padding:'0 0 0 20px',fontSize:'12px'}}>Alamat Pengiriman:</p>
-                                                    </td>
-                                                    <td colSpan="5">
-                                                        <p style={{fontSize:'12px',lineHeight:'1.25em',margin:'0',padding:'10px 0'}}>
-                                                            jln kebon manggu rt 02/04 kelurahan padasuka <br/>
-                                                            Kec. Cimahi Tengah,  Kota Cimahi, 40256 <br/>
-                                                            Provinsi Jawa Barat <br/>
-                                                            Telp: 081223165037
-                                                        </p>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                                                            {/*<img className="img-logo" src="https://indokids.co.id/assets/images/site/Logo_Indokids_Baru-011.png" style={{verticalAlign:'center',width:'100%'}}/>*/}
+                                                                        </td>
+                                                                        <td width={'1%'}/>
+                                                                        <td colSpan="3" style={{margin:'0',verticalAlign:'center'}}>
+                                                                            <h3 style={{padding:'0',margin:'0.5em 0 0'}}>{this.props.data.data_perusahaan===undefined?'':this.props.data.data_perusahaan.title}</h3>
+                                                                            <p>{this.props.data.data_perusahaan===undefined?'':this.props.data.data_perusahaan.website}</p>
+                                                                        </td>
+                                                                        <td colSpan="2" style={{margin:'0',verticalAlign:'top'}}>
+                                                                            <h5 style={{padding:'0',margin:'0.5em 0'}}>
+                                                                                <strong>Tanggal:</strong>
+                                                                                <span style={{clear:'both',display:'block',fontWeight:'normal'}}>{moment(v.created_at).format('ll')}</span>
+                                                                            </h5>
+                                                                            <h5 style={{padding:'0',margin:'0.5em 0'}}>
+                                                                                <strong>Nomor Invoice:</strong>
+                                                                                <span  style={{clear:'both',display:'block',fontWeight:'normal'}}>{v.kd_trx}</span>
+                                                                            </h5>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr style={{margin:'0',padding:'20px'}}>
+                                                                        <td colSpan="4">
+                                                                            <p style={{lineHeight:'1em',margin:'0',padding:'20px 0 0'}}>
+                                                                                <strong>
+                                                                                    Kepada : &nbsp;
+                                                                                    <span style={{textTransform:'capitalize'}}>{v.penerima}</span>
+                                                                                </strong>
+                                                                            </p>
+                                                                            <p style={{fontSize:'12px',lineHeight:'2em'}}>Terima kasih telah berbelanja di {this.props.data.data_perusahaan===undefined?'':this.props.data.data_perusahaan.website}. Berikut adalah rincian orderan Anda:</p>
+                                                                        </td>
+                                                                        <td colSpan="2" style={{fontSize:'0.85rem'}}>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr style={{margin:'0',border:'1px solid #ddd',lineHeight:'1em',fontSize:'12px',color:'black'}}>
+                                                                        <td colSpan="2" style={{padding:'10px 20px',width:'50%'}}>Kode Transaksi</td>
+                                                                        <td colSpan="2" style={{padding:'10px 20px',width:'35%'}}>Barang</td>
+                                                                        <td style={{padding:'10px 20px',width:'5%'}}>Jumlah</td>
+                                                                        <td style={{padding:'10px 20px',width:'10%'}}>Harga</td>
+                                                                        <td style={{padding:'10px 20px',width:'5%'}}>Subtotal</td>
+                                                                    </tr>
+                                                                    {
+                                                                        v.detail.map((val,key)=>{
+                                                                            grandTotal=grandTotal+(parseInt(val.price)*parseInt(val.qty));
+                                                                            return(
+                                                                                <tr style={{border:'1px solid #ddd',lineHeight:'1.25em',fontSize:'12px',verticalAlign:'middle'}}>
+                                                                                    <td colSpan="2" style={{padding:'10px 20px',width:'50%'}}>{val.kd_trx}</td>
+                                                                                    <td colSpan="2" style={{padding:'10px 20px',width:'35%'}}>{val.paket}</td>
+                                                                                    <td style={{padding:'10px 20px',width:'5%'}}>{val.qty} ITEM</td>
+                                                                                    <td style={{padding:'10px 20px',width:'10%'}}>Rp {toCurrency(val.price)} .-</td>
+                                                                                    <td style={{padding:'10px 20px',width:'5%',textAlign:'left'}}>Rp {toCurrency(parseInt(val.price)*parseInt(val.qty))} .-</td>
+                                                                                </tr>
+                                                                            );
+                                                                        })
+                                                                    }
+
+                                                                    <tr style={{border:'1px solid #ddd',lineHeight:'1.25em',fontSize:'12px',verticalAlign:'middle'}}>
+                                                                        <td colSpan="6" style={{padding:'10px 20px',width:'45%'}}>Onggkir</td>
+                                                                        <td style={{padding:'10px 20px',width:'10%',textAlign:'left'}}>Rp {parseInt(v.ongkir)===0?0:toCurrency(v.ongkir)} .-</td>
+                                                                    </tr>
+                                                                    <tr style={{lineHeight:'2em',fontSize:'12px'}}>
+                                                                        <td style={{padding:'10px 20px',width:'45%'}} colSpan="6"><span style={{fontWeight:'700',fontSize:'1rem'}}>TOTAL</span></td>
+                                                                        <td style={{padding:'10px 20px',width:'15%',textAlign:'left'}}><span style={{fontWeight:'700',fontSize:'1rem'}}>Rp {toCurrency(v.grand_total)} .-</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colSpan="7">
+                                                                            <hr style={{borderColor:'#ddd',borderStyle:'dotted'}}/>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style={{verticalAlign:'top',margin:'0',padding:'10px 0'}}>
+                                                                            <p style={{lineHeight:'1em',margin:'0',padding:'0 0 0 20px',fontSize:'12px'}}>Alamat Pengiriman:</p>
+                                                                        </td>
+                                                                        <td colSpan="5">
+                                                                            <p style={{fontSize:'12px',lineHeight:'1.25em',margin:'0',padding:'10px 0'}}>
+                                                                                {v.main_address}<br/>
+                                                                                Telp: {v.no_hp}
+                                                                            </p>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })
+                                            }
                                         </div>
-                                    </div>
-                                ):(
+                                    ):(
 
-                                    <div id="print_3ply">
-                                        {
-                                            (()=>{
-                                                let container =[];
-                                                for(let i=0; i<10; i++){
-                                                    container.push(
-                                                        <div className={`card ${i % 3 === 0?'pagebreak':''}`} style={{marginBottom:'10px',border:'1px dashed black',animation:' fadeIn 2s'}} >
+                                        <div id="print_3ply">
+                                            {
+                                                this.props.data.data.map((v,i)=>{
+                                                    return(
+                                                        <div key={i} className={`card ${i % 4 === 0?'pagebreak':''}`} style={{marginBottom:'5px',border:'1px dashed black',animation:' fadeIn 2s'}} >
                                                             <div key={i} className="card-body">
                                                                 <table width="100%" border="0" cellSpacing="0" className="print-data" id={'printable'}>
                                                                     <tr>
                                                                         <td width="20%" rowSpan="3" className="text-center shop-logo" style={{padding:'10px'}}>
                                                                             {
                                                                                 this.state.shop_logo?(
-                                                                                    <img style={{opacity:'1',animation:' fadeIn 2s'}} className="img-logo" src={'https://indokids.co.id/assets/images/site/Logo_Indokids_Baru-011.png'} width="120"/>
+                                                                                    <img style={{opacity:'1',animation:' fadeIn 2s',height:'120px'}} className="img-logo" src={this.props.data.data_perusahaan===undefined?'':this.props.data.data_perusahaan.logo} onError={(e)=>{e.target.onerror = null; e.target.src=`${noImage()}`}}/>
+
+                                                                                    // <img style={{opacity:'1',animation:' fadeIn 2s'}} className="img-logo" src={'https://indokids.co.id/assets/images/site/Logo_Indokids_Baru-011.png'} width="120"/>
                                                                                 ):null
                                                                             }
+                                                                            <br/>
+                                                                            <br/>
                                                                             <div className="shop-info" style={this.state.shop_info?{opacity:'1',animation:' fadeIn 2s'}:{animation:' fadeIn 1s',display:'none',transition:' opacity 1s easeOut',opacity:'0'}}>
-                                                                                <span>PT NETINDO MEDIATAMA PERKASA</span>
-                                                                                <span>www.ptnetindo.com</span>
+                                                                                <span>{this.props.data.data_perusahaan===undefined?'':this.props.data.data_perusahaan.title}</span><br/>
+                                                                                <span>{this.props.data.data_perusahaan===undefined?'':this.props.data.data_perusahaan.website}</span>
                                                                             </div>
                                                                         </td>
                                                                         <td>Kepada:</td>
                                                                         <td>
                                                                             <span>ORDER</span> &nbsp;
                                                                             {
-                                                                                this.state.no_order?(<span style={{opacity:'1',animation:' fadeIn 2s'}}>- KODE INVOICE&nbsp;</span>):null
+                                                                                this.state.no_order?(<span style={{opacity:'1',animation:' fadeIn 2s'}}>- {v.kd_trx}&nbsp;</span>):null
                                                                             }
                                                                             {
-                                                                                this.state.tanggal_order?(<span style={{opacity:'1',animation:' fadeIn 2s'}}>- 01 Januari 2021</span>):null
+                                                                                this.state.tanggal_order?(<span style={{opacity:'1',animation:' fadeIn 2s'}}>- {moment(v.created_at).format('ll')}</span>):null
                                                                             }
                                                                         </td>
                                                                         {
@@ -252,33 +277,38 @@ class PrintLaporanPenjualan extends Component {
                                                                     </tr>
                                                                     <tr>
                                                                         <td width="40%" valign="top">
-                                                                            <p style={lnr} className="receiver-name ls-1"> Annashrul Yusuf</p>
+                                                                            <p style={lnr} className="receiver-name ls-1"> {v.penerima}</p>
                                                                             <p style={lnr} className="address">
                                                                                 Alamat: <br/>
-                                                                                jln kebon manggu rt 02/04 kelurahan padasuka <br/>
-                                                                                Kec. Cimahi Tengah,  Kota Cimahi, 40256 <br/>
-                                                                                Provinsi Jawa Barat <br/>
-                                                                                Telp: 081223165037
+                                                                                {v.main_address}<br/>
+                                                                                Telp: {v.no_hp}
                                                                             </p>
                                                                         </td>
                                                                         <td width="30%" valign="top" className="orderdetail">
-                                                                            <ul className="product-list" style={{margin:'0', padding:'0'}}>
-                                                                                <li style={{lineHeight:'1.4em'}}>
-                                                                                    <span className="left" style={{color:'grey',float:'left',width:'70%'}}>NAMA BARANG </span>
-                                                                                    <span className="right" style={{color:'red',float:'right',width:'30%'}}>1 Item</span>
-                                                                                </li>
-                                                                            </ul>
+                                                                            <ol className="product-list" style={{margin:'0', padding:'0'}}>
+                                                                                {
+                                                                                    v.detail.length>0?v.detail.map((val,key)=>{
+                                                                                        return(
+                                                                                            <li key={key} style={{lineHeight:'1.4em'}}>
+                                                                                                <span className="left" style={{color:'grey',float:'left',width:'70%'}}>{key+1}. {val.paket}</span>
+                                                                                                <span className="right" style={{color:'red',float:'right',width:'30%'}}>{val.qty}</span>
+                                                                                            </li>
+                                                                                        );
+                                                                                    }):""
+                                                                                }
+
+                                                                            </ol>
 
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>
-                                                                            <p className="plabel">Pengirim: <br/>PT NETINDO MEDIATAMA PERKASA <br/> 081223165037</p>
+                                                                            <p className="plabel">Pengirim: <br/>{this.props.data.data_perusahaan===undefined?'':this.props.data.data_perusahaan.title} <br/> {this.props.data.data_perusahaan===undefined?'':this.props.data.data_perusahaan.telp}</p>
                                                                         </td>
                                                                         {
                                                                             this.state.expedisi?(
                                                                                 <td style={{opacity:'1',animation:' fadeIn 2s'}}>
-                                                                                    <span style={expedisi} className="expedisi">JNE - EZ ( 100 gram )</span>
+                                                                                    <span style={expedisi} className="expedisi">{v.layanan_pengiriman}</span>
                                                                                 </td>
                                                                             ):null
                                                                         }
@@ -287,15 +317,16 @@ class PrintLaporanPenjualan extends Component {
 
                                                             </div>
                                                         </div>
-                                                    )
-                                                }
-                                                return container;
-                                            })()
-                                        }
-                                    </div>
+                                                    );
+                                                })
+                                            }
+                                        </div>
 
-                                )
+                                    )
+                                :"":"":<Preloader/>
                             }
+
+
                         </Print>
                     </NoPrint>
                 </PrintProvider>
@@ -305,6 +336,13 @@ class PrintLaporanPenjualan extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        isLoading: state.laporanPenjualanReducer.isLoading,
+        isOpen:state.modalReducer,
+        data:state.laporanPenjualanReducer.data,
+    }
+}
 
 
-export default PrintLaporanPenjualan;
+export default connect(mapStateToProps)(PrintLaporanPenjualan);

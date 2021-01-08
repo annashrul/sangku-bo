@@ -65,6 +65,7 @@ export const getLaporanPenjualan = (where='') => {
         if(where!==''){
             url+=`?${where}`;
         }
+        console.log("URL PENJUALAN",url);
 
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {

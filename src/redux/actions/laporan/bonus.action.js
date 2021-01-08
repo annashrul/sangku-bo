@@ -101,12 +101,14 @@ export const postPenarikan = (data) => {
                     });
                     dispatch(setIsError(true));
                     dispatch(getBonus(`page=1`));
+                    dispatch(ModalToggle(false));
                 } else {
                     Swal.fire({
                         title: 'failed',
                         icon: 'error',
                         text: NOTIF_ALERT.FAILED,
                     });
+                    dispatch(ModalToggle(true));
                     dispatch(setIsError(false));
                 }
                 dispatch(setLoadingPost(false));

@@ -14,6 +14,7 @@ class SideMenu extends Component {
             isMasterdata:false,
             isContent:false,
             isReport:false,
+            isEwallet:false,
         }
         this.changeMenu = this.changeMenu.bind(this);
     }
@@ -27,6 +28,7 @@ class SideMenu extends Component {
                 isMasterdata:false,
                 isContent:false,
                 isReport:false,
+                isEwallet:false,
             });
         }
         if(param === 'isMasterdata'){
@@ -35,6 +37,7 @@ class SideMenu extends Component {
                 isMasterdata : !this.state.isMasterdata,
                 isContent:false,
                 isReport:false,
+                isEwallet:false,
 
             });
         }
@@ -44,6 +47,7 @@ class SideMenu extends Component {
                 isMasterdata : false,
                 isContent:!this.state.isContent,
                 isReport:false,
+                isEwallet:false,
 
             });
         }
@@ -53,7 +57,17 @@ class SideMenu extends Component {
                 isMasterdata : false,
                 isContent:false,
                 isReport:!this.state.isReport,
+                isEwallet:false,
 
+            });
+        }
+        if(param === 'isEwallet'){
+            this.setState({
+                isPaket:false,
+                isMasterdata : false,
+                isContent:false,
+                isReport:false,
+                isEwallet:!this.state.isEwallet,
             });
         }
 
@@ -83,9 +97,14 @@ class SideMenu extends Component {
                 isContent:true
             })
         }
-        if(path==='/penjualan'){
+        if(path==='/penjualan'||path==='/bonus'){
             this.setState({
                 isReport:true
+            })
+        }
+        if(path==='/deposit'){
+            this.setState({
+                isEwallet:true
             })
         }
 
@@ -133,10 +152,6 @@ class SideMenu extends Component {
                     {/* PIN MODUL START */}
                     <li  className={path==='/member'?"active":''}><Link to="/member"> <i className="fa fa-area-chart" /><span> Member</span></Link></li>
                     {/* PIN MODUL END */}
-                    {/* BONUS MODUL START */}
-                    <li  className={path==='/bonus'?"active":''}><Link to="/bonus"> <i className="fa fa-area-chart" /><span> Bonus</span></Link></li>
-                    {/* BONUS MODUL END */}
-
                     {/* PAKET MODUL START */}
                     <li className={"treeview" +(this.state.isPaket===true || path==='/paket' || path==='/barang' ?" active menu-open" : "")}>
                         <a href="!#" onClick={(e) => this.changeMenu(e,'isPaket')}><i className="fa fa-list" /> <span>Paket</span> <i className="fa fa-angle-right" /></a>
@@ -166,11 +181,20 @@ class SideMenu extends Component {
                         </ul>
                     </li>
                     {/* MASTERDATA MODUL END */}
+                    {/* E-WALLET MODUL START */}
+                    <li className={"treeview" +(this.state.isEwallet===true || path==='/deposit'?" active menu-open" : "")}>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isEwallet')}><i className="fa fa-list" /> <span>E-Wallet</span> <i className="fa fa-angle-right" /></a>
+                        <ul className={"treeview-menu"} style={{display:this.state.isEwallet===true?"block":"none"}}>
+                            <li className={path==='/deposit'?"active":''}><Link to="/deposit" style={{width:'fit-content'}}> Deposit</Link></li>
+                        </ul>
+                    </li>
+                    {/* E-WALLET MODUL END */}
                     {/* REPORT MODUL START */}
-                    <li className={"treeview" +(this.state.isReport===true || path==='/penjualan'?" active menu-open" : "")}>
+                    <li className={"treeview" +(this.state.isReport===true || path==='/penjualan' || path==='/bonus'?" active menu-open" : "")}>
                         <a href="!#" onClick={(e) => this.changeMenu(e,'isReport')}><i className="fa fa-list" /> <span>Laporan</span> <i className="fa fa-angle-right" /></a>
                         <ul className={"treeview-menu"} style={{display:this.state.isReport===true?"block":"none"}}>
                             <li className={path==='/penjualan'?"active":''}><Link to="/penjualan" style={{width:'fit-content'}}> Penjualan</Link></li>
+                            <li className={path==='/bonus'?"active":''}><Link to="/bonus" style={{width:'fit-content'}}> Bonus</Link></li>
                         </ul>
                     </li>
                     {/* REPORT MODUL END */}
