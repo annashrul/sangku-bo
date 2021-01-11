@@ -1,12 +1,12 @@
 import axios from "axios"
 import Swal from "sweetalert2";
-import {DEPOSIT, HEADERS,NOTIF_ALERT} from "../_constants";
+import {PENARIKAN, HEADERS,NOTIF_ALERT} from "../_constants";
 import {ModalToggle} from "../modal.action";
 
 
 export function setLoading(load) {
     return {
-        type: DEPOSIT.LOADING,
+        type: PENARIKAN.LOADING,
         load
     }
 }
@@ -14,54 +14,54 @@ export function setLoading(load) {
 
 export function setLoadingDetail(load) {
     return {
-        type: DEPOSIT.LOADING_DETAIL,
+        type: PENARIKAN.LOADING_DETAIL,
         load
     }
 }
 export function setLoadingPost(load) {
     return {
-        type: DEPOSIT.LOADING_POST,
+        type: PENARIKAN.LOADING_POST,
         load
     }
 }
 export function setIsError(load) {
     return {
-        type: DEPOSIT.IS_ERROR,
+        type: PENARIKAN.IS_ERROR,
         load
     }
 }
 
 export function setData(data = []) {
     return {
-        type: DEPOSIT.SUCCESS,
+        type: PENARIKAN.SUCCESS,
         data
     }
 }
 
 export function setDataEdit(data = []) {
     return {
-        type: DEPOSIT.EDIT,
+        type: PENARIKAN.EDIT,
         data
     }
 }
 export function setDataDetail(data = []) {
     return {
-        type: DEPOSIT.DETAIL,
+        type: PENARIKAN.DETAIL,
         data
     }
 }
 
 export function setDataFailed(data = []) {
     return {
-        type: DEPOSIT.FAILED,
+        type: PENARIKAN.FAILED,
         data
     }
 }
 
-export const getDeposit = (where='') => {
+export const getPenarikan = (where='') => {
     return (dispatch) => {
         dispatch(setLoading(true));
-        let url = 'transaction/deposit';
+        let url = 'transaction/withdrawal';
         if(where!==''){
             url+=`?${where}`;
         }
@@ -86,7 +86,7 @@ export const getDeposit = (where='') => {
 };
 
 
-export const postDeposit = (data,id) => async dispatch =>{
+export const postPenarikan = (data,id) => async dispatch =>{
     Swal.fire({
         title: 'Please Wait.',
         html: NOTIF_ALERT.CHECKING,
@@ -95,8 +95,8 @@ export const postDeposit = (data,id) => async dispatch =>{
         },
         onClose: () => {}
     });
-    const url = HEADERS.URL + `transaction/deposit/${id}`;
-
+    const url = HEADERS.URL + `transaction/withdrawal/${id}`;
+    console.log(data);
     axios.post(url,data)
         .then(response=>{
             setTimeout(
@@ -111,7 +111,7 @@ export const postDeposit = (data,id) => async dispatch =>{
                         });
                         dispatch(setIsError(true));
                         dispatch(ModalToggle(false));
-                        dispatch(getDeposit('page=1'));
+                        dispatch(getPenarikan('page=1'));
                     }
                     else {
                         Swal.fire({

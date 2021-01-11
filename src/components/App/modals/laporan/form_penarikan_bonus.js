@@ -9,7 +9,7 @@ import {
 } from "reactstrap";
 import {ModalToggle} from "../../../../redux/actions/modal.action";
 import {stringifyFormData, ToastQ, rmComma, toCurrency} from "../../../../helper";
-import {postPenarikan} from "../../../../redux/actions/laporan/bonus.action";
+import {postPenarikanBonus} from "../../../../redux/actions/laporan/bonus.action";
 
 
 class FormPenarikanBonus extends Component{
@@ -58,7 +58,7 @@ class FormPenarikanBonus extends Component{
             return;
         }
         else{
-            this.props.dispatch(postPenarikan({
+            this.props.dispatch(postPenarikanBonus({
                 "kode":this.state.kode,
                 "amount":rmComma(this.state.amount)
             }));

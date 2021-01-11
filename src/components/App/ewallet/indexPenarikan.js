@@ -11,8 +11,9 @@ import FormPenarikanBonus from '../modals/laporan/form_penarikan_bonus';
 import {getDeposit, postDeposit} from "../../../redux/actions/ewallet/deposit.action";
 import Select from 'react-select';
 import * as Swal from "sweetalert2";
+import {getPenarikan, postPenarikan} from "../../../redux/actions/ewallet/penarikan.action";
 
-class IndexDeposit extends Component{
+class IndexPenarikan extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -26,58 +27,25 @@ class IndexDeposit extends Component{
             isLoading:true
         };
         this.handleChange      = this.handleChange.bind(this);
-        this.handleModal      = this.handleModal.bind(this);
         this.handlePage      = this.handlePage.bind(this);
         this.handleChangeStatus      = this.handleChangeStatus.bind(this);
-        this.handlePaymentSlip      = this.handlePaymentSlip.bind(this);
         this.handleApproval      = this.handleApproval.bind(this);
         this.handleSearch      = this.handleSearch.bind(this);
         this.handleEvent      = this.handleEvent.bind(this);
 
-    }
-    handleChange(e){
-        this.setState({
-            [e.target.name] : e.target.value
-        })
-    }
-    componentWillMount(){
-        let where=this.handleValidate();
-        this.props.dispatch(getDeposit(where));
-    }
-
-    componentWillReceiveProps(nextProps){
-        let data=[];
-        let isLoading=true;
-        if(typeof nextProps.data.data==='object'){
-            if(nextProps.data.data.length>0){
-                for(let i=0;i<nextProps.data.data.length;i++){
-                    data.push(nextProps.data.data[i]);
-                    isLoading=false;
-                }
-            }
-            else{
-                data=[];
-                isLoading=false;
-            }
-        }else{
-            data=[];
-            isLoading=false;
-        }
-        console.log("ISLOADING",isLoading);
-        this.setState({data:data,isLoading:isLoading});
     }
     handleValidate(){
         this.setState({
             isLoading:true
         })
         let where="perpage=10";
-        let page = localStorage.getItem("pageDeposit");
+        let page = localStorage.getItem("pagePenarikan");
         let dateFrom = this.state.dateFrom;
         let dateTo = this.state.dateTo;
         let status = this.state.status;
         let any = this.state.any;
-        localStorage.setItem("dateFromDeposit",`${dateFrom}`);
-        localStorage.setItem("dateToDeposit",`${dateTo}`);
+        localStorage.setItem("dateFromPenarikan",`${dateFrom}`);
+        localStorage.setItem("dateToPenarikan",`${dateTo}`);
         if(page!==null&&page!==undefined&&page!==""){
             where+=`&page=${page}`;
 
@@ -97,31 +65,34 @@ class IndexDeposit extends Component{
         return where;
 
     }
+    handleChange(e){
+        this.setState({
+            [e.target.name] : e.target.value
+        })
+    }
+    componentWillMount(){
+        let where=this.handleValidate();
+        this.props.dispatch(getPenarikan(where));
+    }
+
+
     handleSearch(e){
         e.preventDefault();
         // this.state.isLoading=true;
         let where = this.handleValidate();
-        this.props.dispatch(getDeposit(where));
+        this.props.dispatch(getPenarikan(where));
         // this.state.isLoading=false;
     }
-
     handlePage(num){
-        localStorage.setItem("pageDeposit",num);
+        localStorage.setItem("pagePenarikan",num);
         let where = this.handleValidate();
-        this.props.dispatch(getDeposit(where));
+        this.props.dispatch(getPenarikan(where));
 
     }
     handleChangeStatus(val){
         this.setState({
             status:val.value
         })
-    }
-
-    handleModal(e,kode){
-        const bool = !this.props.isOpen;
-        this.props.dispatch(ModalToggle(bool));
-        this.props.dispatch(ModalType("formPenarikanBonus"));
-        this.setState({detail:{kode:kode}});
     }
     handleEvent = (event, picker) => {
         event.preventDefault();
@@ -133,24 +104,14 @@ class IndexDeposit extends Component{
         });
     };
 
-    handlePaymentSlip(e,param) {
-        e.preventDefault();
-        Swal.fire({
-            title: 'Bukti Transfer',
-            text: this.props.data.data[param].name,
-            imageUrl: this.props.data.data[param].payment_slip,
-            imageAlt: 'gambar tidak tersedia',
-            showClass   : {popup: 'animate__animated animate__fadeInDown'},
-            hideClass   : {popup: 'animate__animated animate__fadeOutUp'},
-        })
-    }
+
 
     handleApproval(e,id,status){
         console.log(btoa(id));
         e.preventDefault();
         Swal.fire({
             title: 'Perhatian !!!',
-            text: `anda yakin akan ${status===1?"menerima":"membatalkan"} deposit ini ??`,
+            text: `anda yakin akan ${status===1?"menerima":"membatalkan"} penarikan ini ??`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -161,7 +122,7 @@ class IndexDeposit extends Component{
             if (result.value) {
                 let parsedata={"status":status};
                 // let where = this.handleValidate();
-                this.props.dispatch(postDeposit(parsedata,btoa(id)));
+                this.props.dispatch(postPenarikan(parsedata,btoa(id)));
             }
         })
 
@@ -182,13 +143,13 @@ class IndexDeposit extends Component{
             from,
             data
         } = this.props.data;
-        // console.log(typeof data);
+        console.log("DATA",data);
         return(
-            <Layout page={"Deposit"}>
+            <Layout page={"Penarikan"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Deposit</h5>
+                            <h5 className="mb-0 font-weight-bold">Penarikan</h5>
                         </div>
                     </div>
                 </div>
@@ -240,9 +201,10 @@ class IndexDeposit extends Component{
                                         <tr>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>NO</th>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>#</th>
-                                            <th className="text-black" rowSpan="2" style={columnStyle}>KDOE TRX</th>
+                                            <th className="text-black" rowSpan="2" style={columnStyle}>KODE TRX</th>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>NAMA</th>
                                             <th className="text-black" colSpan="3" style={columnStyle}>BANK</th>
+                                            <th className="text-black" rowSpan="2" style={columnStyle}>BIAYA ADMIN</th>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>JUMLAH</th>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>STATUS</th>
                                         </tr>
@@ -256,50 +218,40 @@ class IndexDeposit extends Component{
                                         <tbody>
                                         {
 
-                                            !this.state.isLoading?this.state.data.length > 0 ?
-                                                this.state.data.map((v, i) => {
-                                                totAmount = totAmount+parseInt(v.amount);
-                                                let status='';
-                                                if(v.status===0){
-                                                    status = <button className={"btn btn-warning"}>Pending</button>
-                                                }
-                                                    if(v.status===1){
-                                                        status = <button className={"btn btn-success"}>Sukses</button>
-                                                    }
-                                                    if(v.status===2){
-                                                        status = <button className={"btn btn-danger"}>Gagal</button>
-                                                    }
+                                            !this.props.isLoading? typeof data==='object'? data.length > 0 ?
+                                                data.map((v, i) => {
+                                                totAmount=totAmount+parseInt(v.amount);
+                                                    let badge = "";
+                                                    let txt = "";
+                                                    if(v.status===0){badge="btn-warning";txt="Pending";}
+                                                    if(v.status===1){badge="btn-success";txt="Success";}
+                                                    if(v.status===2){badge="btn-danger";txt="Cancel";}
+
                                                     return (
                                                         <tr key={i}>
                                                             <td style={columnStyle}>
                                                                 <span className="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
                                                             </td>
                                                             <td style={columnStyle}>
-                                                                <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} disabled={v.status === 1 || v.status===2} onClick={(e)=>this.handleApproval(e,v.kd_trx,1)}><i className={"fa fa-check"}/></button>
-                                                                <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} disabled={v.status === 1 || v.status===2} onClick={(e)=>this.handleApproval(e,v.kd_trx,2)}><i className={"fa fa-close"}/></button>
-                                                                <button className={"btn btn-success btn-sm"} onClick={(e)=>this.handlePaymentSlip(e,i)}><i className={"fa fa-image"}/></button>
-
-
-
-                                                                {/*<button style={{marginRight:'5px'}} disabled={v.status!==0} className={'btn btn-primary'} onClick={(e)=>this.handleApproval(e,v.kd_trx,v.status)}>*/}
-                                                                    {/*<i className={'fa fa-check'}/>*/}
-                                                                {/*</button>*/}
-                                                                {/*<button onClick={(e)=>this.handlePaymentSlip(e,i)} className={'btn btn-secondary'}>*/}
-                                                                    {/*<i className={'fa fa-image'}/>*/}
-                                                                {/*</button>*/}
+                                                                <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} disabled={v.status === 1||v.status === 2} onClick={(e)=>this.handleApproval(e,v.id,1)}><i className={"fa fa-check"}/></button>
+                                                                <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} disabled={v.status === 1||v.status === 2} onClick={(e)=>this.handleApproval(e,v.id,2)}><i className={"fa fa-close"}/></button>
                                                             </td>
                                                             <td style={columnStyle}>{v.kd_trx}</td>
                                                             <td style={columnStyle}>{v.full_name}</td>
                                                             <td style={columnStyle}>{v.bank_name}</td>
                                                             <td style={columnStyle}>{v.acc_name}</td>
                                                             <td style={columnStyle}>{v.acc_no}</td>
+                                                            <td style={numStyle}>Rp {v.charge===null||parseInt(v.charge)===0?0:toCurrency(parseInt(v.charge))} .-</td>
                                                             <td style={numStyle}>Rp {parseInt(v.amount)===0?0:toCurrency(parseInt(v.amount))} .-</td>
-                                                            <td style={columnStyle}>{status}</td>
+                                                            <td style={columnStyle}><button className={`btn ${badge} btn-sm`}>{txt}</button></td>
                                                         </tr>
                                                     );
                                                 })
                                                 : <tr>
-                                                    <td colSpan={9} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
+                                                    <td colSpan={10} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
+                                                </tr>:
+                                                <tr>
+                                                    <td colSpan={10} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
                                                 </tr> : (()=>{
                                                 let container =[];
                                                 for(let x=0; x<10; x++){
@@ -316,21 +268,19 @@ class IndexDeposit extends Component{
                                                             <td style={columnStyle}>{<Skeleton/>}</td>
                                                             <td style={columnStyle}>{<Skeleton/>}</td>
                                                             <td style={columnStyle}>{<Skeleton/>}</td>
+                                                            <td style={columnStyle}>{<Skeleton/>}</td>
                                                         </tr>
                                                     )
                                                 }
                                                 return container;
                                             })()
-
-
-
                                         }
                                         </tbody>
                                         <tfoot style={{backgroundColor:"#EEEEEE"}}>
                                         <tr>
-                                            <th colSpan={7}>TOTAL PERPAGE</th>
+                                            <th colSpan={8}>TOTAL PERPAGE</th>
                                             <th colSpan={1} style={numStyle}>Rp {totAmount===0?0:toCurrency(totAmount)} .-</th>
-                                            <th colSpan={1}/>
+                                            <th/>
                                         </tr>
                                         </tfoot>
                                     </table>
@@ -348,11 +298,11 @@ class IndexDeposit extends Component{
                         </div>
                     </div>
                 </div>
-                {
-                    this.props.isOpen===true?<FormPenarikanBonus
-                        detail={this.state.detail}
-                    />:null
-                }
+                {/*{*/}
+                    {/*this.props.isOpen===true?<FormPenarikanBonus*/}
+                        {/*detail={this.state.detail}*/}
+                    {/*/>:null*/}
+                {/*}*/}
                 {/*<FormPaket/>*/}
             </Layout>
         );
@@ -360,11 +310,11 @@ class IndexDeposit extends Component{
 }
 const mapStateToProps = (state) => {
     return {
-        isLoading: state.pinReducer.isLoading,
+        isLoading: state.penarikanReducer.isLoading,
         isOpen:state.modalReducer,
-        data:state.depositReducer.data,
+        data:state.penarikanReducer.data,
     }
 }
 
 
-export default connect(mapStateToProps)(IndexDeposit);
+export default connect(mapStateToProps)(IndexPenarikan);

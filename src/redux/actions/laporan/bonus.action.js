@@ -85,7 +85,7 @@ export const getBonus = (where='') => {
     }
 };
 
-export const postPenarikan = (data) => {
+export const postPenarikanBonus = (data) => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
         dispatch(setIsError(false));

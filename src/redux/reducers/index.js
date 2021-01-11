@@ -17,6 +17,7 @@ import {userLevelReducer} from "./masterdata/user_level.reducer";
 import {laporanPenjualanReducer} from "./laporan/laporan_penjualan.reducer";
 import {bonusReducer} from "./laporan/bonus.reducer";
 import {depositReducer} from "./ewallet/deposit.reducer";
+import {penarikanReducer} from "./ewallet/penarikan.reducer";
 
 export default combineReducers({
     modalReducer,
@@ -36,6 +37,7 @@ export default combineReducers({
     laporanPenjualanReducer,
     bonusReducer,
     depositReducer,
+    penarikanReducer,
     auth: authReducer,
     errors : errorsReducer
 });

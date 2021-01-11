@@ -102,7 +102,7 @@ class SideMenu extends Component {
                 isReport:true
             })
         }
-        if(path==='/deposit'){
+        if(path==='/deposit'||path==='/penarikan'){
             this.setState({
                 isEwallet:true
             })
@@ -182,10 +182,11 @@ class SideMenu extends Component {
                     </li>
                     {/* MASTERDATA MODUL END */}
                     {/* E-WALLET MODUL START */}
-                    <li className={"treeview" +(this.state.isEwallet===true || path==='/deposit'?" active menu-open" : "")}>
+                    <li className={"treeview" +(this.state.isEwallet===true || path==='/deposit'|| path==='/penarikan'?" active menu-open" : "")}>
                         <a href="!#" onClick={(e) => this.changeMenu(e,'isEwallet')}><i className="fa fa-list" /> <span>E-Wallet</span> <i className="fa fa-angle-right" /></a>
                         <ul className={"treeview-menu"} style={{display:this.state.isEwallet===true?"block":"none"}}>
                             <li className={path==='/deposit'?"active":''}><Link to="/deposit" style={{width:'fit-content'}}> Deposit</Link></li>
+                            <li className={path==='/penarikan'?"active":''}><Link to="/penarikan" style={{width:'fit-content'}}> Penarikan</Link></li>
                         </ul>
                     </li>
                     {/* E-WALLET MODUL END */}

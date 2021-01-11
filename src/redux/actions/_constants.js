@@ -228,7 +228,7 @@ export const PENJUALAN = {
 }
 
 /****************
- LAPORAN DEPOSIT
+ DEPOSIT
  *****************/
 let prefDeposit='DEPOSIT';
 export const DEPOSIT = {
@@ -240,6 +240,20 @@ export const DEPOSIT = {
     FAILED: `FAILED_${prefDeposit}`,
     DETAIL: `DETAIL_${prefDeposit}`,
     EDIT: `EDIT_${prefDeposit}`
+}
+/****************
+ PENARIKAN
+ *****************/
+let prefPenarikan='PENARIKAN';
+export const PENARIKAN = {
+    LOADING: `SET_${prefPenarikan}_LOADING`,
+    LOADING_DETAIL: `SET_${prefPenarikan}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefPenarikan}_LOADING_POST`,
+    IS_ERROR: `SET_${prefPenarikan}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefPenarikan}`,
+    FAILED: `FAILED_${prefPenarikan}`,
+    DETAIL: `DETAIL_${prefPenarikan}`,
+    EDIT: `EDIT_${prefPenarikan}`
 }
 /****************
  BONUS
