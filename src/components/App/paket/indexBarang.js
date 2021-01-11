@@ -163,14 +163,14 @@ class IndexBarang extends Component{
                                     <table className="table table-hover">
                                         <thead className="bg-light">
                                         <tr>
-                                            <th className="text-black" style={headStyle}>No</th>
+                                            <th className="text-black" style={headStyle}>NO</th>
                                             <th className="text-black" style={headStyle}>#</th>
-                                            <th className="text-black" style={headStyle}>Nama</th>
-                                            <th className="text-black" style={headStyle}>Harga</th>
-                                            <th className="text-black" style={headStyle}>Stock</th>
+                                            <th className="text-black" style={headStyle}>NAMA</th>
+                                            <th className="text-black" style={headStyle}>HARGA</th>
+                                            <th className="text-black" style={headStyle}>STOK</th>
                                             <th className="text-black" style={headStyle}>PPN</th>
-                                            <th className="text-black" style={headStyle}>Satuan</th>
-                                            <th className="text-black" style={headStyle}>Berat</th>
+                                            <th className="text-black" style={headStyle}>SATUAN</th>
+                                            <th className="text-black" style={headStyle}>BERAT</th>
                                         </tr>
                                         </thead>
                                         <tbody>

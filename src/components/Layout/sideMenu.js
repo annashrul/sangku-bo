@@ -13,8 +13,8 @@ class SideMenu extends Component {
             isPaket:false,
             isMasterdata:false,
             isContent:false,
-            isReport:false,
-            isEwallet:false,
+            isPenjualan:false,
+            isTrx:false,
         }
         this.changeMenu = this.changeMenu.bind(this);
     }
@@ -27,8 +27,8 @@ class SideMenu extends Component {
                 isPaket : !this.state.isPaket,
                 isMasterdata:false,
                 isContent:false,
-                isReport:false,
-                isEwallet:false,
+                isPenjualan:false,
+                isTrx:false,
             });
         }
         if(param === 'isMasterdata'){
@@ -36,8 +36,8 @@ class SideMenu extends Component {
                 isPaket:false,
                 isMasterdata : !this.state.isMasterdata,
                 isContent:false,
-                isReport:false,
-                isEwallet:false,
+                isPenjualan:false,
+                isTrx:false,
 
             });
         }
@@ -46,28 +46,28 @@ class SideMenu extends Component {
                 isPaket:false,
                 isMasterdata : false,
                 isContent:!this.state.isContent,
-                isReport:false,
-                isEwallet:false,
+                isPenjualan:false,
+                isTrx:false,
 
             });
         }
-        if(param === 'isReport'){
+        if(param === 'isPenjualan'){
             this.setState({
                 isPaket:false,
                 isMasterdata : false,
                 isContent:false,
-                isReport:!this.state.isReport,
-                isEwallet:false,
+                isPenjualan:!this.state.isPenjualan,
+                isTrx:false,
 
             });
         }
-        if(param === 'isEwallet'){
+        if(param === 'isTrx'){
             this.setState({
                 isPaket:false,
                 isMasterdata : false,
                 isContent:false,
-                isReport:false,
-                isEwallet:!this.state.isEwallet,
+                isPenjualan:false,
+                isTrx:!this.state.isTrx,
             });
         }
 
@@ -97,14 +97,14 @@ class SideMenu extends Component {
                 isContent:true
             })
         }
-        if(path==='/penjualan'||path==='/bonus'){
+        if(path==='/produk'){
             this.setState({
-                isReport:true
+                isPenjualan:true
             })
         }
-        if(path==='/deposit'||path==='/penarikan'){
+        if(path==='/saldo'||path==='/deposit'||path==='/penarikan'||path==='/bonus'){
             this.setState({
-                isEwallet:true
+                isTrx:true
             })
         }
 
@@ -182,23 +182,24 @@ class SideMenu extends Component {
                     </li>
                     {/* MASTERDATA MODUL END */}
                     {/* E-WALLET MODUL START */}
-                    <li className={"treeview" +(this.state.isEwallet===true || path==='/deposit'|| path==='/penarikan'?" active menu-open" : "")}>
-                        <a href="!#" onClick={(e) => this.changeMenu(e,'isEwallet')}><i className="fa fa-list" /> <span>E-Wallet</span> <i className="fa fa-angle-right" /></a>
-                        <ul className={"treeview-menu"} style={{display:this.state.isEwallet===true?"block":"none"}}>
+                    <li className={"treeview" +(this.state.isTrx===true || path==='/saldo'||path==='/deposit'|| path==='/penarikan'||path==='/bonus'?" active menu-open" : "")}>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isTrx')}><i className="fa fa-list" /> <span>Transaksi</span> <i className="fa fa-angle-right" /></a>
+                        <ul className={"treeview-menu"} style={{display:this.state.isTrx===true?"block":"none"}}>
+                            <li className={path==='/saldo'?"active":''}><Link to="/saldo" style={{width:'fit-content'}}> Laporan Saldo</Link></li>
                             <li className={path==='/deposit'?"active":''}><Link to="/deposit" style={{width:'fit-content'}}> Deposit</Link></li>
                             <li className={path==='/penarikan'?"active":''}><Link to="/penarikan" style={{width:'fit-content'}}> Penarikan</Link></li>
-                        </ul>
-                    </li>
-                    {/* E-WALLET MODUL END */}
-                    {/* REPORT MODUL START */}
-                    <li className={"treeview" +(this.state.isReport===true || path==='/penjualan' || path==='/bonus'?" active menu-open" : "")}>
-                        <a href="!#" onClick={(e) => this.changeMenu(e,'isReport')}><i className="fa fa-list" /> <span>Laporan</span> <i className="fa fa-angle-right" /></a>
-                        <ul className={"treeview-menu"} style={{display:this.state.isReport===true?"block":"none"}}>
-                            <li className={path==='/penjualan'?"active":''}><Link to="/penjualan" style={{width:'fit-content'}}> Penjualan</Link></li>
                             <li className={path==='/bonus'?"active":''}><Link to="/bonus" style={{width:'fit-content'}}> Bonus</Link></li>
                         </ul>
                     </li>
-                    {/* REPORT MODUL END */}
+                    {/* E-WALLET MODUL END */}
+                    {/* PENJUALAN MODUL START */}
+                    <li className={"treeview" +(this.state.isPenjualan===true || path==='/produk'?" active menu-open" : "")}>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isPenjualan')}><i className="fa fa-list" /> <span>Penjualan</span> <i className="fa fa-angle-right" /></a>
+                        <ul className={"treeview-menu"} style={{display:this.state.isPenjualan===true?"block":"none"}}>
+                            <li className={path==='/produk'?"active":''}><Link to="/produk" style={{width:'fit-content'}}> Produk</Link></li>
+                        </ul>
+                    </li>
+                    {/* PENJUALAN MODUL END */}
 
                     {/* LOGOUT MODUL START */}
                     <li><a href={null} style={{cursor:'pointer',color:'#a6b6d0'}} onClick={(event)=>this.handleLogout(event)}> <i className="fa fa-sign-out" /><span> Logout</span></a></li>

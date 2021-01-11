@@ -27,7 +27,7 @@ class PrintLaporanPenjualan extends Component {
     }
     componentWillMount(){
         document.title = `Print Laporan Penjualan`;
-        this.props.dispatch(getLaporanPenjualan(`invoice=${localStorage.kode_trx_penjualan}`));
+        this.props.dispatch(getLaporanPenjualan(`invoice=${localStorage.kode_trx_penjualan}&perpage=${parseInt(localStorage.length_kode_trx_penjualan)}`));
     }
 
     componentWillReceiveProps(nextProps){
@@ -81,7 +81,7 @@ class PrintLaporanPenjualan extends Component {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-md-2">
-                                            <Link to='/penjualan'>
+                                            <Link to='/produk'>
                                                 <button className={"btn btn-success"} style={{letterSpacing:'3px'}}> <i className={'fa fa-arrow-left'}/> KEMBALI</button>
                                             </Link>
                                         </div>

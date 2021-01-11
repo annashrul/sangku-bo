@@ -205,16 +205,16 @@ class IndexPaket extends Component{
                                     <table className="table table-hover">
                                         <thead className="bg-light">
                                         <tr>
-                                            <th className="text-black" style={headStyle}>No</th>
+                                            <th className="text-black" style={headStyle}>NO</th>
                                             <th className="text-black" style={headStyle}>#</th>
-                                            <th className="text-black" style={headStyle}>Gambar</th>
-                                            <th className="text-black" style={headStyle}>Title</th>
-                                            <th className="text-black" style={headStyle}>Kategori</th>
-                                            <th className="text-black" style={headStyle}>Jml Barang</th>
-                                            <th className="text-black" style={headStyle}>Jml Pin</th>
+                                            <th className="text-black" style={headStyle}>GAMBAR</th>
+                                            <th className="text-black" style={headStyle}>NAMA</th>
+                                            <th className="text-black" style={headStyle}>KATEGORI</th>
+                                            <th className="text-black" style={headStyle}>JML BARANG</th>
+                                            <th className="text-black" style={headStyle}>JML PIN</th>
                                             <th className="text-black" style={headStyle}>PV</th>
-                                            <th className="text-black" style={headStyle}>Tipe</th>
-                                            <th className="text-black" style={headStyle}>Status</th>
+                                            <th className="text-black" style={headStyle}>TIPE</th>
+                                            <th className="text-black" style={headStyle}>STATUS</th>
 
                                         </tr>
                                         </thead>

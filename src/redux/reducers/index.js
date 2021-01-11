@@ -18,6 +18,7 @@ import {laporanPenjualanReducer} from "./laporan/laporan_penjualan.reducer";
 import {bonusReducer} from "./laporan/bonus.reducer";
 import {depositReducer} from "./ewallet/deposit.reducer";
 import {penarikanReducer} from "./ewallet/penarikan.reducer";
+import {saldoReducer} from "./ewallet/saldo.reducer";
 
 export default combineReducers({
     modalReducer,
@@ -38,6 +39,7 @@ export default combineReducers({
     bonusReducer,
     depositReducer,
     penarikanReducer,
+    saldoReducer,
     auth: authReducer,
     errors : errorsReducer
 });

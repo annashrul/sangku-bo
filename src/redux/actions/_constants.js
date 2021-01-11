@@ -269,3 +269,17 @@ export const BONUS = {
     DETAIL: `DETAIL_${prefBonus}`,
     EDIT: `EDIT_${prefBonus}`
 }
+/****************
+ SALDO
+ *****************/
+let prefSaldo='SALDO';
+export const SALDO = {
+    LOADING: `SET_${prefSaldo}_LOADING`,
+    LOADING_DETAIL: `SET_${prefSaldo}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefSaldo}_LOADING_POST`,
+    IS_ERROR: `SET_${prefSaldo}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefSaldo}`,
+    FAILED: `FAILED_${prefSaldo}`,
+    DETAIL: `DETAIL_${prefSaldo}`,
+    EDIT: `EDIT_${prefSaldo}`
+}

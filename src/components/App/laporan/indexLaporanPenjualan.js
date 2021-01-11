@@ -35,7 +35,6 @@ class IndexLaporanPenjualan extends Component{
         this.handleChange   = this.handleChange.bind(this);
         this.handlePage     = this.handlePage.bind(this);
         this.handleSearch   = this.handleSearch.bind(this);
-        this.handlePrint   = this.handlePrint.bind(this);
     }
     componentWillUnmount(){
         // localStorage.removeItem('kode_trx_penjualan');
@@ -44,12 +43,14 @@ class IndexLaporanPenjualan extends Component{
 
     componentDidMount(){
         localStorage.removeItem('kode_trx_penjualan');
+        localStorage.removeItem('length_kode_trx_penjualan');
         this.setState({dataTrx:[]});
     }
     componentWillMount(){
         localStorage.removeItem('kode_trx_penjualan');
+        localStorage.removeItem('length_kode_trx_penjualan');
         this.setState({dataTrx:[]});
-        this.props.dispatch(getLaporanPenjualan());
+        this.props.dispatch(getLaporanPenjualan(`page=1&datefrom=${this.state.dateFrom}&dateto=${this.state.dateTo}`));
     }
 
     componentWillReceiveProps(nextProps){
@@ -66,7 +67,7 @@ class IndexLaporanPenjualan extends Component{
         this.setState({isLoading:isLoading,dataPenjualan:data});
     }
     removeItem(arr, value) {
-        var b = '';
+        let b = '';
         for (b in arr) {
             if (arr[b] === value) {
                 arr.splice(b, 1);
@@ -80,33 +81,8 @@ class IndexLaporanPenjualan extends Component{
         let value = e.target.value;
         let checked = e.target.checked;
         let dataPenjualan = [...this.state.dataPenjualan];
-        let kdTrx='';
         let dataTrx=this.state.dataTrx;
         if(column==='isCheckedPrintAll'){
-
-            // if(checked===false){
-            //     this.removeItem(dataTrx,dataPenjualan);
-            //     // localStorage.removeItem('kode_trx_penjualan');
-            // }
-            // else{
-            //     // dataPenjualan.map((v,i)=>{
-            //     //     if(checked===true){
-            //     //         v.isChecked=true;
-            //     //         dataTrx.push(v.kd_trx);
-            //     //     }else{
-            //     //         v.isChecked=false;
-            //     //         this.removeItem(dataPenjualan,v.kd_trx);
-            //     //     }
-            //     //
-            //     //     // kdTrx+= (i>0 ? ",":"") + v.kd_trx;
-            //     //
-            //     //     // if(v.isChecked===false){
-            //     //     //     this.removeItem(dataPenjualan,v.kd_trx);
-            //     //     // }
-            //     //
-            //     // });
-            //     // localStorage.setItem("kode_trx_penjualan",dataTrx.toString());
-            // }
             dataPenjualan.map((v,i)=>{
                 if(checked===true){
                     v.isChecked=true;
@@ -116,16 +92,9 @@ class IndexLaporanPenjualan extends Component{
                     this.removeItem(dataTrx,v.kd_trx);
                     localStorage.removeItem('kode_trx_penjualan');
                 }
-
-                // kdTrx+= (i>0 ? ",":"") + v.kd_trx;
-
-                // if(v.isChecked===false){
-                //     this.removeItem(dataPenjualan,v.kd_trx);
-                // }
-
             });
             localStorage.setItem("kode_trx_penjualan",dataTrx.toString());
-            // console.log(dataTrx);
+            localStorage.setItem("length_kode_trx_penjualan",dataTrx.length);
             this.setState({[column]:checked,dataPenjualan:dataPenjualan,kdTrx:dataTrx.toString()});
             return;
         }
@@ -143,26 +112,26 @@ class IndexLaporanPenjualan extends Component{
                 }
                 console.log(dataTrx.length);
             }
+            localStorage.setItem("length_kode_trx_penjualan",dataTrx.length);
             localStorage.setItem("kode_trx_penjualan",dataTrx.toString());
-            // console.log(dataTrx);
             this.setState({dataPenjualan:dataPenjualan,kdTrx:dataTrx.toString()});
             return;
         }
         dataPenjualan[i] = {...dataPenjualan[i], [column]: value};
         this.setState({dataPenjualan:dataPenjualan});
-        // this.setState({dataPenjualan:dataPenjualan});
-
-
     }
 
     handleValidate(){
+        this.setState({
+            isLoading:true
+        })
         let where="";
-        let page = localStorage.getItem("pageMember");
+        let page = localStorage.getItem("pageLaporanPenjualan");
         let dateFrom = this.state.dateFrom;
         let dateTo = this.state.dateTo;
         let any = this.state.any;
-        localStorage.setItem("dateFromMember",`${dateFrom}`);
-        localStorage.setItem("dateToMember",`${dateTo}`);
+        localStorage.setItem("dateFromLaporanPenjualan",`${dateFrom}`);
+        localStorage.setItem("dateToLaporanPenjualan",`${dateTo}`);
 
         if(page!==null&&page!==undefined&&page!==""){
             where+=`page=${page}`;
@@ -180,9 +149,10 @@ class IndexLaporanPenjualan extends Component{
 
     }
     handlePage(pageNumber){
-        localStorage.setItem("pageMember",pageNumber);
+
+        localStorage.setItem("pageLaporanPenjualan",pageNumber);
         let where = this.handleValidate();
-        this.props.dispatch(getMember(where));
+        this.props.dispatch(getLaporanPenjualan(where));
 
     }
     handleEvent = (event, picker) => {
@@ -196,16 +166,7 @@ class IndexLaporanPenjualan extends Component{
     handleSearch(e){
         e.preventDefault();
         let where = this.handleValidate();
-        this.props.dispatch(getMember(where));
-    }
-    handlePrint() {
-        var content = document.getElementById('printarea');
-        var pri = document.getElementById('ifmcontentstoprint').contentWindow;
-        pri.document.open();
-        pri.document.write(content.innerHTML);
-        pri.document.close();
-        pri.focus();
-        pri.print();
+        this.props.dispatch(getLaporanPenjualan(where));
     }
 
 
@@ -359,7 +320,7 @@ class IndexLaporanPenjualan extends Component{
                         <div id="vertical-timeline" className="vertical-container light--timeline">
 
                         {
-                            this.state.isLoading===false?this.state.dataPenjualan.length>0?this.state.dataPenjualan.map((v,i)=>{
+                            !this.props.isLoading?this.state.dataPenjualan.length>0?this.state.dataPenjualan.map((v,i)=>{
                                 let sts = v.status;
                                 let col='';
                                 if(this.state.isCheckedPrintAll&&v.isChecked){
@@ -426,12 +387,15 @@ class IndexLaporanPenjualan extends Component{
                                                                     </h5>
                                                                     <hr/>
                                                                 </center>
-
                                                             </div>
-                                                            <button className={"btn btn-block btn-outline-primary"}>
-                                                                <i className={"fa fa-upload"}/><br/>
-                                                                Upload Bukti Transfer
-                                                            </button>
+                                                            {
+                                                                sts===0?(
+                                                                    <button className={"btn btn-block btn-outline-danger"}>
+                                                                        <i className={"fa fa-close"}/><br/>
+                                                                        BATALKAN TRANSAKSI
+                                                                    </button>
+                                                                ):null
+                                                            }
                                                         </div>
                                                         <div className="col-md-3">
                                                             <p className="mbtm-10">Status Transaksi</p>
@@ -470,9 +434,9 @@ class IndexLaporanPenjualan extends Component{
                                                             <p style={lnr}/>
                                                             <div className="form-group">
                                                                 <div className="input-group mb-2">
-                                                                    <input disabled={v.resi!=='-'} type="text" className="form-control" name="resi_no" placeholder={"masukan no resi disini ....."} value={v.resi_no} onChange={(e)=>this.handleChange(e,i)}/>
+                                                                    <input disabled={v.valid_resi===1&&sts!==1} type="text" className="form-control" name="resi_no" placeholder={"masukan no resi disini ....."} value={v.resi_no} onChange={(e)=>this.handleChange(e,i)}/>
                                                                     <div className="input-group-prepend">
-                                                                        <button disabled={v.resi!=='-'} className="btn btn-primary" onClick={(event)=>this.handleSearch(event)}>
+                                                                        <button disabled={v.valid_resi===1&&sts!==1} className="btn btn-primary" onClick={(event)=>this.handleSearch(event)}>
                                                                             <i className="fa fa-send"/>
                                                                         </button>
                                                                     </div>
@@ -549,6 +513,14 @@ class IndexLaporanPenjualan extends Component{
                                 return container;
                             })()
                         }
+                        </div>
+                        <div style={{"marginTop":"20px","marginBottom":"20px","float":"right"}}>
+                            <Paginationq
+                                current_page={current_page}
+                                per_page={per_page}
+                                total={total}
+                                callback={this.handlePage}
+                            />
                         </div>
 
 

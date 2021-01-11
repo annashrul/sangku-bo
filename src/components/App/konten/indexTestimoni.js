@@ -262,7 +262,7 @@ class IndexBerita extends Component{
                                 </div>
                                 <div className="row">
                                     {
-                                        typeof data === 'object' ? data.length>0 ? data.map((v,i)=>{
+                                        !this.props.isLoading?typeof data === 'object' ? data.length>0 ? data.map((v,i)=>{
                                             return(
                                                 <div key={i} className="col-xl-3">
                                                     <div className="card">
@@ -292,7 +292,7 @@ class IndexBerita extends Component{
                                                     </div>
                                                 </div>
                                             );
-                                        }):"":(()=>{
+                                        }):"":"":(()=>{
                                             let container =[];
                                             for(let x=0; x<8; x++){
                                                 container.push(
@@ -330,7 +330,7 @@ class IndexBerita extends Component{
                                         <form id="form-todo-list">
                                             <ul id="ecapsToDo-list" className="todo-list" style={{height:'450px',maxHeight:'100%',overflowY:'auto'}}>
                                                 {
-                                                    typeof this.props.kategori.data==='object'? this.props.kategori.data.length>0?this.props.kategori.data.map((v,i)=>{
+                                                    !this.props.isLoadingKategori?typeof this.props.kategori.data==='object'? this.props.kategori.data.length>0?this.props.kategori.data.map((v,i)=>{
                                                         return(
                                                             <li key={i} id={`item${i}`}>
                                                                 <label className="ckbox">
@@ -344,7 +344,7 @@ class IndexBerita extends Component{
                                                                 <h5 style={{fontSize:'12px'}}>{v.title}</h5>
                                                             </li>
                                                         );
-                                                    }):"":(()=>{
+                                                    }):"":"":(()=>{
                                                         let container =[];
                                                         for(let x=0; x<8; x++){
                                                             container.push(

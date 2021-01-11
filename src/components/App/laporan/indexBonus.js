@@ -82,17 +82,17 @@ class IndexBonus extends Component{
                                     <div className="col-md-6 col-xl-4 box-margin">
                                         <div className="card">
                                             <div className="card-body">
-                                                <div className="bg-primary p-3 text-center text-white font-30">{v.kode}</div>
-                                                <p className="d-flex align-items-center justify-content-between font-16">Transaksi Masuk<span className="float-right font-12 success-text">Rp {parseInt(v.trx_in)===0?0:toCurrency(v.trx_in)} .-</span></p>
-                                                <p className="d-flex align-items-center justify-content-between font-16">Transaksi Keluar<span className="float-right font-12 success-text">Rp {parseInt(v.trx_out)===0?0:toCurrency(v.trx_out)} .-</span></p>
+                                                <div className="bg-success p-3 text-center text-white font-20">{v.note.toUpperCase()}</div>
+                                                <br/>
                                                 <p className="d-flex align-items-center justify-content-between font-16">Persantase<span className="float-right font-12 success-text">{v.percentage} %</span></p>
-                                                <hr/>
-                                                <p className="font-12 d-flex align-items-center justify-content-between">
-                                                    <span>Catatan : {v.note}</span>
-                                                    <span>Saldo : Rp {parseInt(v.total)===0?0:toCurrency(v.total)} .-</span>
-                                                </p>
-                                                <hr/>
-                                                <button onClick={(e)=>this.handleModal(e,v.kode)} className={"btn btn-secondary btn-block"}>
+                                                <hr style={{border:'1px dashed #ddd'}}/>
+                                                <p className="d-flex align-items-center justify-content-between font-16">Transaksi Masuk<span className="float-right font-12 text-danger">Rp {parseInt(v.trx_in)===0?0:toCurrency(v.trx_in)} .-</span></p>
+                                                <hr style={{border:'1px dashed #ddd'}}/>
+                                                <p className="d-flex align-items-center justify-content-between font-16">Transaksi Keluar<span className="float-right font-12 text-danger">Rp {parseInt(v.trx_out)===0?0:toCurrency(v.trx_out)} .-</span></p>
+                                                <hr style={{border:'1px dashed #ddd'}}/>
+                                                <p className="d-flex align-items-center justify-content-between font-16">Saldo<span className="float-right font-12 text-danger">Rp {parseInt(v.total)===0?0:toCurrency(v.total)} .-</span></p>
+
+                                                <button onClick={(e)=>this.handleModal(e,v.kode)} className={"btn btn-primary btn-block"}>
                                                     Penarikan
                                                 </button>
                                             </div>

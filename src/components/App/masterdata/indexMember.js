@@ -9,6 +9,7 @@ import Skeleton from 'react-loading-skeleton';
 import moment from "moment";
 import DetailAlamat from "../modals/masterdata/member/detail_alamat"
 import DetailBank from "../modals/masterdata/member/detail_bank"
+import DetailTransaksi from "../modals/masterdata/member/detail_transaksi"
 import {getMember, putMember} from "../../../redux/actions/masterdata/member.action";
 import UncontrolledButtonDropdown from "reactstrap/es/UncontrolledButtonDropdown";
 import DropdownToggle from "reactstrap/es/DropdownToggle";
@@ -34,6 +35,7 @@ class IndexMember extends Component{
         this.handleSearch   = this.handleSearch.bind(this);
         this.handleAlamat   = this.handleAlamat.bind(this);
         this.handleBank   = this.handleBank.bind(this);
+        this.handleDetailTrx   = this.handleDetailTrx.bind(this);
         this.handleUpdate   = this.handleUpdate.bind(this);
 
     }
@@ -41,6 +43,7 @@ class IndexMember extends Component{
     componentWillMount(){
         localStorage.removeItem("isAlamat");
         localStorage.removeItem("isBank");
+        localStorage.removeItem("isDetail");
         this.props.dispatch(getMember(`page=1`));
     }
     handleChange = (event) => {
@@ -106,6 +109,15 @@ class IndexMember extends Component{
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
         this.props.dispatch(ModalType("detailAlamat"));
+        this.props.dispatch(getDetailAlamat(par));
+        // this.setState({detail:{idUser:par}});
+    }
+    handleDetailTrx(e,par){
+        e.preventDefault();
+        localStorage.setItem("isDetail","true");
+        const bool = !this.props.isOpen;
+        this.props.dispatch(ModalToggle(bool));
+        this.props.dispatch(ModalType("detailTransaksi"));
         this.props.dispatch(getDetailAlamat(par));
         // this.setState({detail:{idUser:par}});
     }
@@ -186,25 +198,25 @@ class IndexMember extends Component{
                                     <table className="table table-hover">
                                         <thead className="bg-light">
                                         <tr>
-                                            <th className="text-black" style={headStyle}>No</th>
+                                            <th className="text-black" style={headStyle}>NO</th>
                                             <th className="text-black" style={headStyle}>#</th>
-                                            <th className="text-black" style={headStyle}>Foto</th>
-                                            <th className="text-black" style={headStyle}>Nama</th>
-                                            <th className="text-black" style={headStyle}>Telepon</th>
-                                            <th className="text-black" style={headStyle}>Saldo</th>
-                                            <th className="text-black" style={headStyle}>Penarikan</th>
-                                            <th className="text-black" style={headStyle}>Sponsor</th>
+                                            <th className="text-black" style={headStyle}>GAMBAR</th>
+                                            <th className="text-black" style={headStyle}>NAMA</th>
+                                            <th className="text-black" style={headStyle}>TELEPON</th>
+                                            <th className="text-black" style={headStyle}>SALDO</th>
+                                            <th className="text-black" style={headStyle}>PENARIKAN</th>
+                                            <th className="text-black" style={headStyle}>SPONSOR</th>
                                             <th className="text-black" style={headStyle}>PIN</th>
-                                            <th className="text-black" style={headStyle}>Kaki Kanan</th>
-                                            <th className="text-black" style={headStyle}>Kaki Kiri</th>
-                                            <th className="text-black" style={headStyle}>Status Member</th>
-                                            <th className="text-black" style={headStyle}>Kode Referral</th>
-                                            <th className="text-black" style={headStyle}>Status Aktif</th>
+                                            <th className="text-black" style={headStyle}>KAKI KANAN</th>
+                                            <th className="text-black" style={headStyle}>KAKI KIRI</th>
+                                            <th className="text-black" style={headStyle}>STATUS MEMBER</th>
+                                            <th className="text-black" style={headStyle}>KODE REFERRAL</th>
+                                            <th className="text-black" style={headStyle}>STATUS AKTIF</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {
-                                            typeof data === 'object' ? data.length > 0 ?
+                                            !this.props.isLoading?typeof data === 'object' ? data.length > 0 ?
                                                 data.map((v, i) => {
                                                 totSaldo = totSaldo+parseInt(v.saldo,10);
                                                 totPenarikan = totPenarikan+parseInt(v.total_payment,10);
@@ -220,6 +232,7 @@ class IndexMember extends Component{
                                                                             Aksi
                                                                         </DropdownToggle>
                                                                         <DropdownMenu>
+                                                                            <DropdownItem onClick={(e)=>this.handleDetailTrx(e,v.id)}>Transaksi</DropdownItem>
                                                                             <DropdownItem onClick={(e)=>this.handleAlamat(e,v.id)}>Alamat</DropdownItem>
                                                                             <DropdownItem onClick={(e)=>this.handleBank(e,v.id)}>Bank</DropdownItem>
                                                                             <DropdownItem onClick={(e)=>this.handleUpdate(e,v.id,v.full_name,v.status===0?1:0)}>Ubah Status</DropdownItem>
@@ -245,6 +258,9 @@ class IndexMember extends Component{
                                                         </tr>
                                                     );
                                                 })
+                                                : <tr>
+                                                    <td colSpan={14} style={headStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
+                                                </tr>
                                                 : <tr>
                                                     <td colSpan={14} style={headStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
                                                 </tr>
@@ -306,6 +322,11 @@ class IndexMember extends Component{
                 {
                     localStorage.isBank === "true"?<DetailBank
                     detail={this.props.detailBank}
+                    />:null
+                }
+                {
+                    localStorage.isDetail === "true"?<DetailTransaksi
+                        detail={this.props.detailAlamat}
                     />:null
                 }
             </Layout>

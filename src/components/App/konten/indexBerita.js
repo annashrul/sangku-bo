@@ -268,7 +268,7 @@ class IndexBerita extends Component{
                                 </div>
                                 <div className="row">
                                     {
-                                        typeof data === 'object' ? data.length>0 ? data.map((v,i)=>{
+                                        !this.props.isLoading?typeof data === 'object' ? data.length>0 ? data.map((v,i)=>{
                                             return(
                                                 <div key={i} className="col-6 col-xs-6 col-md-3 col-lg-3" style={{marginBottom:'5px'}}>
                                                     <div className="card">
@@ -298,11 +298,11 @@ class IndexBerita extends Component{
                                                     </div>
                                                 </div>
                                             );
-                                        }):"":(()=>{
+                                        }):"":"":(()=>{
                                             let container =[];
                                             for(let x=0; x<8; x++){
                                                 container.push(
-                                                    <div key={x} className="col-xl-3 height-card box-margin break-992-none break-768-none">
+                                                    <div key={x} className="col-6 col-xs-6 col-md-3 col-lg-3" style={{marginBottom:'5px'}}>
                                                         <div className="card">
                                                             <img src="https://www.sustainablesanantonio.com/wp-content/plugins/ldd-directory-lite/public/images/noimage.png" className="card-img-top" alt="..."/>
                                                             <div className="card-body">
@@ -336,7 +336,7 @@ class IndexBerita extends Component{
                                         <form id="form-todo-list">
                                             <ul id="ecapsToDo-list" className="todo-list" style={{height:'450px',maxHeight:'100%',overflowY:'auto'}}>
                                                 {
-                                                    typeof this.props.kategori.data==='object'? this.props.kategori.data.length>0?this.props.kategori.data.map((v,i)=>{
+                                                    !this.props.isLoadingKategori?typeof this.props.kategori.data==='object'? this.props.kategori.data.length>0?this.props.kategori.data.map((v,i)=>{
                                                         return(
                                                             <li key={i} id={`item${i}`}>
                                                                 <label className="ckbox">
@@ -350,7 +350,7 @@ class IndexBerita extends Component{
                                                                 <h5 style={{fontSize:'12px'}}>{v.title}</h5>
                                                             </li>
                                                         );
-                                                    }):"":(()=>{
+                                                    }):"":"":(()=>{
                                                         let container =[];
                                                         for(let x=0; x<8; x++){
                                                             container.push(

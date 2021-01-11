@@ -71,8 +71,8 @@ class IndexPenarikan extends Component{
         })
     }
     componentWillMount(){
-        let where=this.handleValidate();
-        this.props.dispatch(getPenarikan(where));
+        // let where=this.handleValidate();
+        this.props.dispatch(getPenarikan(`page=1&datefrom=${this.state.dateFrom}&dateto=${this.state.dateTo}`));
     }
 
 

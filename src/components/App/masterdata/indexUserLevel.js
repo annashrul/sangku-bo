@@ -185,10 +185,10 @@ class IndexUserLevel extends Component{
                                     <table className="table table-hover">
                                         <thead className="bg-light">
                                         <tr>
-                                            <th className="text-black" style={headStyle}>No</th>
+                                            <th className="text-black" style={headStyle}>NO</th>
                                             <th className="text-black" style={headStyle}>#</th>
-                                            <th className="text-black" style={headStyle}>Nama</th>
-                                            <th className="text-black" style={headStyle}>Tanggal</th>
+                                            <th className="text-black" style={headStyle}>NAMA</th>
+                                            <th className="text-black" style={headStyle}>TANGGAL</th>
                                         </tr>
                                         </thead>
                                         <tbody>
