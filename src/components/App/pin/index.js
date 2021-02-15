@@ -1,7 +1,6 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
 import Layout from 'components/Layout';
-import {DateRangePicker} from "react-bootstrap-daterangepicker";
 import Paginationq, {rangeDate, toCurrency, toRp} from "../../../helper";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
@@ -17,18 +16,46 @@ class IndexPin extends Component{
         this.state={
             detail:{},
             any:"",
+            type:0,
+            last:'',
             dateFrom:moment(new Date()).format("yyyy-MM-DD"),
             dateTo:moment(new Date()).format("yyyy-MM-DD")
         };
-        this.handleEvent    = this.handleEvent.bind(this);
         this.handleChange   = this.handleChange.bind(this);
         this.handlePage     = this.handlePage.bind(this);
         this.handleSearch   = this.handleSearch.bind(this);
         this.handleAdd      = this.handleAdd.bind(this);
-
     }
-    componentWillMount(){
-        this.props.dispatch(getPin(`page=1`));
+    componentWillReceiveProps(nextProps) {
+        const path = nextProps.match.params.pin
+        if(path!==this.state.last){
+            console.log('pin!',path);
+            if(path==='ro'){
+                this.setState({type:1,last:path})
+                this.props.dispatch(getPin(`page=1&type=1`));
+            }else{
+                this.setState({type:0,last:path})
+                this.props.dispatch(getPin(`page=1&type=0`));
+            }
+
+        }
+    }
+
+    componentDidMount() {
+        const path = this.props.match.params.pin
+        if (path === 'ro') {
+            this.setState({
+                type: 1,
+                last: path
+            })
+            this.props.dispatch(getPin(`page=1&type=1`));
+        } else {
+            this.setState({
+                type: 0,
+                last: path
+            })
+            this.props.dispatch(getPin(`page=1&type=0`));
+        }
     }
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
@@ -37,25 +64,20 @@ class IndexPin extends Component{
     handleValidate(){
         let where="";
         let page = localStorage.getItem("pagePin");
-        let dateFrom = this.state.dateFrom;
-        let dateTo = this.state.dateTo;
         let any = this.state.any;
-        localStorage.setItem("dateFromPin",`${dateFrom}`);
-        localStorage.setItem("dateToPin",`${dateTo}`);
 
         if(page!==null&&page!==undefined&&page!==""){
             where+=`page=${page}`;
         }else{
             where+="page=1";
         }
-        if(dateFrom!==null&&dateFrom!==undefined&&dateFrom!==""){
-            where+=`&datefrom=${dateFrom}&dateto=${dateTo}`;
-        }
 
         if(any!==null&&any!==undefined&&any!==""){
+            localStorage.setItem('pagePin',1)
+            where= "page=1";
             where+=`&q=${any}`;
         }
-        return where;
+        return where += `&type=${this.state.type}`;
 
     }
 
@@ -65,14 +87,7 @@ class IndexPin extends Component{
         this.props.dispatch(getPin(where));
 
     }
-    handleEvent = (event, picker) => {
-        const from = moment(picker.startDate._d).format('YYYY-MM-DD');
-        const to = moment(picker.endDate._d).format('YYYY-MM-DD');
-        this.setState({
-            dateFrom:from,
-            dateTo:to
-        });
-    };
+   
     handleSearch(e){
         e.preventDefault();
         let where = this.handleValidate();
@@ -92,11 +107,7 @@ class IndexPin extends Component{
         const {
             total,
             per_page,
-            offset,
-            to,
-            last_page,
             current_page,
-            from,
             data
         } = this.props.data;
 
@@ -115,16 +126,6 @@ class IndexPin extends Component{
                         <div className="card">
                             <div className="card-body">
                                 <div className="row" style={{zoom:"90%"}}>
-                                    <div className="col-6 col-xs-6 col-md-2">
-                                        <div className="form-group">
-                                            <label>Periode </label>
-                                            <DateRangePicker
-                                                autoUpdateInput={true} showDropdowns={true} style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onApply={this.handleEvent}>
-                                                <input type="text" readOnly={true} className="form-control" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
-                                            </DateRangePicker>
-                                        </div>
-                                    </div>
-
                                     <div className="col-12 col-xs-12 col-md-3">
                                         <div className="form-group">
                                             <label>Cari</label>
@@ -134,7 +135,7 @@ class IndexPin extends Component{
                                     <div className="col-2 col-xs-2 col-md-4">
                                         <div className="form-group">
                                             <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
-                                            <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleAdd(e)}><i className="fa fa-plus"/></button>
+                                            <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleAdd(e)}><i className="fa fa-plus"/> Generate PIN</button>
                                         </div>
                                     </div>
                                 </div>
@@ -144,13 +145,11 @@ class IndexPin extends Component{
                                         <tr>
                                             <th className="text-black" style={columnStyle}>No</th>
                                             <th className="text-black" style={columnStyle}>Kode</th>
-                                            <th className="text-black" style={columnStyle}>Paket</th>
                                             <th className="text-black" style={columnStyle}>Pemilik</th>
                                             <th className="text-black" style={columnStyle}>Harga</th>
                                             <th className="text-black" style={columnStyle}>Tipe</th>
                                             <th className="text-black" style={columnStyle}>Status</th>
                                             <th className="text-black" style={columnStyle}>Tanggal Dibuat</th>
-                                            <th className="text-black" style={columnStyle}>Tanggal Expired</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -163,13 +162,11 @@ class IndexPin extends Component{
                                                                 <span className="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
                                                             </td>
                                                             <td style={columnStyle}>{v.kode}</td>
-                                                            <td style={columnStyle}>{v.paket_title}</td>
                                                             <td style={columnStyle}>{v.pemilik}</td>
                                                             <td style={columnStyle}>Rp {toCurrency(v.harga)} .-</td>
-                                                            <td style={columnStyle}>{v.type===0?'REGISTER':'RO'}</td>
-                                                            <td style={columnStyle}>{v.status}</td>
+                                                            <td style={columnStyle}>{v.type===0?<span className='btn btn-success btn-sm'>AKTIVASI</span>:<span className='btn btn-dark btn-sm'>RO</span>}</td>
+                                                            <td style={columnStyle}>{(v.status===0?<span className='btn btn-success btn-sm'>TERSEDIA</span>:(v.status===1?<span className='btn btn-info btn-sm'>DIBELI</span>:(v.status===2?<span className='btn btn-dark btn-sm'>TELAH DIGUNAKAN</span>:<span className='btn btn-warning btn-sm'>PENDING TRX</span>)))}</td>
                                                             <td style={columnStyle}>{moment(v.created_at).locale('id').format("ddd, Do MMM YYYY hh:mm:ss")}</td>
-                                                            <td style={columnStyle}>{moment(v.exp_date).locale('id').format("ddd, Do MMM YYYY")}</td>
                                                         </tr>
                                                     );
                                                 })

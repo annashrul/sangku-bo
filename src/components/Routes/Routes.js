@@ -7,13 +7,13 @@ import Login from '../App/Auth/Login/Login';
 import Dashboard from '../App/Dashboard/Dashboard';
 import Paket from '../App/paket/indexPaket';
 import Barang from '../App/paket/indexBarang';
-import Pin from '../App/paket/indexPin';
-import Member from '../App/masterdata/indexMember';
+import Pin from '../App/pin';
+import Member from '../App/masterdata/member';
 import UserList from '../App/masterdata/indexUserList';
 import UserLevel from '../App/masterdata/indexUserLevel';
 import Berita from '../App/konten/indexBerita';
 import Testimoni from '../App/konten/indexTestimoni';
-import Penjualan from '../App/laporan/indexLaporanPenjualan';
+import Penjualan from '../App/order';
 import Bonus from '../App/laporan/indexBonus';
 import Deposit from '../App/ewallet/indexDeposit';
 import Penarikan from '../App/ewallet/indexPenarikan';
@@ -31,7 +31,7 @@ const Routes = (
             {/* PAKET SECTION START */}
             <PrivateRoute path="/paket" exact strict component={Paket} />
             <PrivateRoute path="/barang" exact strict component={Barang} />
-            <PrivateRoute path="/pin" exact strict component={Pin} />
+            <PrivateRoute path="/pin/:pin" exact strict component={Pin} />
             {/* PAKET SECTION END */}
             {/* MASTERDATA SECTION START */}
             <PrivateRoute path="/user_list" exact strict component={UserList} />

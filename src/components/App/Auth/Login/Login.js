@@ -19,7 +19,7 @@ class Login extends Component {
             errors:{
             },
             logo: BgAuth,
-            width:'100px'
+            width:'200px'
          };
     }
     getFaviconEl() {
@@ -30,32 +30,32 @@ class Login extends Component {
         if(this.props.auth.isAuthenticated){
             this.props.history.push('/')
         }
-        this.initFetch(false);
+        // this.initFetch(false);
     }
 
-    initFetch(check){
-        fetch(HEADERS.URL + `site/get`)
-        .then(res => res.json())
-        .then(
-            (data) => {
-                localStorage.setItem("logos",data.result.logo)
-                localStorage.setItem("site_title", data.result.site_name)
-                document.title = `${data.result.site_name}`;
-                this.setState({
-                    logo: data.result.logo,
-                    width:data.result.width
-                })
-                const favicon = this.getFaviconEl(); // Accessing favicon element
-                favicon.href = data.result.site_url;
-            },
-            (error) => {
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
-            }
-        )
-    }
+    // initFetch(check){
+    //     fetch(HEADERS.URL + `site/get`)
+    //     .then(res => res.json())
+    //     .then(
+    //         (data) => {
+    //             localStorage.setItem("logos",data.result.logo)
+    //             localStorage.setItem("site_title", data.result.site_name)
+    //             document.title = `${data.result.site_name}`;
+    //             this.setState({
+    //                 logo: data.result.logo,
+    //                 width:data.result.width
+    //             })
+    //             const favicon = this.getFaviconEl(); // Accessing favicon element
+    //             favicon.href = data.result.site_url;
+    //         },
+    //         (error) => {
+    //             this.setState({
+    //                 isLoaded: true,
+    //                 error
+    //             });
+    //         }
+    //     )
+    // }
 
 
     componentWillReceiveProps = (nextProps)=>{
@@ -112,7 +112,7 @@ class Login extends Component {
                         <div className="wrap-login100 p-b-160 p-t-50">
                             <form className="login100-form validate-form" action="#">
                                 <span className="login100-form-title p-b-43 mb-5">
-                                <img alt="logos" src={this.state.logo} className='img-responsive' width={this.state.width} style={{textAlign: 'center', marginLeft: 'auto', marginRight: 'auto', display: 'block'}}/>
+                                <img alt="logos" src={this.state.logo} className='' width={this.state.width} style={{textAlign: 'center', marginLeft: 'auto', marginRight: 'auto', display: 'block'}}/>
                                     {/* Account Login */}
                                 </span>
                                 <div className="wrap-input100 rs1 validate-input" data-validate="Username is required">

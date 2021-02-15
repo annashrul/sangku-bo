@@ -142,7 +142,7 @@ class PrintLaporanPenjualan extends Component {
                                                                 <table id="print_3ply" width="100%" border="0" cellSpacing="0" className="print-data printInvoice" style={{display:'block',fontSize:'12px',opacity:'1',animation:' fadeIn 2s'}}>
                                                                     <tr style={{margin:'0',padding:'20px'}}>
                                                                         <td style={{margin:'0'}} width="10%">
-                                                                            <img style={{opacity:'1',animation:' fadeIn 2s',height:'120px',verticalAlign:'center',width:'70%'}} className="img-logo" src={this.props.data.data_perusahaan===undefined?'':this.props.data.data_perusahaan.logo} onError={(e)=>{e.target.onerror = null; e.target.src=`${noImage()}`}}/>
+                                                                            <img style={{opacity:'1',animation:' fadeIn 2s',height:'120px',verticalAlign:'center',width:'70%'}} className="img-responsive" src={this.props.data.data_perusahaan===undefined?'':this.props.data.data_perusahaan.logo} onError={(e)=>{e.target.onerror = null; e.target.src=`${noImage()}`}}/>
 
                                                                             {/*<img className="img-logo" src="https://indokids.co.id/assets/images/site/Logo_Indokids_Baru-011.png" style={{verticalAlign:'center',width:'100%'}}/>*/}
                                                                         </td>
@@ -198,7 +198,7 @@ class PrintLaporanPenjualan extends Component {
                                                                     }
 
                                                                     <tr style={{border:'1px solid #ddd',lineHeight:'1.25em',fontSize:'12px',verticalAlign:'middle'}}>
-                                                                        <td colSpan="6" style={{padding:'10px 20px',width:'45%'}}>Onggkir</td>
+                                                                        <td colSpan="6" style={{padding:'10px 20px',width:'45%'}}>Ongkir</td>
                                                                         <td style={{padding:'10px 20px',width:'10%',textAlign:'left'}}>Rp {parseInt(v.ongkir)===0?0:toCurrency(v.ongkir)} .-</td>
                                                                     </tr>
                                                                     <tr style={{lineHeight:'2em',fontSize:'12px'}}>
@@ -241,9 +241,7 @@ class PrintLaporanPenjualan extends Component {
                                                                         <td width="20%" rowSpan="3" className="text-center shop-logo" style={{padding:'10px'}}>
                                                                             {
                                                                                 this.state.shop_logo?(
-                                                                                    <img style={{opacity:'1',animation:' fadeIn 2s',height:'120px'}} className="img-logo" src={this.props.data.data_perusahaan===undefined?'':this.props.data.data_perusahaan.logo} onError={(e)=>{e.target.onerror = null; e.target.src=`${noImage()}`}}/>
-
-                                                                                    // <img style={{opacity:'1',animation:' fadeIn 2s'}} className="img-logo" src={'https://indokids.co.id/assets/images/site/Logo_Indokids_Baru-011.png'} width="120"/>
+                                                                                    <img style={{opacity:'1',animation:' fadeIn 2s',height:'60px'}} className="img-responsive" src={this.props.data.data_perusahaan===undefined?'':this.props.data.data_perusahaan.logo} onError={(e)=>{e.target.onerror = null; e.target.src=`${noImage()}`}}/>
                                                                                 ):null
                                                                             }
                                                                             <br/>
@@ -308,7 +306,7 @@ class PrintLaporanPenjualan extends Component {
                                                                         {
                                                                             this.state.expedisi?(
                                                                                 <td style={{opacity:'1',animation:' fadeIn 2s'}}>
-                                                                                    <span style={expedisi} className="expedisi">{v.layanan_pengiriman}</span>
+                                                                                    <span style={expedisi} className="expedisi">{v.layanan_pengiriman.replace('|',' | ')}</span>
                                                                                 </td>
                                                                             ):null
                                                                         }

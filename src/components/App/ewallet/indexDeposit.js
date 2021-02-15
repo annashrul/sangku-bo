@@ -45,6 +45,11 @@ class IndexDeposit extends Component{
         this.props.dispatch(getDeposit(`page=1&datefrom=${this.state.dateFrom}&dateto=${this.state.dateTo}`));
     }
 
+    componentWillUnmount(){
+        localStorage.removeItem('pageDeposit')
+        localStorage.removeItem('dateFromDeposit')
+        localStorage.removeItem('dateToDeposit')
+    }
     componentWillReceiveProps(nextProps){
         let data=[];
         let isLoading=true;
@@ -63,7 +68,6 @@ class IndexDeposit extends Component{
             data=[];
             isLoading=false;
         }
-        console.log("ISLOADING",isLoading);
         this.setState({data:data,isLoading:isLoading});
     }
     handleValidate(){
@@ -175,12 +179,7 @@ class IndexDeposit extends Component{
         const {
             total,
             per_page,
-            offset,
-            to,
-            last_page,
             current_page,
-            from,
-            data
         } = this.props.data;
         // console.log(typeof data);
         return(
@@ -242,12 +241,12 @@ class IndexDeposit extends Component{
                                             <th className="text-black" rowSpan="2" style={columnStyle}>#</th>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>KDOE TRX</th>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>NAMA</th>
-                                            <th className="text-black" colSpan="3" style={columnStyle}>BANK</th>
+                                            <th className="text-black" colSpan="2" style={columnStyle}>BANK TUJUAN</th>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>JUMLAH</th>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>STATUS</th>
+                                            <th className="text-black" rowSpan="2" style={columnStyle}>Tanggal dibuat</th>
                                         </tr>
                                         <tr>
-                                            <th className="text-black" style={columnStyle}>NAMA</th>
                                             <th className="text-black" style={columnStyle}>AKUN</th>
                                             <th className="text-black" style={columnStyle}>REKENING</th>
                                         </tr>
@@ -261,13 +260,13 @@ class IndexDeposit extends Component{
                                                 totAmount = totAmount+parseInt(v.amount);
                                                 let status='';
                                                 if(v.status===0){
-                                                    status = <button className={"btn btn-warning"}>Pending</button>
+                                                    status = <button style={{padding:'10px'}} className={"badge badge-warning"}>Pending</button>
                                                 }
                                                     if(v.status===1){
-                                                        status = <button className={"btn btn-success"}>Sukses</button>
+                                                        status = <button style={{padding:'10px'}} className={"badge badge-success"}>Sukses</button>
                                                     }
                                                     if(v.status===2){
-                                                        status = <button className={"btn btn-danger"}>Gagal</button>
+                                                        status = <button style={{padding:'10px'}} className={"badge badge-danger"}>Gagal</button>
                                                     }
                                                     return (
                                                         <tr key={i}>
@@ -278,23 +277,14 @@ class IndexDeposit extends Component{
                                                                 <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} disabled={v.status === 1 || v.status===2} onClick={(e)=>this.handleApproval(e,v.kd_trx,1)}><i className={"fa fa-check"}/></button>
                                                                 <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} disabled={v.status === 1 || v.status===2} onClick={(e)=>this.handleApproval(e,v.kd_trx,2)}><i className={"fa fa-close"}/></button>
                                                                 <button className={"btn btn-success btn-sm"} onClick={(e)=>this.handlePaymentSlip(e,i)}><i className={"fa fa-image"}/></button>
-
-
-
-                                                                {/*<button style={{marginRight:'5px'}} disabled={v.status!==0} className={'btn btn-primary'} onClick={(e)=>this.handleApproval(e,v.kd_trx,v.status)}>*/}
-                                                                    {/*<i className={'fa fa-check'}/>*/}
-                                                                {/*</button>*/}
-                                                                {/*<button onClick={(e)=>this.handlePaymentSlip(e,i)} className={'btn btn-secondary'}>*/}
-                                                                    {/*<i className={'fa fa-image'}/>*/}
-                                                                {/*</button>*/}
                                                             </td>
                                                             <td style={columnStyle}>{v.kd_trx}</td>
                                                             <td style={columnStyle}>{v.full_name}</td>
-                                                            <td style={columnStyle}>{v.bank_name}</td>
-                                                            <td style={columnStyle}>{v.acc_name}</td>
+                                                            <td style={columnStyle}>{v.acc_name}<br/><div style={{paddingTop:'5px'}}>BANK {v.bank_name}</div></td>
                                                             <td style={columnStyle}>{v.acc_no}</td>
                                                             <td style={numStyle}>Rp {parseInt(v.amount)===0?0:toCurrency(parseInt(v.amount))} .-</td>
                                                             <td style={columnStyle}>{status}</td>
+                                                            <td style={columnStyle}>{moment(v.created_at).format("YYYY/MM/DD HH:mm:ss")}</td>
                                                         </tr>
                                                     );
                                                 })
@@ -328,9 +318,9 @@ class IndexDeposit extends Component{
                                         </tbody>
                                         <tfoot style={{backgroundColor:"#EEEEEE"}}>
                                         <tr>
-                                            <th colSpan={7}>TOTAL PERPAGE</th>
+                                            <th colSpan={6}>TOTAL PERPAGE</th>
                                             <th colSpan={1} style={numStyle}>Rp {totAmount===0?0:toCurrency(totAmount)} .-</th>
-                                            <th colSpan={1}/>
+                                            <th colSpan={2}/>
                                         </tr>
                                         </tfoot>
                                     </table>

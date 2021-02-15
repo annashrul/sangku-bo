@@ -51,76 +51,11 @@ class Header extends Component {
             isNotif:false,
 
         }
-        // socket.on('set_notif',(data)=>{
-        //     let investData=[];
-        //     let withdrawData=[];
-        //     let userData=[];
-        //     let contactData=[];
-        //     for(let i=0;i<data.invest.length;i++){
-        //         investData.push(data.invest[i]);
-        //     }
-        //     for(let i=0;i<data.withdraw.length;i++){
-        //         withdrawData.push(data.withdraw[i]);
-        //     }
-        //     for(let i=0;i<data.users.length;i++){
-        //         userData.push(data.users[i]);
-        //     }
-        //     for(let i=0;i<data.inbox.length;i++){
-        //         contactData.push(data.inbox[i]);
-        //     }
-        //     this.setState({
-        //         invest:investData,
-        //         withdraw:withdrawData,
-        //         user:userData,
-        //         contact:contactData
-        //     });
-        //     // this.refreshDat/**/a();
-        // });
-        // socket.on('refresh_notif',(data)=>{
-        //     const audioEl = document.getElementsByClassName("audio-element")[0];
-        //     audioEl.play()
-        //     this.refreshData();
-        //     // this.setState({isNotif:!this.state.isNotif});
-        //     // this.forceUpdate();
-        // })
+      
     }
 
     handleSetHeight(e,param){
-        // e.preventDefault();
-        // if(param==='invest'){
-        //     this.setState({
-        //         isSetHeightInvest:!this.state.isSetHeightInvest,
-        //         // isSetHeightWithdraw:false,
-        //         // isSetHeightUser:false,
-        //         // isSetHeightContact:false,
-        //
-        //     });
-        // }
-        // if(param==='withdraw'){
-        //     this.setState({
-        //         // isSetHeightInvest:false,
-        //         isSetHeightWithdraw:!this.state.isSetHeightWithdraw,
-        //         // isSetHeightUser:false,
-        //         // isSetHeightContact:false,
-        //
-        //     });
-        // }
-        // if(param==='user'){
-        //     this.setState({
-        //         // isSetHeightInvest:false,
-        //         // isSetHeightWithdraw:false,
-        //         isSetHeightUser:!this.state.isSetHeightUser,
-        //         // isSetHeightContact:false,
-        //
-        //     });        }
-        // if(param==='contact'){
-        //     this.setState({
-        //         // isSetHeightInvest:false,
-        //         // isSetHeightWithdraw:false,
-        //         // isSetHeightUser:false,
-        //         isSetHeightContact:!this.state.isSetHeightContact,
-        //
-        //     });        }
+    
     }
 
     refreshData(){
@@ -156,54 +91,11 @@ class Header extends Component {
         })
     }
     componentWillMount(){
-        fetch(HEADERS.URL + `site/logo`)
-            .then(res => res.json())
-            .then(
-                (data) => {
-                    if (parseInt(data.result.day,10)===0||parseInt(data.result.day,10) < 0){
-                        Swal.fire({
-                            title: 'Warning!',
-                            html: `<h6>Aplikasi telah kedaluarsa.</h6><br/>
-                            <p>Silahkan lakukan pembayaran<br> melalui rekening berikut ini,</p>
-                            <b>Jumlah:</b><br/>
-                            ${data.result.server_price}<br/>
-                            <b>No. rekening:</b><br/>
-                            ${data.result.acc_number}<br/>
-                            <b>Atas nama:</b><br/>
-                            ${data.result.acc_name}`,
-                            icon: 'warning',
-                            confirmButtonColor: '#ff9800',
-                            confirmButtonText: 'Oke',
-                        }).then((result) => {
-
-                        })
-                        this.props.logoutUser();
-                    }
-                    localStorage.setItem("site_title", data.result.title);
-
-                    this.setState({
-                        isShowNotif: parseInt(data.result.day,10) <= 7 ? true : false,
-                        isDay: data.result.day,
-                        tanggal_tempo: moment(data.result.tgl_tempo).format("yyyy-MM-DD"),
-                        server_price: data.result.server_price,
-                        acc_name: data.result.acc_name,
-                        acc_number: data.result.acc_number
-                    })
-                },
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            )
-
     }
 
     handleUpdate=(e,id,param)=>{
         e.preventDefault();
         this.props.putInbox({status:1},id);
-        this.refreshData();
         this.refreshData();
         this.setState({});
         // this.props.updateContact({status:1},id);
@@ -249,20 +141,9 @@ class Header extends Component {
                     {/* <!-- Left Side Nav --> */}
                     <ul className="left-side-navbar d-flex align-items-center">
 
-                        {
-                            isShowNotif?(
-                                <li className={`full-screen-mode ml-1 animate__animated animate__bounceInRight`} style={{marginTop:"14px",cursor:"pointer"}} onClick={this.handleNotif}>
-                                    <div className="alert alert-warning" style={{backgroundColor:"#ffeb3b",border:'none'}} role="alert">
-                                        <p style={{marginBottom:'0'}}><i className="fa fa-warning"/> Aplikasi kedaluarsa {isDay} hari lagi. </p>
-                                    </div>
-                                </li>
-                            ):""
-                        }
                     </ul>
                 </div>
-                <audio className="audio-element">
-                    <source src="https://assets.coderrocketfuel.com/pomodoro-times-up.mp3"/>
-                </audio>
+              
 
                 <div className="right-side-navbar d-flex align-items-center justify-content-end">
                     {/* <!-- Mobile AREAAAAAA --> */}
@@ -637,7 +518,7 @@ class Header extends Component {
                                     <div className="user-profile-area">
                                         <div className="user-profile-heading">
                                             <div className="profile-img">
-                                                <img className="chat-img mr-2" src={this.props.auth.user.foto} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt=""/>
+                                                {/* <img className="chat-img mr-2" src={this.props.auth.user.foto} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt=""/> */}
                                             </div>
                                             <div className="profile-text">
                                                 <h6>{this.props.auth.user.name}</h6>

@@ -8,6 +8,35 @@ import NoData from "assets/nodata.png";
 import Yes from "assets/status-Y.png";
 import No from "assets/status-T.png";
 import {CopyToClipboard} from "react-copy-to-clipboard";
+import dollarY from 'assets/status/dollar_y.svg'
+import dollar from 'assets/status/dollar.svg'
+import dollarWhite from 'assets/status/dollar_white.svg'
+import pack_deliveryY from 'assets/status/pack_delivery_y.svg'
+import pack_deliveryWhite from 'assets/status/pack_delivery_y_white.svg'
+import pack_delivery from 'assets/status/pack_delivery_y_non.svg'
+import pack_deliveredY from 'assets/status/pack_delivered_y.svg'
+import pack_deliveredWhite from 'assets/status/pack_delivered_y_white.svg'
+import pack_delivered from 'assets/status/pack_delivered_y_non.svg'
+import truckY from 'assets/status/truck_y.svg'
+import truckWhite from 'assets/status/truck_y_white.svg'
+import truck from 'assets/status/truck_y_non.svg'
+import confirmY from 'assets/status/confirmation.svg'
+import confirmWhite from 'assets/status/confirmation_white.svg'
+import confirm from 'assets/status/confirmation_non.svg'
+
+export const statusOrder = (type, status, iswhite = false) => {
+    if (type === 'dollar') {
+        return (!iswhite ? (status ? dollarY : dollar) : dollarWhite)
+    } else if (type === 'packing') {
+        return (!iswhite ? (status ? pack_deliveryY : pack_delivery) : pack_deliveryWhite)
+    } else if (type === 'delivered') {
+        return (!iswhite ? (status ? pack_deliveredY : pack_delivered) : pack_deliveredWhite)
+    } else if (type === 'truck') {
+        return (!iswhite ? (status ? truckY : truck) : truckWhite)
+    } else if (type === 'confirm') {
+        return (!iswhite ? (status ? confirmY : confirm) : confirmWhite)
+    }
+}
 
 
 export const isEmpty = (col)=>{
@@ -44,6 +73,8 @@ export const validateEmail=(email)=>{
 
 export const toCurrency = (angka) => {
     let numbers=0;
+    if(angka===null) return 0;
+    else if(angka===0) return 0;
     if(parseFloat(angka)<0){
         numbers = angka.toString().replace('-', '');
 

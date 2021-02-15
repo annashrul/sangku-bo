@@ -9,6 +9,7 @@ import Default from 'assets/default.png';
 import Idle from 'react-idle'
 import { logoutUser } from "redux/actions/authActions";
 import PropTypes from "prop-types";
+import BgAuth from "assets/logo.png"
 
 class Layout extends Component {
     constructor(props){
@@ -35,13 +36,7 @@ class Layout extends Component {
         if (nextProps.auth.user) {
             const favicon = this.getFaviconEl(); // Accessing favicon element
             favicon.href = nextProps.auth.user.fav_icon;
-            
-            if(nextProps.auth.user.site_title!==undefined){
-            localStorage.setItem("site_title", nextProps.auth.user.site_title)
-            document.title = `${nextProps.auth.user.site_title} - ${this.props.page}`;
-            }else
-            document.title = `${localStorage.getItem("site_title")} - ${this.props.page}`;
-
+            document.title = `SangQu - ${this.props.page}`;
         }
     }
 
@@ -57,64 +52,49 @@ class Layout extends Component {
     }
 
     render() {
-        const rawtime = parseInt(this.getTimeout(), 10);
-        const timedout = rawtime === 0 ? 86400000 * 2 : rawtime;
         return (
-            <Idle
-                timeout={timedout}
-                render={({ idle }) =>
-                <div>
-                    {idle &&rawtime!==0
-                    ? this.handleLogout()
-                    : (
-                        <div className={this.props.triggerEcaps?"ecaps-page-wrapper sidemenu-hover-" + this.state.sideHover + " menu-collasped-active":"ecaps-page-wrapper " + (this.props.triggerMobileEcaps?"mobile-menu-active":"")}>
-                        {/* Side Menu */}
-                            <div className="ecaps-sidemenu-area" onMouseEnter={this.mouseEnterHandle} onMouseLeave={this.mouseOutHandle}>
-                                {/* Desktop Logo */}
-                                <div className="ecaps-logo">
-                                    <Link to="/" style={{backgroundColor:'#242939'}}><img className="desktop-logo" src={localStorage.getItem("logos")} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt="Desktop Logo" style={{maxHeight:'50px'}} /> <img className="small-logo" src={localStorage.getItem("logos")} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}} alt="Mobile Logo" /></Link>
-                                </div>
-                                {/* Side Nav */}
-                                <div className="slimScrollDiv" style={{position: "relative", width: "auto", height: "100%"}}>
-                                        <div className="ecaps-sidenav" id="ecapsSideNav" style={{overflowY: "unset",width: "auto", height: "100%"}}>
-                                    <FreeScrollbar>
-                                            {/* Side Menu Area */}
-                                            <div className="side-menu-area" style={{paddingRight:'8px', marginTop:'unset'}}>
-                                                {/* Sidebar Menu */}
-                                                <SideMenu/>
-                                            </div>
-                                    </FreeScrollbar>
-                                        </div>
-                                </div>
-                            </div>
-
-                            {/* Page Content */}
-
-                            <div className="ecaps-page-content">
-                                {/* Top Header Area */}
-                                <Header/>
-                                {/* Main Content Area */}
-                                <div className="main-content">
-                                    <div className="container-fluid">
-                                        {/* content */}
-                                        {
-                                            this.props.children
-                                        }
-
+                <div className={this.props.triggerEcaps?"ecaps-page-wrapper sidemenu-hover-" + this.state.sideHover + " menu-collasped-active":"ecaps-page-wrapper " + (this.props.triggerMobileEcaps?"mobile-menu-active":"")}>
+                {/* Side Menu */}
+                    <div className="ecaps-sidemenu-area" onMouseEnter={this.mouseEnterHandle} onMouseLeave={this.mouseOutHandle}>
+                        {/* Desktop Logo */}
+                        <div className="ecaps-logo">
+                            <Link to="/" style={{backgroundColor:'#242939'}}><img className="desktop-logo" src={BgAuth} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt="Desktop Logo" style={{maxHeight:'30px'}} /> <img className="small-logo" src={BgAuth} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}} alt="Mobile Logo" /></Link>
+                        </div>
+                        {/* Side Nav */}
+                        <div className="slimScrollDiv" style={{position: "relative", width: "auto", height: "100%"}}>
+                                <div className="ecaps-sidenav" id="ecapsSideNav" style={{overflowY: "unset",width: "auto", height: "100%"}}>
+                            <FreeScrollbar>
+                                    {/* Side Menu Area */}
+                                    <div className="side-menu-area" style={{paddingRight:'8px', marginTop:'unset'}}>
+                                        {/* Sidebar Menu */}
+                                        <SideMenu/>
                                     </div>
+                            </FreeScrollbar>
                                 </div>
-                                {/* Page Footer*/}
-                                {/* <Footer/>        */}
+                        </div>
+                    </div>
+
+                    {/* Page Content */}
+
+                    <div className="ecaps-page-content">
+                        {/* Top Header Area */}
+                        <Header/>
+                        {/* Main Content Area */}
+                        <div className="main-content">
+                            <div className="container-fluid">
+                                {/* content */}
+                                {
+                                    this.props.children
+                                }
+
                             </div>
                         </div>
-        
-                    )
-                    }
+                        {/* Page Footer*/}
+                        {/* <Footer/>        */}
+                    </div>
                 </div>
-                }
-            />
-            
-        );
+
+        )
     }
 }
 Layout.propTypes = {

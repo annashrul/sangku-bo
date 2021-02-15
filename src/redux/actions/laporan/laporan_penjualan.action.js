@@ -58,14 +58,14 @@ export function setDataFailed(data = []) {
     }
 }
 
-export const getLaporanPenjualan = (where='') => {
+export const getLaporanPenjualan = (where = '') => {
     return (dispatch) => {
         dispatch(setLoading(true));
         let url = 'transaction/penjualan/report';
-        if(where!==''){
-            url+=`?${where}`;
+        if (where !== '') {
+            url += `?${where}`;
         }
-        console.log("URL PENJUALAN",url);
+        console.log("URL PENJUALAN", url);
 
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
@@ -79,6 +79,66 @@ export const getLaporanPenjualan = (where='') => {
                     Swal.fire(
                         'Network Failed!.',
                         'Please check your connection',
+                        'error'
+                    );
+                }
+            })
+
+    }
+};
+
+export const updateResi = (kd_trx, resi) => {
+    return (dispatch) => {
+        dispatch(setLoading(true));
+        let url = 'transaction/resi/'+btoa(kd_trx);
+        axios.put(HEADERS.URL + url, {
+            resi      
+            })
+            .then(function (response) {
+                const data = response.data;
+                dispatch(getLaporanPenjualan('page=1'))
+                dispatch(setLoading(false));
+            })
+            .catch(function (error) {
+                dispatch(setLoading(false));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Network Failed!.',
+                        'Please check your connection',
+                        'error'
+                    );
+                }
+            })
+
+    }
+};
+export const lacakResi = (kd_trx, resi,kurir) => {
+    return (dispatch) => {
+        dispatch(setLoading(true));
+        axios.post(HEADERS.URL + 'transaction/kurir/cek/resi', {
+                resi,
+                kurir,
+                kd_trx:btoa(kd_trx)
+            })
+            .then(function (response) {
+                const data = response.data;
+                console.log(data);
+                dispatch(getLaporanPenjualan('page=1'))
+                dispatch(setLoading(false));
+            })
+            .catch(function (error) {
+                dispatch(setLoading(false));
+                console.log("ERR",);
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Network Failed!.',
+                        'Please check your connection',
+                        'error'
+                    );
+                }else if (error.response.data !==undefined) {
+                    Swal.fire(
+                        'Perhatian!.',
+                        error.response.data.msg,
                         'error'
                     );
                 }

@@ -27,7 +27,7 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-  <title>Kahve</title>
+  <title>SangQu</title>
 
 
   <style>
@@ -171,12 +171,26 @@
       width: 100%;
       height:39px!important;
     }
+    input.form-control-sm{
+      border:1px solid #e8ebf1!important;
+      width: 100%;
+      height:25px!important;
+    }
     input[type="file"] {
       padding:2px;
     }
     img{
       border-radius: 10%!important;
     }
+    .img-responsive{
+      width: 100%; height: 100%; object-fit: contain;
+    }
+    .shadow-1 {
+      box-sizing: border-box;
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.13);
+      margin:5px
+    }
+
     .fade {
       transition: opacity .15s linear;
       width: 100% !important;
@@ -329,6 +343,49 @@
       /*background-color:#34b471;*/
       float:left;
     }
+
+    .icon {
+      max-width: 24px;
+      max-height: 24px;
+    }
+
+    .tr-status ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 8px
+    }
+
+    .tr-status ul li {
+      width: 36px;
+      height: 36px;
+      display: inline-block;
+      border-radius: 50%;
+      margin-right: 6px;
+      margin-bottom: 6px;
+      text-align: center;
+      padding-top: 4px;
+      border: 2px solid #ddd;
+      background-color: #fff
+    }
+
+    .tr-status ul li.done {
+      border: 2px solid #0168fa
+    }
+
+    .tr-status ul li.done .icon path {
+      fill: #0168fa
+    }
+
+    .tr-status ul li.undone .icon path {
+      fill: #ddd
+    }
+    .order-items {
+      border-bottom: 1px dashed #ddd;
+      margin-top: 10px;
+      padding-bottom: 10px;
+    }
+
+
 
   </style>
   <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqD1Z03FoLnIGJTbpAgRvjcchrR-NiICk&libraries=places" async defer></script>-->

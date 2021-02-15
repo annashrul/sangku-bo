@@ -24,43 +24,40 @@ class GeneratePin extends Component{
         this.state={
             qty:0,
             prefix:"",
-            paket:"",
-            dataPaket:[]
+            type:0,
+            dataPaket:[{
+                label:'Aktivasi',
+                value:0
+            }, {
+                label: 'RO',
+                value: 1
+            }]
         }
     }
     clearState(){
         this.setState({
             qty:0,
             prefix:"",
-            paket:"",
-            dataPaket:[]
+            type: 0
         })
     }
 
     componentWillMount(){
-        this.props.dispatch(fetchPaket('page=1&perpage=1000'));
     }
 
     componentWillReceiveProps(nextProps){
-        let data=[];
-        if(nextProps.paket.data.length>0){
-            nextProps.paket.data.map((v,i)=>{
-                data.push({value:v.id,label:v.title})
-            });
-        }
-        console.log(data);
-
-        this.setState({dataPaket:data});
 
     }
 
     handleChange = (event) => {
-        this.setState({[event.target.name]: event.target.value});
+        this.setState({
+            [event.target.name]: event.target.name === 'prefix' ? event.target.value.toUpperCase() : event.target.value
+        });
     }
 
     handleChangePaket(val){
         this.setState({
-            paket:val.value
+            type: val.value
         })
     }
     handleSubmit(e){
@@ -68,9 +65,9 @@ class GeneratePin extends Component{
         let parsedata={};
         parsedata['qty'] = this.state.qty;
         parsedata['prefix'] = this.state.prefix;
-        parsedata['paket'] = this.state.paket;
-        if(parsedata['paket']===''){
-            ToastQ.fire({icon:'error',title:`paket tidak boleh kosong`});
+        parsedata['type'] = this.state.type;
+        if(parsedata['type']===''){
+            ToastQ.fire({icon:'error',title:`type tidak boleh kosong`});
             return;
         }
         if(parsedata['qty']===0||parsedata['qty']===''){
@@ -85,33 +82,31 @@ class GeneratePin extends Component{
         if(this.props.isError===true){
             this.clearState();
         }
-        console.log(parsedata);
     }
     toggle = (e) => {
         e.preventDefault();
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
-
     };
     render(){
         const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace:"nowrap"};
         return (
             <WrapperModal isOpen={this.props.isOpen && this.props.type === "generatePin"} size="md">
-                <ModalHeader toggle={this.toggle}>Buat Pin</ModalHeader>
+                <ModalHeader toggle={this.toggle}>Generate Pin</ModalHeader>
                 <ModalBody>
                     <div className="row">
                         <div className="col-md-12">
                             <div className="form-group">
-                                <label>Paket</label>
+                                <label>Tipe PIN</label>
                                 {
 
                                     <Select
                                         options={this.state.dataPaket}
-                                        placeholder="Pilih Paket"
+                                        placeholder="Pilih Tipe"
                                         onChange={this.handleChangePaket}
                                         value={
                                             this.state.dataPaket.find(op => {
-                                                return op.value === this.state.paket
+                                                return op.value === this.state.type
                                             })
                                         }
 
@@ -126,6 +121,8 @@ class GeneratePin extends Component{
                             <div className="form-group">
                                 <label>Prefix <small style={{color:'red',fontWeight:'bold'}}>( maksimal 2 huruf dan harus menggunakan huruf kapital (besar) )</small></label>
                                 <input maxLength={2} style={{textTransform:'uppercase'}} type="text" className={"form-control"} name={"prefix"} value={this.state.prefix} onChange={this.handleChange}/>
+                                <small id="emailHelp" class="form-text text-muted">Contoh hasil: {this.state.prefix===''?'**':this.state.prefix}9D75E00858.</small>
+
                             </div>
                         </div>
 

@@ -207,11 +207,10 @@ class IndexPaket extends Component{
                                         <tr>
                                             <th className="text-black" style={headStyle}>NO</th>
                                             <th className="text-black" style={headStyle}>#</th>
-                                            <th className="text-black" style={headStyle}>GAMBAR</th>
-                                            <th className="text-black" style={headStyle}>NAMA</th>
-                                            <th className="text-black" style={headStyle}>KATEGORI</th>
-                                            <th className="text-black" style={headStyle}>JML BARANG</th>
-                                            <th className="text-black" style={headStyle}>JML PIN</th>
+                                            <th className="text-black" style={headStyle}>Gambar</th>
+                                            <th className="text-black" style={headStyle}>Nama</th>
+                                            <th className="text-black" style={headStyle}>Level</th>
+                                            <th className="text-black" style={headStyle}>Isi Paket</th>
                                             <th className="text-black" style={headStyle}>PV</th>
                                             <th className="text-black" style={headStyle}>TIPE</th>
                                             <th className="text-black" style={headStyle}>STATUS</th>
@@ -241,10 +240,9 @@ class IndexPaket extends Component{
                                                             </td>
                                                             <td style={headStyle}>{v.title}</td>
                                                             <td style={headStyle}>{v.kategori}</td>
-                                                            <td style={numberStyle}>{v.jumlah_barang}</td>
-                                                            <td style={numberStyle}>{toRp(v.jumlah_pin)}</td>
-                                                            <td style={numberStyle}>{v.point_volume}</td>
-                                                            <td style={numberStyle}>{v.type}</td>
+                                                            <td style={headStyle}>{v.jumlah_barang} Item</td>
+                                                            <td style={headStyle}>{v.point_volume}</td>
+                                                            <td style={headStyle}>{v.type}</td>
                                                             <td style={headStyle}>{statusQ(v.status)}</td>
                                                         </tr>
                                                     );
