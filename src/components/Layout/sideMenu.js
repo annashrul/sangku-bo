@@ -15,7 +15,9 @@ class SideMenu extends Component {
             isContent:false,
             isPenjualan:false,
             isTrx:false,
-            isStockist:false
+            isStockist:false,
+            isReport:false,
+            isSetting:false,
         }
         this.changeMenu = this.changeMenu.bind(this);
     }
@@ -29,7 +31,10 @@ class SideMenu extends Component {
                 isContent: false,
                 isPenjualan: false,
                 isStockist: false,
-                isTrx: false
+                isTrx: false,
+                isSetting: false,
+                isReport: false
+
         };
         sts[param] = !this.state[param];
         this.setState(sts);
@@ -112,14 +117,14 @@ class SideMenu extends Component {
             <nav>
                 <ul className="sidebar-menu" data-widget="tree">
                     {/* DASHBOARD MODUL START */}
-                    <li  className={path==='/'?"active":''}><Link to="/"> <i className="fa fa-area-chart" /><span> Dashboard</span></Link></li>
+                    <li  className={path==='/'?"active":''}><Link to="/"> <i className="fa fa-dashboard" /><span> Dashboard</span></Link></li>
                     {/* DASHBOARD MODUL END */}
                     {/* PIN MODUL START */}
-                    <li  className={path==='/member'?"active":''}><Link to="/member"> <i className="fa fa-area-chart" /><span> Member</span></Link></li>
+                    <li  className={path==='/member'?"active":''}><Link to="/member"> <i className="fa fa-users" /><span> Member</span></Link></li>
                     {/* PIN MODUL END */}
                     {/* PIN MODUL START */}
                     <li className={"treeview" +(this.state.isStockist===true || path==='/pin/aktivasi' || path==='/pin/ro' ?" active menu-open" : "")}>
-                        <a href="!#" onClick={(e) => this.changeMenu(e,'isStockist')}><i className="fa fa-list" /> <span>Stockist</span> <i className="fa fa-angle-right" /></a>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isStockist')}><i className="fa fa-tasks" /> <span>Stockist</span> <i className="fa fa-angle-right" /></a>
                         <ul className={"treeview-menu"} style={{display:this.state.isStockist===true?"block":"none"}}>
                             <li className={path==='/pin/aktivasi'?"active":''}><Link to="/pin/aktivasi" style={{width:'fit-content'}}> PIN Aktivasi</Link></li>
                             <li className={path==='/pin/ro'?"active":''}><Link to="/pin/ro" style={{width:'fit-content'}}> PIN RO</Link></li>
@@ -128,30 +133,36 @@ class SideMenu extends Component {
                     {/* PIN MODUL END */}
                      {/* PENJUALAN MODUL START */}
                     <li className={"treeview" +(this.state.isPenjualan===true || path==='/produk'?" active menu-open" : "")}>
-                        <a href="!#" onClick={(e) => this.changeMenu(e,'isPenjualan')}><i className="fa fa-list" /> <span>Penjualan</span> <i className="fa fa-angle-right" /></a>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isPenjualan')}><i className="fa fa-shopping-basket" /> <span>Order</span> <i className="fa fa-angle-right" /></a>
                         <ul className={"treeview-menu"} style={{display:this.state.isPenjualan===true?"block":"none"}}>
-                            <li className={path==='/produk'?"active":''}><Link to="/produk" style={{width:'fit-content'}}> Produk</Link></li>
+                            <li className={path==='/produk'?"active":''}><Link to="/produk" style={{width:'fit-content'}}> Order Paket</Link></li>
+                            <li className={path==='/produk'?"active":''}><Link to="/produk" style={{width:'fit-content'}}> Redeem Point</Link></li>
+                            <li className={path==='/produk'?"active":''}><Link to="/produk" style={{width:'fit-content'}}> Claim Reward</Link></li>
+
                         </ul>
                     </li>
                     {/* PENJUALAN MODUL END */}
+                    <li className={"treeview" +(this.state.isTrx===true || path==='/saldo'||path==='/deposit'|| path==='/penarikan'||path==='/bonus'?" active menu-open" : "")}>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isTrx')}><i className="fa fa-google-wallet" /> <span>E-Wallet</span> <i className="fa fa-angle-right" /></a>
+                        <ul className={"treeview-menu"} style={{display:this.state.isTrx===true?"block":"none"}}>
+                            <li className={path==='/saldo'?"active":''}><Link to="/saldo" style={{width:'fit-content'}}> Laporan Saldo</Link></li>
+                            <li className={path==='/deposit'?"active":''}><Link to="/deposit" style={{width:'fit-content'}}> Deposit</Link></li>
+                            <li className={path==='/penarikan'?"active":''}><Link to="/penarikan" style={{width:'fit-content'}}> Penarikan</Link></li>
+                            <li className={path==='/bonus'?"active":''}><Link to="/bonus" style={{width:'fit-content'}}> Bonus</Link></li>
+                        </ul>
+                    </li>
+                    {/* E-WALLET MODUL END */}
+                   
                     {/* PAKET MODUL START */}
                     <li className={"treeview" +(this.state.isPaket===true || path==='/paket' || path==='/barang' ?" active menu-open" : "")}>
-                        <a href="!#" onClick={(e) => this.changeMenu(e,'isPaket')}><i className="fa fa-list" /> <span>Paket</span> <i className="fa fa-angle-right" /></a>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isPaket')}><i className="fa fa-folder-o	" /> <span>Paket</span> <i className="fa fa-angle-right" /></a>
                         <ul className={"treeview-menu"} style={{display:this.state.isPaket===true?"block":"none"}}>
                             <li className={path==='/paket'?"active":''}><Link to="/paket" style={{width:'fit-content'}}> Paket</Link></li>
                             <li className={path==='/barang'?"active":''}><Link to="/barang" style={{width:'fit-content'}}> Barang</Link></li>
                         </ul>
                     </li>
                     {/* PAKET MODUL END */}
-                    {/* MASTERDATA MODUL START */}
-                    <li className={"treeview" +(this.state.isMasterdata===true || path==='/user_list' || path==='/user_level' ?" active menu-open" : "")}>
-                        <a href="!#" onClick={(e) => this.changeMenu(e,'isMasterdata')}><i className="fa fa-list" /> <span>User</span> <i className="fa fa-angle-right" /></a>
-                        <ul className={"treeview-menu"} style={{display:this.state.isMasterdata===true?"block":"none"}}>
-                            <li className={path==='/user_list'?"active":''}><Link to="/user_list" style={{width:'fit-content'}}> User List</Link></li>
-                            <li className={path==='/user_level'?"active":''}><Link to="/user_level" style={{width:'fit-content'}}> User Level</Link></li>
-                        </ul>
-                    </li>
-                    {/* MASTERDATA MODUL END */}
+                    
                     {/* MASTERDATA MODUL START */}
                     <li className={"treeview" +(this.state.isContent===true || path==='/berita'|| path==='/testimoni' ?" active menu-open" : "")}>
                         <a href="!#" onClick={(e) => this.changeMenu(e,'isContent')}><i className="fa fa-list" /> <span>Menejemen Konten</span> <i className="fa fa-angle-right" /></a>
@@ -164,17 +175,37 @@ class SideMenu extends Component {
                     </li>
                     {/* MASTERDATA MODUL END */}
                     {/* E-WALLET MODUL START */}
-                    <li className={"treeview" +(this.state.isTrx===true || path==='/saldo'||path==='/deposit'|| path==='/penarikan'||path==='/bonus'?" active menu-open" : "")}>
-                        <a href="!#" onClick={(e) => this.changeMenu(e,'isTrx')}><i className="fa fa-list" /> <span>Transaksi</span> <i className="fa fa-angle-right" /></a>
-                        <ul className={"treeview-menu"} style={{display:this.state.isTrx===true?"block":"none"}}>
-                            <li className={path==='/saldo'?"active":''}><Link to="/saldo" style={{width:'fit-content'}}> Laporan Saldo</Link></li>
-                            <li className={path==='/deposit'?"active":''}><Link to="/deposit" style={{width:'fit-content'}}> Deposit</Link></li>
-                            <li className={path==='/penarikan'?"active":''}><Link to="/penarikan" style={{width:'fit-content'}}> Penarikan</Link></li>
-                            <li className={path==='/bonus'?"active":''}><Link to="/bonus" style={{width:'fit-content'}}> Bonus</Link></li>
+
+                     {/* Report MODUL START */}
+                    <li className={"treeview" +(this.state.isReport===true || path==='/user_list' || path==='/user_level' ?" active menu-open" : "")}>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isReport')}><i className="fa fa-file-text" /> <span>Laporan</span> <i className="fa fa-angle-right" /></a>
+                        <ul className={"treeview-menu"} style={{display:this.state.isReport===true?"block":"none"}}>
+                            <li className={path==='/user_list'?"active":''}><Link to="/user_list" style={{width:'fit-content'}}> User List</Link></li>
+                            <li className={path==='/user_level'?"active":''}><Link to="/user_level" style={{width:'fit-content'}}> User Level</Link></li>
                         </ul>
                     </li>
-                    {/* E-WALLET MODUL END */}
-                   
+                    {/* Report MODUL END */}
+
+                     {/* MASTERDATA MODUL START */}
+                    <li className={"treeview" +(this.state.isMasterdata===true || path==='/user_list' || path==='/user_level' ?" active menu-open" : "")}>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isMasterdata')}><i className="fa fa-user" /> <span>User</span> <i className="fa fa-angle-right" /></a>
+                        <ul className={"treeview-menu"} style={{display:this.state.isMasterdata===true?"block":"none"}}>
+                            <li className={path==='/user_list'?"active":''}><Link to="/user_list" style={{width:'fit-content'}}> User List</Link></li>
+                            <li className={path==='/user_level'?"active":''}><Link to="/user_level" style={{width:'fit-content'}}> User Level</Link></li>
+                        </ul>
+                    </li>
+                    {/* MASTERDATA MODUL END */}
+
+                    {/* Setting MODUL START */}
+                    <li className={"treeview" +(this.state.isSetting===true || path==='/user_list' || path==='/user_level' ?" active menu-open" : "")}>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isSetting')}><i className="fa fa-cogs" /> <span>Pengaturan</span> <i className="fa fa-angle-right" /></a>
+                        <ul className={"treeview-menu"} style={{display:this.state.isSetting===true?"block":"none"}}>
+                            <li className={path==='/user_list'?"active":''}><Link to="/user_list" style={{width:'fit-content'}}> User List</Link></li>
+                            <li className={path==='/user_level'?"active":''}><Link to="/user_level" style={{width:'fit-content'}}> User Level</Link></li>
+                        </ul>
+                    </li>
+                    {/* Setting MODUL END */}
+      
 
                     {/* LOGOUT MODUL START */}
                     <li><a href={null} style={{cursor:'pointer',color:'#a6b6d0'}} onClick={(event)=>this.handleLogout(event)}> <i className="fa fa-sign-out" /><span> Logout</span></a></li>

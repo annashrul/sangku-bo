@@ -160,12 +160,10 @@ class Order extends Component{
         if (dateFrom !== null && dateFrom !== undefined && dateFrom !== "") {
             where += `&datefrom=${dateFrom}&dateto=${dateTo}`;
         }
-
         if (any !== null && any !== undefined && any !== "") {
             where += `&q=${any}`;
         }
         return where;
-
     }
 
 

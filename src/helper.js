@@ -75,6 +75,7 @@ export const toCurrency = (angka) => {
     let numbers=0;
     if(angka===null) return 0;
     else if(angka===0) return 0;
+    else if (parseInt(angka) === 0) return 0;
     if(parseFloat(angka)<0){
         numbers = angka.toString().replace('-', '');
 

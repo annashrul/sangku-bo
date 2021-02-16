@@ -123,7 +123,7 @@ class IndexBarang extends Component{
 
 
         return(
-            <Layout page={"Paket"}>
+            <Layout page={"Barang"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
@@ -168,7 +168,6 @@ class IndexBarang extends Component{
                                             <th className="text-black" style={headStyle}>NAMA</th>
                                             <th className="text-black" style={headStyle}>HARGA</th>
                                             <th className="text-black" style={headStyle}>STOK</th>
-                                            <th className="text-black" style={headStyle}>PPN</th>
                                             <th className="text-black" style={headStyle}>SATUAN</th>
                                             <th className="text-black" style={headStyle}>BERAT</th>
                                         </tr>
@@ -187,11 +186,10 @@ class IndexBarang extends Component{
                                                                 {/*<button style={{marginRight:"5px"}} className={"btn btn-info btn-sm"} onClick={(e)=>this.handleAdd(e,i)}><i className={"fa fa-pencil"}/></button>*/}
                                                             </td>
                                                             <td style={headStyle}>{v.title}</td>
-                                                            <td style={numberStyle}>Rp {toCurrency(v.harga)} .-</td>
-                                                            <td style={numberStyle}>{toCurrency(v.stock_barang)}</td>
-                                                            <td style={numberStyle}>{v.ppn} %</td>
+                                                            <td style={headStyle}>Rp {toCurrency(v.harga)} .-</td>
+                                                            <td style={headStyle}>{toCurrency(v.stock_barang)}</td>
                                                             <td style={headStyle}>{v.satuan}</td>
-                                                            <td style={numberStyle}>{toCurrency(v.berat)} (gram)</td>
+                                                            <td style={headStyle}>{toCurrency(v.berat)} (gram)</td>
                                                         </tr>
                                                     );
                                                 })

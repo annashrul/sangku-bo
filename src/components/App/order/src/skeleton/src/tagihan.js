@@ -23,8 +23,20 @@ class Produk extends Component{
                     </p>
                     <div className="row payment-stts">
                         <div className="col-sm-12 col-md-12">
-                            <p className="order-items text-white">
-                                <div className="text-white" style={{float:'left'}}><Skeleton width={60}/></div> <br/>
+                            <p className="order-items text-white" style={{padding:0,margin:0,marginTop:'5px',marginBottom:'5px'}}>
+                                <div className="text-white" style={{float:'left',fontWeight:'light'}}>
+                                    <Skeleton width={60}/></div> <br/>
+                                <div style={{fontSize:'1.3em'}}>
+                                    <Skeleton width={40}/>
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+                     <div className="row payment-stts">
+                        <div className="col-sm-12 col-md-12">
+                            <p className="order-items text-white" style={{padding:0,margin:0,marginTop:'5px',marginBottom:'5px'}}>
+                                <div className="text-white" style={{float:'left',fontWeight:'light'}}>
+                                    <Skeleton width={60}/></div> <br/>
                                 <div style={{fontSize:'1.3em'}}>
                                     <Skeleton width={40}/>
                                 </div>

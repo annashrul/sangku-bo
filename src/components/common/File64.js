@@ -159,8 +159,8 @@ export default class File64 extends React.Component {
         }
         {
           this.props.showPreview?(
-            <div>
-              <img alt="images" src={this.state.images===''?this.props.previewLink:this.state.images} width={this.props.previewConfig.width} height={this.props.previewConfig.height}/>
+            <div style={{margin:this.props.previewAlign==='center'?'0 auto':'',width:this.props.previewConfig.width,height:this.props.previewConfig.height}}>
+              <img alt="images" className='img-responsive' src={this.state.images===''?this.props.previewLink:this.state.images} width={this.props.previewConfig.width} height={this.props.previewConfig.height}/>
             </div>
           ):''
         }
@@ -175,7 +175,8 @@ File64.defaultProps = {
   fileType: 'all',
   className:'',
   showPreview:true,
-  previewLink:'',
+  previewAlign:'center',
+  previewLink: 'http://ptnetindo.com:6692/images/default.png',
   lang:'en',
   previewConfig:{
     width:'150px',

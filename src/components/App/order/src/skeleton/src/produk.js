@@ -21,7 +21,7 @@ class Produk extends Component{
 
     rowBottom(){
         return (
-            <div className="col-md-4 col-sm-4" style={{margin:'0px',padding:'0px'}}>
+            <div className="col-md-6 col-sm-12" style={{margin:'0px',padding:'0px'}}>
                 <p className="order-items"><small><Skeleton width={60}/></small><br /><Skeleton width={30}/></p>
             </div>
         )
@@ -49,6 +49,7 @@ class Produk extends Component{
             <div className="row" style={{paddingLeft:'20px',paddingRight:'20px',textAlign:'center'}}>
                 {this.rowBottom('Subtotal',0)}
                 {this.rowBottom('PPN', 0)}
+                {this.rowBottom('Diskon', 0)}
                 {this.rowBottom('Ongkir', 0)}
             </div>
             <hr />

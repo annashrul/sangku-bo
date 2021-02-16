@@ -16,9 +16,9 @@ class Produk extends Component{
     render(){
         const {
             grandtotal,
-            total,
             kd_trx,
             status,
+            voucher,
             metode_pembayaran
         }=this.props
         return (
@@ -31,7 +31,7 @@ class Produk extends Component{
                             </small>
                         </p>
                     <div style={{clear:'both'}} />
-                    <p className="med mbtm-10 order-items" data-toggle="tooltip" data-placement="top" title data-original-title="Belum Dibayar">
+                    <p className="med mbtm-10 order-items" style={{padding:0,margin:0,marginTop:'5px',marginBottom:'5px'}} data-toggle="tooltip" data-placement="top" title data-original-title="Belum Dibayar">
                         <span
                             className="text-white"
                             style={{cursor:'pointer',fontSize:'1.3em'}}
@@ -46,9 +46,17 @@ class Produk extends Component{
                     </p>
                     <div className="row payment-stts">
                         <div className="col-sm-12 col-md-12">
-                            <p className="order-items text-white">
-                                <div className="text-white" style={{float:'left'}}>Metode Pembayaran</div> <br/>
-                                <div style={{fontSize:'1.3em'}}>{metode_pembayaran.charAt(0).toUpperCase() + metode_pembayaran.slice(1)}</div>
+                            <p className="order-items text-white" style={{padding:0,margin:0,marginTop:'5px',marginBottom:'5px'}}>
+                                <div className="text-white" style={{float:'left',fontWeight:'light'}}>Metode Pembayaran</div> <br/>
+                                <div style={{fontSize:'1.2em'}}>{metode_pembayaran.charAt(0).toUpperCase() + metode_pembayaran.slice(1)}</div>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="row payment-stts">
+                        <div className="col-sm-12 col-md-12">
+                            <p className="order-items text-white" style={{padding:0,margin:0,marginTop:'5px',marginBottom:'5px'}}>
+                                <div className="text-white" style={{float:'left',fontWeight:'light'}}>Voucher</div> <br/>
+                                <div style={{fontSize:'1.2em'}}>{voucher}</div>
                             </p>
                         </div>
                     </div>

@@ -21,9 +21,10 @@ class Produk extends Component{
     }
 
     rowBottom(title,value){
+        console.log(value);
         return (
-            <div className="col-md-4 col-sm-4" style={{margin:'0px',padding:'0px'}}>
-                <p className="order-items"><small>{title}</small><br /><small>Rp</small> {toCurrency(value)}</p>
+            <div className="col-md-6 col-sm-12" style={{margin:'0px',padding:'0px'}}>
+                <p className="order-items" style={{padding:0,margin:0}}><small>{title}</small><br /><small>Rp</small> {toCurrency(value)}</p>
             </div>
         )
     }
@@ -51,6 +52,7 @@ class Produk extends Component{
                 </div>
             <div className="row" style={{paddingLeft:'20px',paddingRight:'20px',textAlign:'center'}}>
                 {this.rowBottom('Subtotal',this.props.subtotal)}
+                {this.rowBottom('Diskon', this.props.diskon)}
                 {this.rowBottom('PPN', this.props.ppn)}
                 {this.rowBottom('Ongkir',this.props.ongkir)}
             </div>

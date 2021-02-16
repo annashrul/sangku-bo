@@ -20,7 +20,7 @@ class FormBarang extends Component{
         this.state={
             title:"",
             harga:"",
-            ppn:"",
+            ppn:"0",
             satuan:"",
             status:"1",
             berat:"",
@@ -110,10 +110,6 @@ class FormBarang extends Component{
                             <div className="form-group">
                                 <label>Harga</label>
                                 <input type="text" className={"form-control"} name={"harga"} value={toCurrency(this.state.harga)} onChange={this.handleChange}/>
-                            </div>
-                            <div className="form-group">
-                                <label>PPN</label>
-                                <input type="numer" className={"form-control"} name={"ppn"} value={this.state.ppn} onChange={this.handleChange}/>
                             </div>
                             <div className="form-group">
                                 <label>Satuan</label>

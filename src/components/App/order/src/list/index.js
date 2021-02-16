@@ -33,7 +33,8 @@ class ListBrand extends Component{
                             <Produk
                                 data={data.detail}
                                 subtotal={data.subtotal}
-                                ppn={0}
+                                ppn={data.tax}
+                                diskon={data.disc}
                                 ongkir={parseInt(data.ongkir)}
                             />
                             {/* section 3 */}
@@ -43,6 +44,7 @@ class ListBrand extends Component{
                                 bukti={data.bukti}
                                 metode_pembayaran={data.metode_pembayaran}
                                 status={data.status}
+                                voucher={data.voucher_code}
                                 handleApproval={this.props.handleApproval}
                             />
                             {/* section 4 */}

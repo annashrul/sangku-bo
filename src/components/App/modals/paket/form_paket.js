@@ -11,7 +11,7 @@ import Paginationq, {noImage, rmComma, ToastQ, toCurrency, toRp} from "../../../
 import Select from 'react-select';
 import Skeleton from 'react-loading-skeleton';
 import {postPaket, putPaket} from "../../../../redux/actions/paket/paket.action";
-import FileBase64 from "react-file-base64";
+import File64 from "components/common/File64";
 import {HEADERS, NOTIF_ALERT} from "../../../../redux/actions/_constants";
 import {fetchBarang} from "../../../../redux/actions/paket/barang.action";
 import * as Swal from "sweetalert2";
@@ -36,15 +36,16 @@ class FormPaket extends Component{
             any:'',
             isSelected:false,
             kategori_data:[],
-            kategori:"",
+            kategori: "3a385e1d-21f7-4c73-9554-c818f0078c6f",
             id:"",
             title:"",
             harga:0,
             deskripsi:"",
             foto:"",
+            ppn:'',
             status:"",
-            point_volume:"",
-            type:"",
+            point_volume:"1",
+            type:0,
             barang_data:[],
             detail:[],
             perpage:10,
@@ -91,7 +92,6 @@ class FormPaket extends Component{
     getProps(param){
         let kategori = typeof param.kategori.data === 'object' ? param.kategori.data : [];
         let barang=[];
-        console.log("typeof",typeof param.barang.data);
 
         if(typeof param.barang.data==='object'){
             console.log("data",param.barang.data);
@@ -204,14 +204,21 @@ class FormPaket extends Component{
 
     };
     handleChange = (event) => {
-        this.setState({[event.target.name]: event.target.value});
         let err = Object.assign({}, this.state.error, {
             [event.target.name]: ""
         });
         this.setState({
+            [event.target.name]: event.target.value,
             error: err,
             isSelected:false,
         });
+        if (event.target.name==='type'){
+            this.setState({
+                kategori: "3a385e1d-21f7-4c73-9554-c818f0078c6f",
+                point_volume: "1",
+            })
+
+        }
     }
     handleValidation(e){
         e.preventDefault();
@@ -494,57 +501,96 @@ class FormPaket extends Component{
                                 <input type="text" className="form-control" name="title" value={this.state.title} onChange={this.handleChange} />
                             </div>
                             <div className="form-group">
-                                <label>Harga</label>
-                                <input type="text" className="form-control" name="harga" value={toCurrency(this.state.harga)} onChange={this.handleChange} />
-                            </div>
-                            <div className="form-group">
-                                <label>Deskripsi</label>
-                                <input type="text" className="form-control" name="deskripsi" value={this.state.deskripsi} onChange={this.handleChange} />
-                            </div>
-                            <div className="form-group">
-                                <label>Kategori</label>
-                                {
-                                    typeof this.props.kategori.data === 'object' ?
-                                        (
-                                            <Select
-                                                options={this.state.kategori_data}
-                                                placeholder="Pilih Kategori"
-                                                onChange={this.HandleChangeCategory}
-                                                value={
-                                                this.state.kategori_data.find(op => {
-                                                    return op.value === this.state.kategori
-                                                })
-                                            }
-
-                                            />
-                                        )
-                                    : <Skeleton height={40}/>
-                                }
-
-                            </div>
-                            <div className="form-group">
-                                <label>Status</label>
-                                <select className="form-control form-control-lg" name="status" value={this.state.status} onChange={this.handleChange} defaultValue={this.state.status}>
-                                    <option value="">=== Pilih ===</option>
-                                    <option value="1">Aktif</option>
-                                    <option value="0">Tidak Aktif</option>
-                                </select>
-                            </div>
-                            <div className="form-group">
-                                <label>PV</label>
-                                <input type="number" className="form-control" name="point_volume" value={this.state.point_volume} onChange={this.handleChange} />
-                            </div>
-                            <div className="form-group">
                                 <label>Tipe</label>
                                 <select className="form-control form-control-lg" name="type" value={this.state.type} onChange={this.handleChange} defaultValue={this.state.type}>
                                     <option value="">=== Pilih ===</option>
+                                    <option value="0">Aktivasi</option>
                                     <option value="1">Repeat Order</option>
-                                    <option value="0">Registrasi</option>
                                 </select>
                             </div>
                             <div className="form-group">
+                                <label>Harga</label>
+                                <input type="text" className="form-control" name="harga" value={toCurrency(this.state.harga)} onChange={this.handleChange} />
+                            </div>
+
+                            <div className="row">
+                                <div className={parseInt(this.state.type,10)===0?"col-md-6 col-sm-12":"col-md-12 col-sm-12"}>
+                                <div className="form-group">
+                                    <label>Deskripsi</label>
+                                    <textarea type="text" rows="6" className="form-control" name="deskripsi" onChange={this.handleChange} >
+                                        {this.state.deskripsi} 
+                                    </textarea>
+                                </div>
+                                </div>
+                                <div className="col-md-6 col-sm-12" style={parseInt(this.state.type,10)===0?{display:'block'}:{display:'none'}}>
+                                    <div className="row">
+                                        <div className="col-md-12 col-sm-12">
+                                            <div className="form-group">
+                                                <label>Jenis Membership</label>
+                                                {
+                                                    typeof this.props.kategori.data === 'object' ?
+                                                        (
+                                                            <Select
+                                                                options={this.state.kategori_data}
+                                                                placeholder="Pilih Membership"
+                                                                onChange={this.HandleChangeCategory}
+                                                                value={
+                                                                this.state.kategori_data.find(op => {
+                                                                    return op.value === this.state.kategori
+                                                                })
+                                                            }
+
+                                                            />
+                                                        )
+                                                    : <Skeleton height={40}/>
+                                                }
+
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12 col-sm-12">
+                                            <div className="form-group">
+                                                <label>PV</label>
+                                                <input type="number" className="form-control" name="point_volume" value={this.state.point_volume} onChange={this.handleChange} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="row">
+                                <div className="col-md-6 col-sm-12">
+                                     <div className="form-group">
+                                        <label>PPN</label>
+                                        <input type="numer" className={"form-control"} name={"ppn"} value={this.state.ppn} onChange={this.handleChange}/>
+                                    </div>
+                                </div>
+                                <div className="col-md-6 col-sm-12">
+                                    <div className="form-group">
+                                        <label>Status</label>
+                                        <select className="form-control form-control-lg" name="status" value={this.state.status} onChange={this.handleChange} defaultValue={this.state.status}>
+                                            <option value="">=== Pilih ===</option>
+                                            <option value="1">Aktif</option>
+                                            <option value="0">Tidak Aktif</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="form-group">
                                 <label>Gambar <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail.id!==''?"( kosongkan apabila tidak akan diubah )":""}</small></label><br/>
-                                <FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile.bind(this) } />
+                                <File64 multiple={ false }
+                                    maxSize={2048} //in kb
+                                    fileType='png, jpg' //pisahkan dengan koma
+                                    className="mr-3 form-control-file"
+                                    onDone={ this.handleFile.bind(this) }
+                                    showPreview={true}
+                                    lang='id'
+                                    previewLink={this.state.prev}
+                                    previewConfig={{
+                                        width:'100px',
+                                        height: '100px'
+                                    }}
+                                />
                             </div>
                         </div>
                     </div>

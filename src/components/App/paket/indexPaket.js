@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {connect} from "react-redux";
 import Layout from 'components/Layout';
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
-import Paginationq, {noImage, rangeDate, statusQ, toRp} from "../../../helper";
+import Paginationq, {noImage, rangeDate, statusQ, toCurrency} from "../../../helper";
 import moment from "moment";
 import {deletePaket, detailPaket, fetchPaket} from "../../../redux/actions/paket/paket.action";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
@@ -10,7 +10,6 @@ import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import FormPaket from "../modals/paket/form_paket"
 import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
-import {fetchBarang} from "../../../redux/actions/paket/barang.action";
 import {fetchKategori} from "../../../redux/actions/kategori/kategori.action";
 import {BrowserView, MobileView,isBrowser, isMobile} from 'react-device-detect';
 
@@ -22,6 +21,7 @@ class IndexPaket extends Component{
             detail:{},
             status:"",
             any:"",
+            tipe:'aktivasi',
             dateFrom:moment(new Date()).format("yyyy-MM-DD"),
             dateTo:moment(new Date()).format("yyyy-MM-DD")
         };
@@ -30,14 +30,22 @@ class IndexPaket extends Component{
         this.handlePage     = this.handlePage.bind(this);
         this.handleSearch   = this.handleSearch.bind(this);
         this.handleModal      = this.handleModal.bind(this);
-        this.handleDelete   = this.handleDelete.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleTipe = this.handleTipe.bind(this);
 
     }
     componentWillMount(){
-        this.props.dispatch(fetchPaket(`page=1`));
+        this.props.dispatch(fetchPaket(`page=1&tipe=${this.state.tipe}`));
     }
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
+    }
+    handleTipe(e,type){
+        e.preventDefault();
+        this.setState({
+            tipe: type
+        })
+        this.props.dispatch(fetchPaket(`page=1&tipe=${type}`));
     }
 
     handleValidate(){
@@ -51,9 +59,9 @@ class IndexPaket extends Component{
         localStorage.setItem("dateToPaket",`${dateTo}`);
 
         if(page!==null&&page!==undefined&&page!==""){
-            where+=`page=${page}`;
+            where+=`page=${page}&tipe=${this.state.tipe}`;
         }else{
-            where+="page=1";
+            where+=`page=1&tipe=${this.state.tipe}`;
         }
         if(dateFrom!==null&&dateFrom!==undefined&&dateFrom!==""){
             where+=`&datefrom=${dateFrom}&dateto=${dateTo}`;
@@ -115,15 +123,6 @@ class IndexPaket extends Component{
         }).then((result) => {
             if (result.value) {
                 this.props.dispatch(deletePaket(id));
-                // let id = param['id'];
-                // let data  = {"status":param['status'],'isadmin':0};
-                // let where = this.handleValidate();
-                // if(param['status']===1){
-                //     this.props.dispatch(confirmUserMember({'isadmin':0},btoa(param['regist'].split("|")[0]),where));
-                // }
-                // else{
-                //     this.props.dispatch(putUserMember(data,id,where));
-                // }
             }
         })
     }
@@ -133,11 +132,7 @@ class IndexPaket extends Component{
         const {
             total,
             per_page,
-            offset,
-            to,
-            last_page,
             current_page,
-            from,
             data
         } = this.props.data;
         const headStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
@@ -169,17 +164,7 @@ class IndexPaket extends Component{
                                             </DateRangePicker>
                                         </div>
                                     </div>
-                                    <div className="col-6 col-xs-6 col-md-2">
-                                        <div className="form-group">
-                                            <label>Status</label>
-                                            <select name="status" className="form-control form-control-lg" defaultValue={this.state.status} value={this.state.status} onChange={this.handleChange}>
-                                                <option value="">All Status</option>
-                                                <option value="0">Pending</option>
-                                                <option value="1">Success</option>
-                                                <option value="2">Cancel</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                   
                                     <div className="col-9 col-xs-9 col-md-3">
                                         <div className="form-group">
                                             <label>Type something here ..</label>
@@ -200,6 +185,12 @@ class IndexPaket extends Component{
                                             </div>
                                         </MobileView>
                                     </div>
+                                    <div className="col-9 col-xs-9 col-md-3">
+                                        <div className="form-group text-right">
+                                                <button style={{marginTop:"27px"}} type="button" className={this.state.tipe==='aktivasi'?"btn btn-success mb-2 mr-2":"btn btn-outline-success mb-2 mr-2"} onClick={(e)=>this.handleTipe(e,'aktivasi')}>Aktivasi</button>
+                                                <button style={{marginTop:"27px"}} type="button" className={this.state.tipe==='ro'?"btn btn-success mb-2 mr-2":"btn btn-outline-success mb-2 mr-2"}  onClick={(e)=>this.handleTipe(e,'ro')}>Repeat Order</button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div style={{overflowX: "auto",zoom:"80%"}}>
                                     <table className="table table-hover">
@@ -209,9 +200,15 @@ class IndexPaket extends Component{
                                             <th className="text-black" style={headStyle}>#</th>
                                             <th className="text-black" style={headStyle}>Gambar</th>
                                             <th className="text-black" style={headStyle}>Nama</th>
-                                            <th className="text-black" style={headStyle}>Level</th>
+                                            <th className="text-black" style={headStyle}>Harga</th>
+                                            <th className="text-black" style={headStyle}>PPN (%)</th>
+                                            {
+                                                this.state.tipe!=='ro'?(<th className="text-black" style={headStyle}>Membership</th>):''
+                                            }
+                                            {
+                                                this.state.tipe!=='ro'?(<th className="text-black" style={headStyle}>PV</th>):''
+                                            }
                                             <th className="text-black" style={headStyle}>Isi Paket</th>
-                                            <th className="text-black" style={headStyle}>PV</th>
                                             <th className="text-black" style={headStyle}>TIPE</th>
                                             <th className="text-black" style={headStyle}>STATUS</th>
 
@@ -239,9 +236,16 @@ class IndexPaket extends Component{
                                                                 {/*<img className="img-fluid" style={{height:"30px",width:"30px"}} src={NOTIF_ALERT.NO_DATA}/>*/}
                                                             </td>
                                                             <td style={headStyle}>{v.title}</td>
-                                                            <td style={headStyle}>{v.kategori}</td>
+                                                            <td style={headStyle}>Rp {toCurrency(v.harga)}</td>
+                                                            <td style={headStyle}>{v.ppn}</td>
+                                                            {
+                                                                this.state.tipe!=='ro'?(<td style={headStyle}>{v.kategori}</td>):''
+                                                            }
+                                                            {
+                                                                this.state.tipe!=='ro'?(<td style={headStyle}>{v.point_volume}</td>):''
+                                                            }
+                                                            
                                                             <td style={headStyle}>{v.jumlah_barang} Item</td>
-                                                            <td style={headStyle}>{v.point_volume}</td>
                                                             <td style={headStyle}>{v.type}</td>
                                                             <td style={headStyle}>{statusQ(v.status)}</td>
                                                         </tr>
@@ -266,6 +270,8 @@ class IndexPaket extends Component{
                                                                 <td>{<Skeleton/>}</td>
                                                                 <td>{<Skeleton/>}</td>
                                                                 <td>{<Skeleton/>}</td>
+                                                                <td>{<Skeleton/>}</td>
+                                                                <td>{<Skeleton/>}</td>
                                                             </tr>
                                                         )
                                                     }
@@ -273,15 +279,6 @@ class IndexPaket extends Component{
                                                 })()
                                         }
                                         </tbody>
-                                        <tfoot style={{backgroundColor:"#EEEEEE"}}>
-                                        <tr>
-                                            <th colSpan={5}>TOTAL PERPAGE</th>
-                                            <th colSpan={1} style={numberStyle}>{toRp(jmlBarang)}</th>
-                                            <th colSpan={1} style={numberStyle}>{toRp(jmlPin)}</th>
-                                            <th colSpan={1} style={numberStyle}>{toRp(jmlPV)}</th>
-                                            <th colSpan={2}/>
-                                        </tr>
-                                        </tfoot>
                                     </table>
                                 </div>
                                 <div style={{"marginTop":"20px","marginBottom":"20px","float":"right"}}>
