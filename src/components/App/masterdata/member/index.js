@@ -170,7 +170,7 @@ class IndexMember extends Component{
                                     <div className="col-12 col-xs-12 col-md-3">
                                         <div className="form-group">
                                             <label>Cari</label>
-                                            <input type="text" className="form-control" name="any" placeholder={"cari disini"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
+                                            <input type="text" className="form-control" name="any" placeholder={"cari disini"} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
                                     <div className="col-2 col-xs-2 col-md-4">
@@ -183,23 +183,23 @@ class IndexMember extends Component{
                                     <table className="table table-hover table-bordered">
                                         <thead className="bg-light">
                                         <tr>
-                                            <th className="text-black" rowspan="2" style={headStyle}>NO</th>
-                                            <th className="text-black" rowspan="2" style={headStyle}>#</th>
-                                            <th className="text-black" rowspan="2" style={headStyle}>Gambar</th>
-                                            <th className="text-black" rowspan="2" style={headStyle}>Nama</th>
-                                            <th className="text-black" rowspan="2" style={headStyle}>Userid</th>
-                                            <th className="text-black" rowspan="2" style={headStyle}>Membership</th>
-                                            <th className="text-black" rowspan="2" style={headStyle}>Karir</th>
-                                            <th className="text-black" rowspan="2" style={headStyle}>Status</th>
-                                            <th className="text-black" rowspan="2" style={headStyle}>Telepon</th>
-                                            <th className="text-black" rowspan="2" style={headStyle}>Saldo</th>
-                                            <th className="text-black" rowspan="2" style={headStyle}>Penarikan</th>
-                                            <th className="text-black" rowspan="2" style={headStyle}>Jumlah<br/>Sponsor</th>
-                                            <th className="text-black" rowspan="2" style={headStyle}>Jumlah<br/>PIN</th>
-                                            <th className="text-black" colspan="2"  style={headStyle}>PV</th>
-                                            <th className="text-black" colspan="2"  style={headStyle}>Reward</th>
-                                            <th className="text-black" rowspan="2" style={headStyle}>Plafon</th>
-                                            <th className="text-black" rowspan="2" style={headStyle}>Point<br/>RO</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>NO</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>#</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>Gambar</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>Nama</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>Userid</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>Membership</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>Karir</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>Status</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>Telepon</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>Saldo</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>Penarikan</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>Jumlah<br/>Sponsor</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>Jumlah<br/>PIN</th>
+                                            <th className="text-black" colSpan="2"  style={headStyle}>PV</th>
+                                            <th className="text-black" colSpan="2"  style={headStyle}>Reward</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>Plafon</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>Point<br/>RO</th>
                                         </tr>
                                         <tr>
                                             <th className="text-black" style={headStyle}>Kiri</th>
@@ -215,6 +215,7 @@ class IndexMember extends Component{
                                                 data.map((v, i) => {
                                                 totSaldo = totSaldo+parseInt(v.saldo,10);
                                                 totPenarikan = totPenarikan+parseInt(v.total_payment,10);
+
                                                     return (
                                                         <tr key={i}>
                                                             <td style={headStyle}>

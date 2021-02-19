@@ -8,8 +8,10 @@ import Dashboard from '../App/Dashboard/Dashboard';
 import Paket from '../App/paket/indexPaket';
 import Barang from '../App/paket/indexBarang';
 import BarangRedeem from '../App/paket/indexBarangRedeem';
+import BarangReward from '../App/paket/indexBarangReward';
 import Pin from '../App/pin';
 import Member from '../App/masterdata/member';
+import Voucher from '../App/masterdata/voucher/indexVoucher';
 import UserList from '../App/masterdata/indexUserList';
 import UserLevel from '../App/masterdata/indexUserLevel';
 import Berita from '../App/konten/indexBerita';
@@ -36,6 +38,7 @@ const Routes = (
             <PrivateRoute path="/paket" exact strict component={Paket} />
             <PrivateRoute path="/barang" exact strict component={Barang} />
             <PrivateRoute path="/barang_redeem" exact strict component={BarangRedeem} />
+            <PrivateRoute path="/barang_reward" exact strict component={BarangReward} />
             <PrivateRoute path="/pin/:pin" exact strict component={Pin} />
             {/* PAKET SECTION END */}
             {/* MASTERDATA SECTION START */}
@@ -44,6 +47,7 @@ const Routes = (
             {/* MASTERDATA SECTION END */}
             {/* MANAGEMENT CONTENT SECTION START */}
             <PrivateRoute path="/member" exact strict component={Member} />
+            <PrivateRoute path="/voucher" exact strict component={Voucher} />
             <PrivateRoute path="/berita" exact strict component={Berita} />
             <PrivateRoute path="/testimoni" exact strict component={Testimoni} />
             {/* MANAGEMENT CONTENT SECTION END */}

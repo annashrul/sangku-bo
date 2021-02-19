@@ -55,7 +55,7 @@ class SideMenu extends Component {
                 isStockist:true
             })
         }
-        if(path==='/paket' || path==='/barang'||path==='/barang_redeem'){
+        if(path==='/paket' || path==='/barang'||path==='/barang_redeem'||path==='/barang_reward'){
             this.setState({
                 isPaket:true
             })
@@ -132,6 +132,7 @@ class SideMenu extends Component {
                     {/* DASHBOARD MODUL END */}
                     {/* PIN MODUL START */}
                     <li  className={path==='/member'?"active":''}><Link to="/member"> <i className="fa fa-users" /><span> Member</span></Link></li>
+                    <li  className={path==='/voucher'?"active":''}><Link to="/voucher"> <i className="fa fa-code" /><span> Voucher</span></Link></li>
                     {/* PIN MODUL END */}
                     {/* PIN MODUL START */}
                     <li className={"treeview" +(this.state.isStockist===true || path==='/pin/aktivasi' || path==='/pin/ro' ?" active menu-open" : "")}>
@@ -165,12 +166,13 @@ class SideMenu extends Component {
                     {/* E-WALLET MODUL END */}
                    
                     {/* PAKET MODUL START */}
-                    <li className={"treeview" +(this.state.isPaket===true || path==='/paket' || path==='/barang' || path==='/barang_redeem'?" active menu-open" : "")}>
+                    <li className={"treeview" +(this.state.isPaket===true || path==='/paket' || path==='/barang' || path==='/barang_redeem' || path==='/barang_reward'?" active menu-open" : "")}>
                         <a href="!#" onClick={(e) => this.changeMenu(e,'isPaket')}><i className="fa fa-folder-o	" /> <span>Paket</span> <i className="fa fa-angle-right" /></a>
                         <ul className={"treeview-menu"} style={{display:this.state.isPaket===true?"block":"none"}}>
                             <li className={path==='/paket'?"active":''}><Link to="/paket" style={{width:'fit-content'}}> Paket</Link></li>
                             <li className={path==='/barang'?"active":''}><Link to="/barang" style={{width:'fit-content'}}> Barang</Link></li>
                             <li className={path==='/barang_redeem'?"active":''}><Link to="/barang_redeem" style={{width:'fit-content'}}> Barang Redeem</Link></li>
+                            <li className={path==='/barang_reward'?"active":''}><Link to="/barang_reward" style={{width:'fit-content'}}> Barang Reward</Link></li>
                         </ul>
                     </li>
                     {/* PAKET MODUL END */}
