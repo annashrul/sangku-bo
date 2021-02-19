@@ -21,8 +21,8 @@ export const NOTIF_ALERT = {
 
 export const HEADERS ={
   // URL: atob(document.getElementById("hellyeah").value),
-  // URL       : "http://192.168.100.10:3010/",
-  URL: 'http://ptnetindo.com:6694/',
+  URL       : "http://192.168.100.10:3010/",
+  // URL: 'http://ptnetindo.com:6694/',
   TOKEN     : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwY2RiN2M5OC0wNWNmLTQ4NDgtOGM3Yy0yZTFiYTczZGUwNmYiLCJpYXQiOjE1NzAxNzM0ODYsImV4cCI6MTU3MDc3ODI4Nn0.1NiWtt2luG83am8FJSvWpL5p35Oxd8GSJJTwhFmAdgw",
   USERNAME  : "netindo",
   PASSWORD  : "$2b$08$hLMU6rEvNILCMaQbthARK.iCmDRO7jNbUB8CcvyRStqsHD4UQxjDO"
@@ -163,7 +163,7 @@ export const ALAMAT = {
     DETAIL: `DETAIL_${prefAlamat}`,
 }
 /****************
- ALAMAT
+ BANK
  *****************/
 let prefBank='BANK';
 export const BANK = {
@@ -282,4 +282,57 @@ export const SALDO = {
     FAILED: `FAILED_${prefSaldo}`,
     DETAIL: `DETAIL_${prefSaldo}`,
     EDIT: `EDIT_${prefSaldo}`
+}
+/****************
+ SETTING
+ *****************/
+let generalSetting = 'GENERAL_SETTING';
+export const GENERAL = {
+  LOADING: `SET_${generalSetting}_LOADING`,
+  LOADING_DETAIL: `SET_${generalSetting}_LOADING_DETAIL`,
+  LOADING_POST: `SET_${generalSetting}_LOADING_POST`,
+  IS_ERROR: `SET_${generalSetting}_IS_ERROR`,
+  SUCCESS: `SUCCESS_${generalSetting}`,
+  FAILED: `FAILED_${generalSetting}`,
+  DETAIL: `DETAIL_${generalSetting}`,
+  EDIT: `EDIT_${generalSetting}`,
+  PLAFON: `PLAFON_${generalSetting}`,
+  KARIR: `KARIR_${generalSetting}`,
+  LANDING: `LANDING_${generalSetting}`
+}
+
+let bonusSetting = 'BONUS_SETTING';
+export const BONUS_SETTING = {
+  LOADING: `SET_${bonusSetting}_LOADING`,
+  IS_ERROR: `SET_${bonusSetting}_IS_ERROR`,
+  BONUS: `BONUS_${bonusSetting}`,
+  BONUS_RO: `BONUS_RO_${bonusSetting}`,
+  FAILED: `FAILED_${bonusSetting}`,
+  DETAIL: `DETAIL_${bonusSetting}`,
+  EDIT: `EDIT_${bonusSetting}`
+}
+
+/****************
+ KURIR
+ *****************/
+let kurir = 'KURIR';
+export const KURIR = {
+  LOADING: `SET_${kurir}_LOADING`,
+  IS_ERROR: `SET_${kurir}_IS_ERROR`,
+  SUCCESS: `SUCCESS_${kurir}`,
+  KECAMATAN: `KECAMATAN_${kurir}`,
+  KOTA: `KOTA_${kurir}`,
+  PROVINSI: `PROVINSI_${kurir}`,
+  FAILED: `FAILED_${kurir}`,
+}
+/****************
+ KURIR
+ *****************/
+let mbank = 'BANKS';
+export const BANKS = {
+  LOADING: `SET_${mbank}_LOADING`,
+  IS_ERROR: `SET_${mbank}_IS_ERROR`,
+  SUCCESS: `SUCCESS_${mbank}`,
+  LISTBANK: `LISTBANK_${mbank}`,
+  FAILED: `FAILED_${mbank}`,
 }

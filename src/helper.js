@@ -201,7 +201,7 @@ export const toRp = (angka) => {
 };
 export const ToastQ = Swal.mixin({
     toast: true,
-    position: 'top-end',
+    position: 'bottom-end',
     showConfirmButton: false,
     timer: 1000,
     timerProgressBar: true,

@@ -81,6 +81,12 @@ class SideMenu extends Component {
             })
         }
 
+        if (path === '/setting' || path === '/setting/website' || path === '/setting/bank') {
+            this.setState({
+                isSetting:true
+            })
+        }
+
     }
     componentWillReceiveProps = (nextProps) => {
         this.getProps(nextProps);
@@ -197,11 +203,12 @@ class SideMenu extends Component {
                     {/* MASTERDATA MODUL END */}
 
                     {/* Setting MODUL START */}
-                    <li className={"treeview" +(this.state.isSetting===true || path==='/user_list' || path==='/user_level' ?" active menu-open" : "")}>
+                    <li className={"treeview" +(this.state.isSetting===true || path==='/setting' || path==='/setting/website'  || path==='/setting/bank' ?" active menu-open" : "")}>
                         <a href="!#" onClick={(e) => this.changeMenu(e,'isSetting')}><i className="fa fa-cogs" /> <span>Pengaturan</span> <i className="fa fa-angle-right" /></a>
                         <ul className={"treeview-menu"} style={{display:this.state.isSetting===true?"block":"none"}}>
-                            <li className={path==='/user_list'?"active":''}><Link to="/user_list" style={{width:'fit-content'}}> User List</Link></li>
-                            <li className={path==='/user_level'?"active":''}><Link to="/user_level" style={{width:'fit-content'}}> User Level</Link></li>
+                            <li className={path==='/setting'?"active":''}><Link to="/setting" style={{width:'fit-content'}}> Pengaturan Umum</Link></li>
+                            <li className={path==='/setting/website'?"active":''}><Link to="/setting/website" style={{width:'fit-content'}}> Pengaturan Website</Link></li>
+                            <li className={path==='/setting/bank'?"active":''}><Link to="/setting/bank" style={{width:'fit-content'}}> Pengaturan bank</Link></li>
                         </ul>
                     </li>
                     {/* Setting MODUL END */}

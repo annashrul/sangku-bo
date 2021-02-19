@@ -109,13 +109,13 @@ export default class File64 extends React.Component {
         <input
           style={{display:'none'}}
           type="file"
-          name='imageUpload'
-          id = "imageUpload"
+          name={"imageUpload"+this.props.ids}
+          id = {"imageUpload"+this.props.ids}
           onChange={ this.handleChange.bind(this) }
           className={this.props.className}
           multiple={ this.props.multiple } />
         <label 
-          for="imageUpload" 
+          for={"imageUpload"+this.props.ids} 
           // onclick = "javascript:document.getElementById('imageUpload').click();"
           style = {{
               width: '30%',
@@ -174,6 +174,7 @@ File64.defaultProps = {
   maxSize: 1000, // on kb,
   fileType: 'all',
   className:'',
+  ids:'uid',
   showPreview:true,
   previewAlign:'center',
   previewLink: 'http://ptnetindo.com:6692/images/default.png',

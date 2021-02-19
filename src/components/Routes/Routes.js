@@ -18,7 +18,9 @@ import Bonus from '../App/laporan/indexBonus';
 import Deposit from '../App/ewallet/indexDeposit';
 import Penarikan from '../App/ewallet/indexPenarikan';
 import Saldo from '../App/ewallet/indexSaldo';
-import Setting from '../App/setting';
+import Setting from '../App/setting/umum';
+import Website from '../App/setting/website';
+import Bank from '../App/setting/bank';
 import PrintLaporanPenjualan from '../App/print/print_laporan_penjualan';
 
 const Routes = (
@@ -55,6 +57,8 @@ const Routes = (
             {/* E-WALLET SECTION END */}
 
             <PrivateRoute path="/setting" exact strict component={Setting} />
+            <PrivateRoute path="/setting/website" exact strict component={Website} />
+            <PrivateRoute path="/setting/bank" exact strict component={Bank} />
 
             {/* PRINT SECTION START */}
             <PrivateRoute path="/print_laporan_penjualan" exact strict component={PrintLaporanPenjualan} />
