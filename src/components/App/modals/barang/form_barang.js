@@ -8,7 +8,7 @@ import {
 } from 'reactstrap';
 import {ModalToggle} from "../../../../redux/actions/modal.action";
 import {rmComma, ToastQ, toCurrency} from "../../../../helper";
-import {postBarang} from "../../../../redux/actions/paket/barang.action";
+import {postBarang, putBarang} from "../../../../redux/actions/paket/barang.action";
 
 
 class FormBarang extends Component{
@@ -39,10 +39,30 @@ class FormBarang extends Component{
             stock:"",
         })
     }
+
+    getProps(props){
+        this.setState({
+            title:props.detail.title,
+            harga:props.detail.harga,
+            ppn:props.detail.ppn,
+            satuan:props.detail.satuan,
+            status:props.detail.status,
+            berat:props.detail.berat,
+            stock:props.detail.stock,
+        })
+    }
+    componentWillMount(){
+        this.getProps(this.props);
+    }
+    componentWillReceiveProps(nextProps){
+        this.getProps(nextProps);
+    }
+
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
     }
     toggle = (e) => {
+        this.clearState();
         e.preventDefault();
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
@@ -56,10 +76,9 @@ class FormBarang extends Component{
         parseData['ppn'] = this.state.ppn;
         parseData['satuan'] = this.state.satuan;
         parseData['status'] = this.state.status;
-        parseData['berat'] = this.state.berat;
+        parseData['berat'] = rmComma(this.state.berat);
         parseData['stock'] = rmComma(this.state.stock);
         console.log(parseData)
-
         if(parseData['title']===''){
             ToastQ.fire({icon:'error',title:`nama tidak boleh kosong`});
             return;
@@ -85,10 +104,10 @@ class FormBarang extends Component{
             return;
         }
         if(this.props.detail.id!==''){
-            // this.props.dispatch(putPaket(parseData,this.props.detail.id));
+            this.props.dispatch(putBarang(parseData,this.props.detail.id));
         }
         else{
-            this.props.dispatch(postBarang(parseData));
+            this.props.dispatch(postBarang(parseData,''));
         }
         if(this.props.isError===true){
             this.clearState();
@@ -96,6 +115,7 @@ class FormBarang extends Component{
 
     }
     render(){
+        console.log("form");
         const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace:"nowrap"};
         return (
             <WrapperModal isOpen={this.props.isOpen && this.props.type === "formBarang"} size="md">
@@ -124,12 +144,18 @@ class FormBarang extends Component{
                             </div>
                             <div className="form-group">
                                 <label>Berat (Gram)</label>
-                                <input type="number" className={"form-control"} name={"berat"} value={this.state.berat} onChange={this.handleChange}/>
+                                <input type="text" className={"form-control"} name={"berat"} value={toCurrency(this.state.berat)} onChange={this.handleChange}/>
                             </div>
-                            <div className="form-group">
-                                <label>Stock</label>
-                                <input type="text" className={"form-control"} name={"stock"} value={toCurrency(this.state.stock)} onChange={this.handleChange}/>
-                            </div>
+
+                            {
+                                this.props.detail.id===''?(
+                                    <div className="form-group">
+                                        <label>Stock</label>
+                                        <input type="text" className={"form-control"} name={"stock"} value={toCurrency(this.state.stock)} onChange={this.handleChange}/>
+                                    </div>
+                                ):null
+                            }
+
                         </div>
 
                     </div>

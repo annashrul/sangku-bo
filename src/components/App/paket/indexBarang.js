@@ -9,6 +9,7 @@ import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import {deleteBarang, fetchBarang} from "../../../redux/actions/paket/barang.action";
 import Skeleton from 'react-loading-skeleton';
 import FormBarang from "../modals/barang/form_barang"
+import FormAdjusment from "../modals/barang/form_adjusment"
 import * as Swal from "sweetalert2";
 
 class IndexBarang extends Component{
@@ -17,6 +18,7 @@ class IndexBarang extends Component{
         this.state={
             detail:{},
             any:"",
+            isPage:'',
             dateFrom:moment(new Date()).format("yyyy-MM-DD"),
             dateTo:moment(new Date()).format("yyyy-MM-DD")
         };
@@ -24,11 +26,17 @@ class IndexBarang extends Component{
         this.handleChange   = this.handleChange.bind(this);
         this.handlePage     = this.handlePage.bind(this);
         this.handleSearch   = this.handleSearch.bind(this);
-        this.handleAdd      = this.handleAdd.bind(this);
+        this.handleModal      = this.handleModal.bind(this);
         this.handleDelete      = this.handleDelete.bind(this);
+        this.handleAdjusment      = this.handleAdjusment.bind(this);
+
+    }
+    componentDidMount(){
+        console.log('componentDidMount');
 
     }
     componentWillMount(){
+        console.log('componentWillMount');
         this.props.dispatch(fetchBarang(`page=1`));
     }
     handleChange = (event) => {
@@ -79,12 +87,37 @@ class IndexBarang extends Component{
         let where = this.handleValidate();
         this.props.dispatch(fetchBarang(where));
     }
-
-    handleAdd(e){
+    getDetail(i){
+        return {
+            id:this.props.data.data[i].id,
+            title:this.props.data.data[i].title,
+            stock:this.props.data.data[i].stock_barang,
+            status:this.props.data.data[i].status,
+            harga:this.props.data.data[i].harga,
+            ppn:this.props.data.data[i].ppn,
+            satuan:this.props.data.data[i].satuan,
+            berat:this.props.data.data[i].berat,
+        };
+    }
+    handleModal(e,i){
         const bool = !this.props.isOpen;
+        this.setState({isPage:'formBarang'});
         this.props.dispatch(ModalToggle(bool));
         this.props.dispatch(ModalType("formBarang"));
-        this.setState({detail:{id:''}});
+        if(i!==''){
+            this.setState({detail:this.getDetail(i)});
+        }
+        else{
+            this.setState({detail:{id:''}});
+
+        }
+    }
+    handleAdjusment(e,i){
+        const bool = !this.props.isOpen;
+        this.setState({isPage:'formAdjusment'});
+        this.props.dispatch(ModalToggle(bool));
+        this.props.dispatch(ModalType("formAdjusment"));
+        this.setState({detail:this.getDetail(i)});
     }
     handleDelete(e,id){
         e.preventDefault();
@@ -127,7 +160,7 @@ class IndexBarang extends Component{
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Paket</h5>
+                            <h5 className="mb-0 font-weight-bold">Barang</h5>
                         </div>
                     </div>
                 </div>
@@ -149,13 +182,13 @@ class IndexBarang extends Component{
                                     <div className="col-12 col-xs-12 col-md-3">
                                         <div className="form-group">
                                             <label>Cari</label>
-                                            <input type="text" className="form-control" name="any" placeholder={"cari disini"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
+                                            <input type="text" className="form-control" name="any" placeholder={"cari disini"} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
                                     <div className="col-2 col-xs-2 col-md-4">
                                         <div className="form-group">
                                             <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
-                                            <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleAdd(e,'')}><i className="fa fa-plus"/></button>
+                                            <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleModal(e,'')}><i className="fa fa-plus"/></button>
                                         </div>
                                     </div>
                                 </div>
@@ -183,7 +216,8 @@ class IndexBarang extends Component{
                                                             </td>
                                                             <td style={headStyle}>
                                                                 <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} onClick={(e)=>this.handleDelete(e,v.id)}><i className={"fa fa-trash"}/></button>
-                                                                {/*<button style={{marginRight:"5px"}} className={"btn btn-info btn-sm"} onClick={(e)=>this.handleAdd(e,i)}><i className={"fa fa-pencil"}/></button>*/}
+                                                                <button style={{marginRight:"5px"}} className={"btn btn-info btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-pencil"}/></button>
+                                                                <button style={{marginRight:"5px"}} className={"btn btn-secondary btn-sm"} onClick={(e)=>this.handleAdjusment(e,i)}><i className={"fa fa-tasks"}/></button>
                                                             </td>
                                                             <td style={headStyle}>{v.title}</td>
                                                             <td style={headStyle}>Rp {toCurrency(v.harga)} .-</td>
@@ -232,7 +266,12 @@ class IndexBarang extends Component{
                     </div>
                 </div>
                 {
-                    this.props.isOpen===true?<FormBarang
+                    this.state.isPage==='formBarang'?<FormBarang
+                        detail={this.state.detail}
+                    />:null
+                }
+                {
+                    this.state.isPage==='formAdjusment'?<FormAdjusment
                         detail={this.state.detail}
                     />:null
                 }
