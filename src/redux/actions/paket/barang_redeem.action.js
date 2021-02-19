@@ -1,64 +1,62 @@
 import axios from "axios"
 import Swal from "sweetalert2";
-import {PAKET, HEADERS, NOTIF_ALERT} from "../_constants";
+import {BARANG_REDEEM, HEADERS,NOTIF_ALERT} from "../_constants";
 import {ModalToggle} from "../modal.action";
 
 
 export function setLoading(load) {
     return {
-        type: PAKET.LOADING,
-        load
-    }
-}
-
-export function setLoadingDetail(load) {
-    return {
-        type: PAKET.LOADING_DETAIL,
+        type: BARANG_REDEEM.LOADING,
         load
     }
 }
 export function setLoadingPost(load) {
     return {
-        type: PAKET.LOADING_POST,
+        type: BARANG_REDEEM.LOADING_POST,
         load
     }
 }
 export function setIsError(load) {
     return {
-        type: PAKET.IS_ERROR,
+        type: BARANG_REDEEM.IS_ERROR,
         load
     }
 }
 
 export function setData(data = []) {
     return {
-        type: PAKET.SUCCESS,
+        type: BARANG_REDEEM.SUCCESS,
         data
     }
 }
 
+export function setDataEdit(data = []) {
+    return {
+        type: BARANG_REDEEM.EDIT,
+        data
+    }
+}
 export function setDataDetail(data = []) {
     return {
-        type: PAKET.DETAIL,
+        type: BARANG_REDEEM.DETAIL,
         data
     }
 }
 
 export function setDataFailed(data = []) {
     return {
-        type: PAKET.FAILED,
+        type: BARANG_REDEEM.FAILED,
         data
     }
 }
 
-export const fetchPaket = (where) => {
+export const fetchBarangRedeem = (where) => {
     return (dispatch) => {
         dispatch(setLoading(true));
-        let url = 'package';
+        let url = 'redeem/barang';
         if(where){
             url+=`?${where}`;
         }
-
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
@@ -78,39 +76,11 @@ export const fetchPaket = (where) => {
 
     }
 };
-export const detailPaket = (id,where) => {
-    return (dispatch) => {
-        dispatch(setLoadingDetail(true));
-        let url = `package/${id}`;
-
-        axios.get(HEADERS.URL + `${url}`)
-            .then(function (response) {
-                const data = response.data;
-                dispatch(setDataDetail(data));
-                dispatch(setLoadingDetail(false));
-            })
-            .catch(function (error) {
-                // handle error
-                dispatch(setLoadingDetail(false));
-                if (error.message === 'Network Error') {
-                    Swal.fire(
-                        'Network Failed!.',
-                        'Please check your connection',
-                        'error'
-                    );
-
-                }
-            })
-
-    }
-};
-
-
-export const postPaket = (data) => {
+export const postBarangRedeem = (data) => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
         dispatch(setIsError(false));
-        const url = HEADERS.URL + `package`;
+        const url = HEADERS.URL + `redeem/barang`;
         axios.post(url,data)
             .then(function (response) {
                 const data = (response.data);
@@ -122,7 +92,7 @@ export const postPaket = (data) => {
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
-                    dispatch(fetchPaket('page=1'));
+                    dispatch(fetchBarangRedeem('page=1'));
                 } else {
                     Swal.fire({
                         title: 'failed',
@@ -162,11 +132,11 @@ export const postPaket = (data) => {
             })
     }
 }
-export const putPaket = (data,id) => {
+export const putBarangRedeem = (data,id) => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
         dispatch(setIsError(false));
-        const url = HEADERS.URL + `package/${id}`;
+        const url = HEADERS.URL + `redeem/barang/${id}`;
         axios.put(url,data)
             .then(function (response) {
                 const data = (response.data);
@@ -178,7 +148,7 @@ export const putPaket = (data,id) => {
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
-                    dispatch(fetchPaket('page=1'));
+                    dispatch(fetchBarangRedeem('page=1'));
                 } else {
                     Swal.fire({
                         title: 'failed',
@@ -218,7 +188,7 @@ export const putPaket = (data,id) => {
             })
     }
 }
-export const deletePaket = (id) => async dispatch =>{
+export const deleteBarangRedeem = (id) => async dispatch =>{
     Swal.fire({
         title: 'Tunggu sebentar.',
         html: NOTIF_ALERT.CHECKING,
@@ -228,7 +198,7 @@ export const deletePaket = (id) => async dispatch =>{
         onClose: () => {}
     })
 
-    axios.delete(HEADERS.URL+`package/${id}`)
+    axios.delete(HEADERS.URL+`redeem/barang/${id}`)
         .then(response=>{
             setTimeout(
                 function () {
@@ -248,7 +218,7 @@ export const deletePaket = (id) => async dispatch =>{
                         });
                     }
                     dispatch(setLoading(false));
-                    dispatch(fetchPaket('page=1'));
+                    dispatch(fetchBarangRedeem('page=1'));
                 },800)
 
         }).catch(error =>{
@@ -274,3 +244,5 @@ export const deletePaket = (id) => async dispatch =>{
 
     });
 }
+
+

@@ -78,11 +78,15 @@ export const fetchBarang = (where) => {
 };
 
 
-export const postBarang = (data) => {
+export const postBarang = (data,where='') => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
         dispatch(setIsError(false));
-        const url = HEADERS.URL + `barang`;
+        let url=`${HEADERS.URL}barang`;
+        if(where!==''){
+            url+=where;
+        }
+        // const url = HEADERS.URL + `barang`;
         axios.post(url,data)
             .then(function (response) {
                 const data = (response.data);
@@ -132,7 +136,62 @@ export const postBarang = (data) => {
             })
     }
 }
+export const putBarang = (data,id) => {
+    return (dispatch) => {
+        dispatch(setLoadingPost(true));
+        dispatch(setIsError(false));
+        const url = HEADERS.URL + `barang/${id}`;
+        axios.put(url,data)
+            .then(function (response) {
+                const data = (response.data);
+                if (data.status === 'success') {
+                    Swal.fire({
+                        title: 'Success',
+                        icon: 'success',
+                        text: NOTIF_ALERT.SUCCESS,
+                    });
+                    dispatch(setIsError(true));
+                    dispatch(ModalToggle(false));
+                    dispatch(fetchBarang('page=1'));
+                } else {
+                    Swal.fire({
+                        title: 'failed',
+                        icon: 'error',
+                        text: NOTIF_ALERT.FAILED,
+                    });
+                    dispatch(setIsError(false));
+                    dispatch(ModalToggle(true));
+                }
+                dispatch(setLoadingPost(false));
 
+
+            })
+            .catch(function (error) {
+                dispatch(setLoadingPost(false));
+                dispatch(setIsError(false));
+                dispatch(ModalToggle(true));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Network Failed!.',
+                        'Please check your connection',
+                        'error'
+                    );
+                }
+                else{
+                    Swal.fire({
+                        title: 'failed',
+                        icon: 'error',
+                        text: error.response.data.msg,
+                    });
+
+                    if (error.response) {
+
+                    }
+                }
+
+            })
+    }
+}
 export const deleteBarang = (id) => async dispatch =>{
     Swal.fire({
         title: 'Tunggu sebentar.',

@@ -115,7 +115,7 @@ export default class File64 extends React.Component {
           className={this.props.className}
           multiple={ this.props.multiple } />
         <label 
-          for={"imageUpload"+this.props.ids} 
+          htmlFor={"imageUpload"+this.props.ids}
           // onclick = "javascript:document.getElementById('imageUpload').click();"
           style = {{
               width: '30%',
@@ -155,7 +155,7 @@ export default class File64 extends React.Component {
         <div style={{clear:'both'}}></div>
         {
           this.state.error!==''?
-          <label id="password-error" style={{fontSize:'0.7rem',color:'#dc3545',marginTop:'.1rem'}} for="password">{this.state.error}</label>:''
+          <label id="password-error" style={{fontSize:'0.7rem',color:'#dc3545',marginTop:'.1rem'}} htmlFor="password">{this.state.error}</label>:''
         }
         {
           this.props.showPreview?(

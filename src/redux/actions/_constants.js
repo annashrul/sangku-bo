@@ -111,6 +111,19 @@ export const BARANG = {
     DETAIL: `DETAIL_${prefBarang}`,
     EDIT: `EDIT_${prefBarang}`
 }
+/****************
+ BARANG_REDEEM
+ *****************/
+let prefBarangRedeem='BARANG_REDEEM';
+export const BARANG_REDEEM = {
+    LOADING: `SET_${prefBarangRedeem}_LOADING`,
+    LOADING_POST: `SET_${prefBarangRedeem}_LOADING_POST`,
+    IS_ERROR: `SET_${prefBarangRedeem}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefBarangRedeem}`,
+    FAILED: `FAILED_${prefBarangRedeem}`,
+    DETAIL: `DETAIL_${prefBarangRedeem}`,
+    EDIT: `EDIT_${prefBarangRedeem}`
+}
 
 /****************
  KATEGORI
