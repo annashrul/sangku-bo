@@ -148,9 +148,9 @@ class Header extends Component {
                 <div className="right-side-navbar d-flex align-items-center justify-content-end">
                     {/* <!-- Mobile AREAAAAAA --> */}
                     <div className="right-side-trigger" style={{width:'unset',height:'unset',marginRight:'unset'}} >
-                        <li className="nav-item dropdown" style={{listStyleType:'none'}}>
-                            <UncontrolledButtonDropdown nav inNavbar>
-                                <DropdownToggle caret inNavbar className="nohover">
+                        <div className="nav-item dropdown" style={{listStyleType:'none'}}>
+                            <UncontrolledButtonDropdown nav >
+                                <DropdownToggle caret  className="nohover">
                                     <i className="fa fa-bell-o"/>
                                     <span className="badge badge-xs badge-pill badge-primary inbox">
                                         {
@@ -192,7 +192,7 @@ class Header extends Component {
                                                 this.state.invest.map((v,i)=>{
                                                     return (
                                                         <table className="table table-hover" key={i}>
-                                                            <tbody>
+                                                            <thead>
                                                             <tr>
                                                                 <td className="text-black" style={columnStyle}>
                                                                     {v.name} -
@@ -201,7 +201,7 @@ class Header extends Component {
                                                                     <small style={{color:"black"}}>{parseFloat(v.amount).toFixed(8)}</small>
                                                                 </td>
                                                             </tr>
-                                                            </tbody>
+                                                            </thead>
                                                         </table>
 
 
@@ -226,13 +226,13 @@ class Header extends Component {
                                                 this.state.withdraw.map((v,i)=>{
                                                     return (
                                                         <table className="table table-hover" key={i}>
-                                                            <tbody>
+                                                            <thead>
                                                             <tr>
                                                                 <td className="text-black" style={columnStyle}>
                                                                     {v.users} -
                                                                     &nbsp;<small style={{color:"#FC8213"}}>{moment(v.created_at).fromNow()}</small><br/><small style={{color:"green"}}>{v.kd_trx}</small><br/><small style={{color:"black"}}>{parseFloat(v.amount).toFixed(8)}</small></td>
                                                             </tr>
-                                                            </tbody>
+                                                            </thead>
                                                         </table>
 
 
@@ -256,7 +256,7 @@ class Header extends Component {
                                                 this.state.user.map((v,i)=>{
                                                     return (
                                                         <table className="table table-hover" key={i}>
-                                                            <tbody>
+                                                            <thead>
                                                             <tr>
                                                                 <td className="text-black" style={columnStyle}>
                                                                     <Link to={`/user`}>
@@ -267,7 +267,7 @@ class Header extends Component {
                                                                 </td>
                                                                 {/*<td className="text-black" style={columnStyle}>{v.name.length>20?v.name.substr(0,20)+"..":v.name} - <small>{moment(v.created_at).fromNow()}</small><br/><small style={{color:"green"}}>{v.email}</small></td>*/}
                                                             </tr>
-                                                            </tbody>
+                                                            </thead>
                                                         </table>
 
                                                     );
@@ -289,7 +289,7 @@ class Header extends Component {
                                                 this.state.contact.map((v,i)=>{
                                                     return (
                                                         <table className="table table-hover"key={i}>
-                                                            <tbody>
+                                                            <thead>
                                                             <tr onClick={(e)=>this.handleUpdate(e,v.id,'contact')}>
                                                                 <Link to={`/contact/${v.id}`}>
                                                                     <td className="text-black" style={columnStyle}>
@@ -299,7 +299,7 @@ class Header extends Component {
                                                                     </td>
                                                                 </Link>
                                                             </tr>
-                                                            </tbody>
+                                                            </thead>
                                                         </table>
 
 
@@ -311,14 +311,14 @@ class Header extends Component {
 
                                 </DropdownMenu>
                             </UncontrolledButtonDropdown>
-                        </li>
+                        </div>
                     </div>
 
                     {/* <!-- END Mobile AREAAAAAA --> */}
 
                     {/* <!-- Top Bar Nav --> */}
                     <ul className={"right-side-content d-flex align-items-center " + (this.state.toggleMobileNav === true? "active":"")}>
-                        <li className="nav-item dropdown">
+                        <div className="nav-item dropdown">
                             <UncontrolledButtonDropdown nav>
                                 <DropdownToggle caret className="nohover">
                                     <i className="fa fa-bell-o"/>
@@ -365,7 +365,7 @@ class Header extends Component {
                                                return (
                                                    <UncontrolledCollapse toggler="#toggleInvest" key={i}>
                                                        <table className="table table-hover">
-                                                           <tbody>
+                                                           <thead>
                                                            <tr>
                                                                <Link to={`/investment/${v.id}/${btoa(moment(v.created_at).format("yyyy-MM-DD"))}`}>
                                                                <td className="text-black" style={columnStyle}>
@@ -376,7 +376,7 @@ class Header extends Component {
                                                                </td>
                                                                </Link>
                                                            </tr>
-                                                           </tbody>
+                                                           </thead>
                                                        </table>
                                                    </UncontrolledCollapse>
                                                );
@@ -398,7 +398,7 @@ class Header extends Component {
                                                 return (
                                                     <UncontrolledCollapse toggler="#toggleWithdraw" key={i}>
                                                         <table className="table table-hover">
-                                                            <tbody>
+                                                            <thead>
                                                             <tr>
                                                                 <Link to={`/withdraw/${v.id}/${btoa(moment(v.created_at).format("yyyy-MM-DD"))}`}>
                                                                     <td className="text-black" style={columnStyle}>
@@ -409,7 +409,7 @@ class Header extends Component {
                                                                     </td>
                                                                 </Link>
                                                             </tr>
-                                                            </tbody>
+                                                            </thead>
                                                         </table>
                                                     </UncontrolledCollapse>
 
@@ -434,7 +434,7 @@ class Header extends Component {
 
                                                     <UncontrolledCollapse toggler="#toggleUser" key={i}>
                                                         <table className="table table-hover">
-                                                            <tbody>
+                                                            <thead>
                                                             <tr>
                                                                 <Link to={`/user/${v.id}`}>
                                                                     <td className="text-black" style={columnStyle}>
@@ -446,7 +446,7 @@ class Header extends Component {
 
                                                                 {/*<td className="text-black" style={columnStyle}>{v.name.length>20?v.name.substr(0,20)+"..":v.name} - <small>{moment(v.created_at).fromNow()}</small><br/><small style={{color:"green"}}>{v.email}</small></td>*/}
                                                             </tr>
-                                                            </tbody>
+                                                            </thead>
                                                         </table>
                                                     </UncontrolledCollapse>
 
@@ -470,7 +470,7 @@ class Header extends Component {
                                                 return (
                                                     <UncontrolledCollapse toggler="#toggleContact" key={i}>
                                                         <table className="table table-hover">
-                                                            <tbody>
+                                                            <thead>
                                                             <tr onClick={(e)=>this.handleUpdate(e,v.id,'contact')}>
                                                                 <Link to={`/contact/${v.id}`}>
                                                                     <td className="text-black" style={columnStyle}>
@@ -480,7 +480,7 @@ class Header extends Component {
                                                                     </td>
                                                                 </Link>
                                                             </tr>
-                                                            </tbody>
+                                                            </thead>
                                                         </table>
                                                     </UncontrolledCollapse>
                                                 );
@@ -491,13 +491,14 @@ class Header extends Component {
                                     </div>
                                 </DropdownMenu>
                             </UncontrolledButtonDropdown>
-                        </li>
+                        </div>
 
-                        <li className="nav-item dropdown">
-                            <UncontrolledButtonDropdown nav inNavbar>
-                                <DropdownToggle caret inNavbar className="nohover">
+                        <div className="nav-item dropdown">
+                            <UncontrolledButtonDropdown nav >
+                                <DropdownToggle caret  className="nohover">
                                     <div className="user-name">
                                         <table>
+                                            <thead>
                                             <tr>
                                                 <td className="fs1">
                                                     <p>{this.props.auth.user.name}</p>
@@ -511,6 +512,7 @@ class Header extends Component {
 
                                                 </td>
                                             </tr>
+                                            </thead>
                                         </table>
                                     </div>
                                 </DropdownToggle>
@@ -531,7 +533,7 @@ class Header extends Component {
                                     </div>
                                 </DropdownMenu>
                             </UncontrolledButtonDropdown>
-                        </li>
+                        </div>
 
                     </ul>
                 </div>

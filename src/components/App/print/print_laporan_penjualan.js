@@ -238,7 +238,7 @@ class PrintLaporanPenjualan extends Component {
                                                             <div key={i} className="card-body">
                                                                 <table width="100%" border="0" cellSpacing="0" className="print-data" id={'printable'}>
                                                                     <tr>
-                                                                        <td width="20%" rowSpan="3" className="text-center shop-logo" style={{padding:'10px'}}>
+                                                                        <td width="15%" rowSpan="3" className="text-center shop-logo" style={{padding:'10px'}}>
                                                                             {
                                                                                 this.state.shop_logo?(
                                                                                     <img style={{opacity:'1',animation:' fadeIn 2s',height:'60px'}} className="img-responsive" src={this.props.data.data_perusahaan===undefined?'':this.props.data.data_perusahaan.logo} onError={(e)=>{e.target.onerror = null; e.target.src=`${noImage()}`}}/>
@@ -278,7 +278,7 @@ class PrintLaporanPenjualan extends Component {
                                                                             <p style={lnr} className="receiver-name ls-1"> {v.penerima}</p>
                                                                             <p style={lnr} className="address">
                                                                                 Alamat: <br/>
-                                                                                {v.main_address}<br/>
+                                                                                <span style={{fontSize:"10px"}}>{v.main_address}</span><br/>
                                                                                 Telp: {v.no_hp}
                                                                             </p>
                                                                         </td>

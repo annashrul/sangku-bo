@@ -23,6 +23,7 @@ import {generalReducer} from './setting/general.reducer';
 import {kurirReducer} from './setting/kurir.reducer';
 import {bonusSettingReducer} from './setting/configbonus.reducer'
 import {banksReducer} from './setting/bank.reducer'
+import {barangRedeemReducer} from "./paket/barang_redeem.reducer";
 
 export default combineReducers({
     modalReducer,
@@ -31,6 +32,7 @@ export default combineReducers({
     siteReducer,
     paketReducer,
     barangReducer,
+    barangRedeemReducer,
     pinReducer,
     memberReducer,
     alamatReducer,

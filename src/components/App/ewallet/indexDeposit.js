@@ -64,7 +64,8 @@ class IndexDeposit extends Component{
                 data=[];
                 isLoading=false;
             }
-        }else{
+        }
+        else{
             data=[];
             isLoading=false;
         }

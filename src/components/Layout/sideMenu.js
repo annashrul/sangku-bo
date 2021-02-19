@@ -55,7 +55,7 @@ class SideMenu extends Component {
                 isStockist:true
             })
         }
-        if(path==='/paket' || path==='/barang'){
+        if(path==='/paket' || path==='/barang'||path==='/barang_redeem'){
             this.setState({
                 isPaket:true
             })
@@ -155,16 +155,18 @@ class SideMenu extends Component {
                             <li className={path==='/deposit'?"active":''}><Link to="/deposit" style={{width:'fit-content'}}> Deposit</Link></li>
                             <li className={path==='/penarikan'?"active":''}><Link to="/penarikan" style={{width:'fit-content'}}> Penarikan</Link></li>
                             <li className={path==='/bonus'?"active":''}><Link to="/bonus" style={{width:'fit-content'}}> Bonus</Link></li>
+
                         </ul>
                     </li>
                     {/* E-WALLET MODUL END */}
                    
                     {/* PAKET MODUL START */}
-                    <li className={"treeview" +(this.state.isPaket===true || path==='/paket' || path==='/barang' ?" active menu-open" : "")}>
+                    <li className={"treeview" +(this.state.isPaket===true || path==='/paket' || path==='/barang' || path==='/barang_redeem'?" active menu-open" : "")}>
                         <a href="!#" onClick={(e) => this.changeMenu(e,'isPaket')}><i className="fa fa-folder-o	" /> <span>Paket</span> <i className="fa fa-angle-right" /></a>
                         <ul className={"treeview-menu"} style={{display:this.state.isPaket===true?"block":"none"}}>
                             <li className={path==='/paket'?"active":''}><Link to="/paket" style={{width:'fit-content'}}> Paket</Link></li>
                             <li className={path==='/barang'?"active":''}><Link to="/barang" style={{width:'fit-content'}}> Barang</Link></li>
+                            <li className={path==='/barang_redeem'?"active":''}><Link to="/barang_redeem" style={{width:'fit-content'}}> Barang Redeem</Link></li>
                         </ul>
                     </li>
                     {/* PAKET MODUL END */}
