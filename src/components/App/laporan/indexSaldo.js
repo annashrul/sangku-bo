@@ -22,47 +22,26 @@ class IndexSaldo extends Component{
             any:"",
             dateFrom:moment(new Date()).format("yyyy-MM-DD"),
             dateTo:moment(new Date()).format("yyyy-MM-DD"),
-            status_data:[{value:'kd_trx',label:'KODE TRX'},{value:'full_name',label:'NAMA'},{value:'status',label:'STATUS'}],
-            status:'',
             data:[],
             isLoading:true
         };
         this.handleChange      = this.handleChange.bind(this);
         this.handlePage      = this.handlePage.bind(this);
-        this.handleChangeStatus      = this.handleChangeStatus.bind(this);
-        this.handleApproval      = this.handleApproval.bind(this);
         this.handleSearch      = this.handleSearch.bind(this);
         this.handleEvent      = this.handleEvent.bind(this);
+        this.handleDetail      = this.handleDetail.bind(this);
 
     }
     handleValidate(){
-        this.setState({
-            isLoading:true
-        })
-        let where="perpage=10";
-        let page = localStorage.getItem("pageLaporanSaldo");
-        let dateFrom = this.state.dateFrom;
-        let dateTo = this.state.dateTo;
-        let status = this.state.status;
+        let page = localStorage.pageLaporanSaldo!==undefined?localStorage.pageLaporanSaldo:"1";
+        let dateFrom=localStorage.dateFromLaporanSaldo!==undefined?localStorage.dateFromLaporanSaldo:this.state.dateFrom;
+        let dateTo=localStorage.dateToLaporanSaldo!==undefined?localStorage.dateToLaporanSaldo:this.state.dateTo;
         let any = this.state.any;
-        localStorage.setItem("dateFromLaporanSaldo",`${dateFrom}`);
-        localStorage.setItem("dateToLaporanSaldo",`${dateTo}`);
-        if(page!==null&&page!==undefined&&page!==""){
-            where+=`&page=${page}`;
-
-        }else{
-            where+=`&page=1`;
-        }
-        if(dateFrom!==null&&dateFrom!==undefined&&dateFrom!==""){
-            where+=`&datefrom=${dateFrom}&dateto=${dateTo}`;
-        }
-        if(status!==null&&status!==undefined&&status!==""){
-            where+=`&searchby=${status}`;
-        }
+        let where=`page=${page}&perpage=10&datefrom=${dateFrom}&dateto=${dateTo}`;
         if(any!==null&&any!==undefined&&any!==""){
             where+=`&q=${any}`;
         }
-        console.log(where);
+        // remove()
         return where;
 
     }
@@ -71,28 +50,37 @@ class IndexSaldo extends Component{
             [e.target.name] : e.target.value
         })
     }
-    componentWillMount(){
-        this.props.dispatch(getLaporanSaldo(`page=1&datefrom=${this.state.dateFrom}&dateto=${this.state.dateTo}`));
+    componentWillUnmount(){
+        localStorage.removeItem("dateFromLaporanSaldo");
+        localStorage.removeItem("dateToLaporanSaldo");
+        localStorage.removeItem("pageLaporanSaldo");
     }
-
-
+    componentWillMount(){
+        let getDateFrom=localStorage.dateFromLaporanSaldo;
+        let getDateTo=localStorage.dateToLaporanSaldo;
+        if(getDateFrom!==undefined&&getDateTo!==undefined){
+            this.setState({
+                dateFrom:getDateFrom,
+                dateTo:getDateTo,
+            })
+        }
+        let where=this.handleValidate();
+        console.log(where);
+        this.props.dispatch(getLaporanSaldo(where));
+    }
     handleSearch(e){
         e.preventDefault();
-        // this.state.isLoading=true;
+        localStorage.setItem("dateFromLaporanSaldo",`${this.state.dateFrom}`);
+        localStorage.setItem("dateToLaporanSaldo",`${this.state.dateTo}`);
+        localStorage.removeItem("pageLaporanSaldo");
         let where = this.handleValidate();
         this.props.dispatch(getLaporanSaldo(where));
-        // this.state.isLoading=false;
     }
     handlePage(num){
         localStorage.setItem("pageLaporanSaldo",num);
         let where = this.handleValidate();
         this.props.dispatch(getLaporanSaldo(where));
 
-    }
-    handleChangeStatus(val){
-        this.setState({
-            status:val.value
-        })
     }
     handleEvent = (event, picker) => {
         event.preventDefault();
@@ -103,35 +91,17 @@ class IndexSaldo extends Component{
             dateTo:to
         });
     };
-
-
-
-    handleApproval(e,id,status){
-        console.log(btoa(id));
+    handleDetail(e,id){
         e.preventDefault();
-        Swal.fire({
-            title: 'Perhatian !!!',
-            text: `anda yakin akan ${status===1?"menerima":"membatalkan"} penarikan ini ??`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: `Oke, ${status===1?"terima":"batalkan"} sekarang!`,
-            cancelButtonText: 'keluar',
-        }).then((result) => {
-            if (result.value) {
-                let parsedata={"status":status};
-                // let where = this.handleValidate();
-                this.props.dispatch(postPenarikan(parsedata,btoa(id)));
-            }
-        })
-
     }
 
     render(){
         const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const numStyle ={verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
         // const data = this.state.data;
+        let totPlafon=0;
+        let totSaldoAwal=0;
+        let totSaldoAkhir=0;
         let totTrxIn=0;
         let totTrxOut=0;
         const {
@@ -168,25 +138,11 @@ class IndexSaldo extends Component{
                                             </DateRangePicker>
                                         </div>
                                     </div>
-                                    <div className="col-md-2">
-                                        <div className="form-group">
-                                            <label>Kolom</label>
-                                            <Select
-                                                options={this.state.status_data}
-                                                placeholder="==== Pilih Kolom ===="
-                                                onChange={this.handleChangeStatus}
-                                                value={
-                                                    this.state.status_data.find(op => {
-                                                        return op.value === this.state.status
-                                                    })
-                                                }
-                                            />
-                                        </div>
-                                    </div>
+
                                     <div className="col-12 col-xs-12 col-md-3">
                                         <div className="form-group">
                                             <label>Cari</label>
-                                            <input type="text" className="form-control" name="any" placeholder={"cari disini"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
+                                            <input type="text" className="form-control" name="any" placeholder={"cari disini"} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
                                     <div className="col-2 col-xs-2 col-md-4">
@@ -196,21 +152,25 @@ class IndexSaldo extends Component{
                                         </div>
                                     </div>
                                 </div>
-                                <div style={{overflowX: "auto",zoom:"80%"}}>
+                                <div style={{overflowX: "auto"}}>
                                     <table className="table table-hover table-bordered">
                                         <thead className="bg-light">
                                         <tr>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>NO</th>
-                                            <th className="text-black" rowSpan="2" style={columnStyle}>KODE TRX</th>
+                                            <th className="text-black" rowSpan="2" style={columnStyle}>#</th>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>NAMA</th>
+                                            <th className="text-black" rowSpan="2" style={columnStyle}>MEMBERSHIP</th>
+                                            <th className="text-black" rowSpan="2" style={columnStyle}>PLAFON</th>
                                             <th className="text-black" colSpan="2" style={columnStyle}>SALDO</th>
-                                            <th className="text-black" rowSpan="2" style={columnStyle}>CATATAN</th>
-                                            <th className="text-black" rowSpan="2" style={columnStyle}>TANGGAL</th>
+                                            <th className="text-black" colSpan="2" style={columnStyle}>TRANSAKSI</th>
                                         </tr>
                                         <tr>
-                                            <th className="text-black" style={columnStyle}>KELUAR</th>
+                                            <th className="text-black" style={columnStyle}>AWAL</th>
+                                            <th className="text-black" style={columnStyle}>AKHIR</th>
                                             <th className="text-black" style={columnStyle}>MASUK</th>
+                                            <th className="text-black" style={columnStyle}>KELUAR</th>
                                         </tr>
+
 
                                         </thead>
                                         <tbody>
@@ -218,33 +178,43 @@ class IndexSaldo extends Component{
 
                                             !this.props.isLoading? typeof data==='object'? data.length > 0 ?
                                                 data.map((v, i) => {
-                                                    totTrxIn=totTrxIn+parseInt(v.trx_in);
-                                                    totTrxOut=totTrxOut+parseInt(v.trx_out);
+                                                    totPlafon=totPlafon+parseInt(v.plafon,10);
+                                                    totSaldoAwal=totSaldoAwal+parseInt(v.saldo_awal,10);
+                                                    totSaldoAkhir=totSaldoAkhir+parseInt(v.saldo_akhir,10);
+                                                    totTrxIn=totTrxIn+parseInt(v.trx_in,10);
+                                                    totTrxOut=totTrxOut+parseInt(v.trx_out,10);
                                                     return (
                                                         <tr key={i}>
                                                             <td style={columnStyle}>
                                                                 <span className="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
                                                             </td>
-                                                            <td style={columnStyle}>{v.kd_trx}</td>
+                                                            <td style={columnStyle}>
+                                                                <button className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleDetail(e,v.id)}><i className={"fa fa-eye"}/></button>
+                                                            </td>
+
                                                             <td style={columnStyle}>{v.full_name}</td>
-                                                            <td style={numStyle}>Rp {parseInt(v.trx_in)===0?0:toCurrency(v.trx_in)} .-</td>
-                                                            <td style={numStyle}>Rp {parseInt(v.trx_out)===0?0:toCurrency(v.trx_out)} .-</td>
-                                                            <td style={columnStyle}>{v.note}</td>
-                                                            <td style={columnStyle}>{moment(v.created_at).locale('id').format("ddd, Do MMM YYYY hh:mm:ss")}</td>
+                                                            <td style={columnStyle}>{v.membership}</td>
+                                                            <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.plafon,10)===0?0:toCurrency(v.plafon)} .-</td>
+                                                            <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.saldo_awal,10)===0?0:toCurrency(v.saldo_awal)} .-</td>
+                                                            <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.saldo_akhir,10)===0?0:toCurrency(v.saldo_akhir)} .-</td>
+                                                            <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.trx_in,10)===0?0:toCurrency(v.trx_in)} .-</td>
+                                                            <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.trx_out,10)===0?0:toCurrency(v.trx_out)} .-</td>
                                                         </tr>
                                                     );
                                                 })
                                                 : <tr>
-                                                    <td colSpan={10} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
+                                                    <td colSpan={9} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
                                                 </tr>:
                                                 <tr>
-                                                    <td colSpan={10} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
+                                                    <td colSpan={9} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
                                                 </tr> : (()=>{
                                                 let container =[];
                                                 for(let x=0; x<10; x++){
                                                     container.push(
                                                         <tr key={x}>
                                                             <td style={columnStyle}>{<Skeleton circle={true} height={40} width={40}/>}</td>
+                                                            <td style={columnStyle}>{<Skeleton/>}</td>
+                                                            <td style={columnStyle}>{<Skeleton/>}</td>
                                                             <td style={columnStyle}>{<Skeleton/>}</td>
                                                             <td style={columnStyle}>{<Skeleton/>}</td>
                                                             <td style={columnStyle}>{<Skeleton/>}</td>
@@ -260,12 +230,27 @@ class IndexSaldo extends Component{
                                         </tbody>
                                         <tfoot style={{backgroundColor:"#EEEEEE"}}>
                                         <tr>
-                                            <th colSpan={3}>TOTAL PERPAGE</th>
-                                            <th colSpan={1} style={numStyle}>Rp {totTrxIn===0?0:toCurrency(totTrxIn)} .-</th>
-                                            <th colSpan={1} style={numStyle}>Rp {totTrxOut===0?0:toCurrency(totTrxOut)} .-</th>
-                                            <th colSpan={1}/>
-                                            <th/>
+                                            <th colSpan={4}>TOTAL PERHALAMAN</th>
+                                            <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totPlafon===0?0:toCurrency(totPlafon)} .-</th>
+                                            <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totSaldoAwal===0?0:toCurrency(totSaldoAwal)} .-</th>
+                                            <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totSaldoAkhir===0?0:toCurrency(totSaldoAkhir)} .-</th>
+                                            <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totTrxIn===0?0:toCurrency(totTrxIn)} .-</th>
+                                            <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totTrxOut===0?0:toCurrency(totTrxOut)} .-</th>
                                         </tr>
+                                        {
+
+                                            !this.props.isLoading?summary!==undefined?(
+                                                <tr>
+                                                    <th colSpan={4}>TOTAL KESELURUHAN</th>
+                                                    <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.plafon,10)===0?0:toCurrency(parseInt(summary.plafon,10))} .-</th>
+                                                    <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.saldo_awal,10)===0?0:toCurrency(parseInt(summary.saldo_awal,10))} .-</th>
+                                                    <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.saldo_akhir,10)===0?0:toCurrency(parseInt(summary.saldo_akhir,10))} .-</th>
+                                                    <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.trx_in,10)===0?0:toCurrency(parseInt(summary.trx_in,10))} .-</th>
+                                                    <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.trx_out,10)===0?0:toCurrency(parseInt(summary.trx_out,10))} .-</th>
+                                                </tr>
+                                            ):null:null
+                                        }
+
                                         </tfoot>
                                     </table>
                                 </div>

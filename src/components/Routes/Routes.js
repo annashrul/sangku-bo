@@ -18,7 +18,7 @@ import Penjualan from '../App/order';
 import Bonus from '../App/laporan/indexBonus';
 import Deposit from '../App/ewallet/indexDeposit';
 import Penarikan from '../App/ewallet/indexPenarikan';
-import Saldo from '../App/ewallet/indexSaldo';
+import Saldo from '../App/laporan/indexSaldo';
 import Setting from '../App/setting/umum';
 import Website from '../App/setting/website';
 import Bank from '../App/setting/bank';

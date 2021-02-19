@@ -61,7 +61,7 @@ export function setDataFailed(data = []) {
 export const getLaporanSaldo = (where='') => {
     return (dispatch) => {
         dispatch(setLoading(true));
-        let url = 'transaction/history';
+        let url = 'transaction/history/member';
         if(where!==''){
             url+=`?${where}`;
         }
