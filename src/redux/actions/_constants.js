@@ -266,6 +266,20 @@ export const PENJUALAN = {
     DETAIL: `DETAIL_${prefPenjualan}`,
     EDIT: `EDIT_${prefPenjualan}`
 }
+/****************
+ REPORT REDEEM
+ *****************/
+let prefReportRedeem='REPORT_REDEEM';
+export const REPORT_REDEEM = {
+    LOADING: `SET_${prefReportRedeem}_LOADING`,
+    LOADING_DETAIL: `SET_${prefReportRedeem}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefReportRedeem}_LOADING_POST`,
+    IS_ERROR: `SET_${prefReportRedeem}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefReportRedeem}`,
+    FAILED: `FAILED_${prefReportRedeem}`,
+    DETAIL: `DETAIL_${prefReportRedeem}`,
+    EDIT: `EDIT_${prefReportRedeem}`
+}
 
 /****************
  DEPOSIT

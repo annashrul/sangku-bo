@@ -70,7 +70,7 @@ class SideMenu extends Component {
                 isContent:true
             })
         }
-        if(path==='/produk'){
+        if(path==='/produk'||path==='/report_redeem'||path==='/report_reward'){
             this.setState({
                 isPenjualan:true
             })
@@ -144,12 +144,12 @@ class SideMenu extends Component {
                     </li>
                     {/* PIN MODUL END */}
                      {/* PENJUALAN MODUL START */}
-                    <li className={"treeview" +(this.state.isPenjualan===true || path==='/produk'?" active menu-open" : "")}>
+                    <li className={"treeview" +(this.state.isPenjualan===true || path==='/produk' || path==='/report_redeem' || path==='/report_reward'?" active menu-open" : "")}>
                         <a href="!#" onClick={(e) => this.changeMenu(e,'isPenjualan')}><i className="fa fa-shopping-basket" /> <span>Order</span> <i className="fa fa-angle-right" /></a>
                         <ul className={"treeview-menu"} style={{display:this.state.isPenjualan===true?"block":"none"}}>
                             <li className={path==='/produk'?"active":''}><Link to="/produk" style={{width:'fit-content'}}> Order Paket</Link></li>
-                            <li className={path==='/produk'?"active":''}><Link to="/produk" style={{width:'fit-content'}}> Redeem Point</Link></li>
-                            <li className={path==='/produk'?"active":''}><Link to="/produk" style={{width:'fit-content'}}> Claim Reward</Link></li>
+                            <li className={path==='/report_redeem'?"active":''}><Link to="/report_redeem" style={{width:'fit-content'}}> Redeem Point</Link></li>
+                            <li className={path==='/report_reward'?"active":''}><Link to="/report_reward" style={{width:'fit-content'}}> Claim Reward</Link></li>
 
                         </ul>
                     </li>
