@@ -7,14 +7,8 @@ import {NOTIF_ALERT} from "redux/actions/_constants";
 import {ModalToggle, ModalType} from "redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import moment from "moment";
-import DetailAlamat from "../../modals/masterdata/member/detail_alamat"
-import DetailBank from "../../modals/masterdata/member/detail_bank"
-import DetailTransaksi from "../../modals/masterdata/member/detail_transaksi"
+import FormVoucher from "../../modals/masterdata/voucher/form_voucher"
 import {getMember, putMember} from "redux/actions/masterdata/member.action";
-import UncontrolledButtonDropdown from "reactstrap/es/UncontrolledButtonDropdown";
-import DropdownToggle from "reactstrap/es/DropdownToggle";
-import DropdownMenu from "reactstrap/es/DropdownMenu";
-import DropdownItem from "reactstrap/es/DropdownItem";
 import {getDetailAlamat} from "redux/actions/masterdata/alamat.action";
 import {getDetailBank} from "redux/actions/masterdata/bank.action";
 import * as Swal from "sweetalert2";
@@ -65,20 +59,12 @@ class IndexVoucher extends Component{
     handleModal(e,i){
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
-        this.props.dispatch(ModalType("formBarangReward"));
+        this.props.dispatch(ModalType("formVoucher"));
         if(i!==''){
-            this.setState({detail:{
-                id:this.props.data.data[i].id,
-                title:this.props.data.data[i].title,
-                caption:this.props.data.data[i].caption,
-                id_karir:this.props.data.data[i].id_karir,
-                gambar:this.props.data.data[i].gambar,
-
-            }});
+            this.setState({detail:this.props.data.data[i]});
         }
         else{
             this.setState({detail:{id:''}});
-
         }
     }
     handleDelete(e,id){
@@ -137,6 +123,7 @@ class IndexVoucher extends Component{
                                     </div>
                                     <div className="col-2 col-xs-2 col-md-4">
                                         <div className="form-group">
+                                            <button style={{marginTop:"27px",marginRight:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleModal(e,'')}><i className="fa fa-plus"/></button>
                                             <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
                                         </div>
                                     </div>
@@ -164,6 +151,16 @@ class IndexVoucher extends Component{
                                                 <span>Sampai <span style={{float:"right"}} className={"txtRed"}>{moment(v.periode_end).format('lll')}</span></span>
                                                 <hr style={{borderStyle:"dotted"}}/>
                                                 <span>{v.deskripsi}</span>
+                                                <hr style={{borderStyle:"dotted"}}/>
+
+                                                <div className="row">
+                                                    <div className="col-md-6">
+                                                        <button className={"btn btn-block btn-info btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-pencil"}/></button>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <button className={"btn btn-block btn-danger btn-sm"} onClick={(e)=>this.handleDelete(e,v.id)}><i className={"fa fa-trash"}/></button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     );
@@ -196,9 +193,12 @@ class IndexVoucher extends Component{
                                 callback={this.handlePage}
                             />
                         </div>
+
                     </div>
                 </div>
-
+                {
+                    this.props.isOpen?<FormVoucher detail={this.state.detail}/>:null
+                }
             </Layout>
         );
     }
