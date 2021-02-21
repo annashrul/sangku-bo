@@ -24,6 +24,9 @@ import {kurirReducer} from './setting/kurir.reducer';
 import {bonusSettingReducer} from './setting/configbonus.reducer'
 import {banksReducer} from './setting/bank.reducer'
 import {barangRedeemReducer} from "./paket/barang_redeem.reducer";
+import {barangRewardReducer} from "./paket/barang_reward.reducer";
+import {voucherReducer} from "./masterdata/voucher.reducer";
+import {reportRedeemReducer} from "./laporan/report_redeem.reducer";
 
 export default combineReducers({
     modalReducer,
@@ -33,8 +36,10 @@ export default combineReducers({
     paketReducer,
     barangReducer,
     barangRedeemReducer,
+    barangRewardReducer,
     pinReducer,
     memberReducer,
+    voucherReducer,
     alamatReducer,
     bankReducer,
     userListReducer,
@@ -42,6 +47,7 @@ export default combineReducers({
     kategoriReducer,
     contentReducer,
     laporanPenjualanReducer,
+    reportRedeemReducer,
     bonusReducer,
     depositReducer,
     penarikanReducer,

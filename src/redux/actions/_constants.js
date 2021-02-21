@@ -20,8 +20,7 @@ export const NOTIF_ALERT = {
 }
 
 export const HEADERS ={
-  // URL: atob(document.getElementById("hellyeah").value),
-  // URL       : "http://localhost:3010/",
+  // URL       : "http://192.168.100.10:3010/",
   URL: 'http://ptnetindo.com:6694/',
   TOKEN     : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwY2RiN2M5OC0wNWNmLTQ4NDgtOGM3Yy0yZTFiYTczZGUwNmYiLCJpYXQiOjE1NzAxNzM0ODYsImV4cCI6MTU3MDc3ODI4Nn0.1NiWtt2luG83am8FJSvWpL5p35Oxd8GSJJTwhFmAdgw",
   USERNAME  : "netindo",
@@ -124,6 +123,19 @@ export const BARANG_REDEEM = {
     DETAIL: `DETAIL_${prefBarangRedeem}`,
     EDIT: `EDIT_${prefBarangRedeem}`
 }
+/****************
+ BARANG_REWARD
+ *****************/
+let prefBarangReward='BARANG_REWARD';
+export const BARANG_REWARD = {
+    LOADING: `SET_${prefBarangReward}_LOADING`,
+    LOADING_POST: `SET_${prefBarangReward}_LOADING_POST`,
+    IS_ERROR: `SET_${prefBarangReward}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefBarangReward}`,
+    FAILED: `FAILED_${prefBarangReward}`,
+    DETAIL: `DETAIL_${prefBarangReward}`,
+    EDIT: `EDIT_${prefBarangReward}`
+}
 
 /****************
  KATEGORI
@@ -166,6 +178,20 @@ export const MEMBER = {
     FAILED: `FAILED_${prefMember}`,
     DETAIL: `DETAIL_${prefMember}`,
     EDIT: `EDIT_${prefMember}`
+}
+/****************
+ VOUCHER
+ *****************/
+let prefVoucher='VOUCHER';
+export const VOUCHER = {
+    LOADING: `SET_${prefVoucher}_LOADING`,
+    LOADING_DETAIL: `SET_${prefVoucher}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefVoucher}_LOADING_POST`,
+    IS_ERROR: `SET_${prefVoucher}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefVoucher}`,
+    FAILED: `FAILED_${prefVoucher}`,
+    DETAIL: `DETAIL_${prefVoucher}`,
+    EDIT: `EDIT_${prefVoucher}`
 }
 /****************
  ALAMAT
@@ -238,6 +264,20 @@ export const PENJUALAN = {
     FAILED: `FAILED_${prefPenjualan}`,
     DETAIL: `DETAIL_${prefPenjualan}`,
     EDIT: `EDIT_${prefPenjualan}`
+}
+/****************
+ REPORT REDEEM
+ *****************/
+let prefReportRedeem='REPORT_REDEEM';
+export const REPORT_REDEEM = {
+    LOADING: `SET_${prefReportRedeem}_LOADING`,
+    LOADING_DETAIL: `SET_${prefReportRedeem}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefReportRedeem}_LOADING_POST`,
+    IS_ERROR: `SET_${prefReportRedeem}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefReportRedeem}`,
+    FAILED: `FAILED_${prefReportRedeem}`,
+    DETAIL: `DETAIL_${prefReportRedeem}`,
+    EDIT: `EDIT_${prefReportRedeem}`
 }
 
 /****************
