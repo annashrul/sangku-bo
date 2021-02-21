@@ -280,6 +280,20 @@ export const REPORT_REDEEM = {
     DETAIL: `DETAIL_${prefReportRedeem}`,
     EDIT: `EDIT_${prefReportRedeem}`
 }
+/****************
+ REPORT_REWARD
+ *****************/
+let prefReportReward='REPORT_REWARD';
+export const REPORT_REWARD = {
+    LOADING: `SET_${prefReportReward}_LOADING`,
+    LOADING_DETAIL: `SET_${prefReportReward}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefReportReward}_LOADING_POST`,
+    IS_ERROR: `SET_${prefReportReward}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefReportReward}`,
+    FAILED: `FAILED_${prefReportReward}`,
+    DETAIL: `DETAIL_${prefReportReward}`,
+    EDIT: `EDIT_${prefReportReward}`
+}
 
 /****************
  DEPOSIT

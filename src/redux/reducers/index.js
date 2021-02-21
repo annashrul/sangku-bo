@@ -27,6 +27,7 @@ import {barangRedeemReducer} from "./paket/barang_redeem.reducer";
 import {barangRewardReducer} from "./paket/barang_reward.reducer";
 import {voucherReducer} from "./masterdata/voucher.reducer";
 import {reportRedeemReducer} from "./laporan/report_redeem.reducer";
+import {reportRewardReducer} from "./laporan/report_reward.reducer";
 
 export default combineReducers({
     modalReducer,
@@ -48,6 +49,7 @@ export default combineReducers({
     contentReducer,
     laporanPenjualanReducer,
     reportRedeemReducer,
+    reportRewardReducer,
     bonusReducer,
     depositReducer,
     penarikanReducer,
