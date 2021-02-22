@@ -178,6 +178,7 @@ export const toRp = (angka) => {
     // return Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(txt);
     // var number_string = angka.toString().replace(/[^,\d]/g, ''),
     let numbers=0;
+    if (parseFloat(angka)===0) return 0;
     if(parseFloat(angka)<0){
         numbers = angka.toString().replace('-', '');
     }else{

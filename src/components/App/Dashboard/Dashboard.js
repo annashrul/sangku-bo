@@ -3,19 +3,17 @@ import {connect} from 'react-redux';
 import Layout from 'components/Layout';
 import moment from 'moment';
 import {toRp} from "helper";
-import {FetchStock} from 'redux/actions/dashboard/dashboard.action'
+// import {FetchStock} from 'redux/actions/dashboard/dashboard.action'
 import 'bootstrap-daterangepicker/daterangepicker.css';
-// import socketIOClient from "socket.io-client";
+import socketIOClient from "socket.io-client";
 import {HEADERS} from 'redux/actions/_constants'
-import ReactApexChart from "react-apexcharts";
-
 
 import Cards from './src/Cards'
 import Filter from './src/Filter'
 import Info from './src/Info'
+import Chart from './src/charts'
 import Clock from "../../common/clock";
-// import {CheckDaily, storeDailyProfit} from "../../../redux/actions/transaction/transaction.action";
-// const socket = socketIOClient(HEADERS.URL);
+const socket = socketIOClient(HEADERS.URL);
 
 class Dashboard extends Component {
     constructor(props) {
@@ -23,103 +21,151 @@ class Dashboard extends Component {
         this.state = {
             startDate:moment(new Date()).format("yyyy-MM-DD"),
             endDate:moment(new Date()).format("yyyy-MM-DD"),
-            totalBalance:"0",
-            totalInvest:"0",
-            totalWD:"0",
-            totalMember:"0",
+            saldo_member:0,
+            total_penarikan:0,
+            total_member:0,
+            total_penjualan:0,
+            get_sponsor_terbaik:[],
+            get_member_baru:[],
             location_data:[],
             location:"-",
-            series: [
-                {
-                    name: 'Active Balance',
-                    data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-                        min: 10,
-                        max: 60
-                    })
-                },
-                {
-                    name: 'Investment',
-                    data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-                        min: 10,
-                        max: 20
-                    })
-                },
-                {
-                    name: 'Withdraw',
-                    data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-                        min: 10,
-                        max: 15
-                    })
-                }
-            ],
-            options: {
-                chart: {
-                    type: 'area',
-                    height: 350,
-                    stacked: true,
-                    events: {
-                        selection: function (chart, e) {
-                        }
+            penjualan_pin:{
+                series: [{
+                    name: 'series1',
+                    data: [31, 40]
+                }, {
+                    name: 'series2',
+                    data: [11, 32]
+                }],
+                options: {
+                    chart: {
+                        height: 350,
+                        type: 'area'
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    stroke: {
+                        curve: 'smooth'
+                    },
+                    xaxis: {
+                        type: 'date',
+                        categories: ["2018-09-19", "2018-09-19"]
+                    },
+                    tooltip: {
+                        x: {
+                            format: 'dd/MM/yy'
+                        },
                     },
                 },
-                colors: ['#008FFB', '#00E396', '#b71c1c'],
-                dataLabels: {
-                    enabled: false
-                },
-                stroke: {
-                    curve: 'smooth'
-                },
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        opacityFrom: 0.6,
-                        opacityTo: 1.0,
-                    }
-                },
-                legend: {
-                    position: 'top',
-                    horizontalAlign: 'left'
-                },
-                xaxis: {
-                    type: 'datetime'
+            },
+            penjualan_paket: {
+                series: [{
+                        name: 'series1',
+                        data: [31, 40]
+                    }, {
+                        name: 'series2',
+                        data: [11, 32]
+                    }],
+                    options: {
+                        chart: {
+                            height: 350,
+                            type: 'area'
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        stroke: {
+                            curve: 'smooth'
+                        },
+                        xaxis: {
+                            type: 'date',
+                            categories: ["2018-09-19", "2018-09-19"]
+                        },
+                        tooltip: {
+                            x: {
+                                format: 'dd/MM/yy'
+                            },
+                        },
+                    },
+            },
+            pie_membership: {
+                series: [44, 55],
+                options: {
+                    labels: ['Team A', 'Team B'],
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {
+                            chart: {
+                                width: 200
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }]
                 },
             },
-            isDaily:false,
-
+            pie_karir: {
+                series: [44, 55],
+                options: {
+                    labels: ['Team A', 'Team B'],
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {
+                            chart: {
+                                width: 200
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }]
+                },
+            },
+            pie_signup: {
+                series: [44, 55],
+                options: {
+                    labels: ['Team A', 'Team B'],
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {
+                            chart: {
+                                width: 200
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }]
+                },
+            }
         };
 
         // socket.on('refresh_dashboard',(data)=>{
         //     this.refreshData();
         // })
         
-        // socket.on("set_dashboard", (data) => {
-        //     this.setState({
-        //         series:data.series,
-        //         totalBalance:data.total_balance,
-        //         totalInvest:data.total_invest,
-        //         totalWD:data.total_wd,
-        //         totalMember:data.total_member,
-        //     })
-        // });
+        socket.on("set_dashboard_bo", (data) => {
+            this.setState({
+                penjualan_pin:data.penjualan_pin,
+                penjualan_paket:data.penjualan_paket,
+                pie_membership:data.pie_membership,
+                pie_karir:data.pie_karir,
+                pie_signup:data.pie_signup,
+                saldo_member: data.saldo_member,
+                total_penarikan: data.total_penarikan,
+                total_member: data.total_member,
+                total_penjualan: data.total_penjualan,
+                get_sponsor_terbaik: data.get_sponsor_terbaik,
+                get_member_baru: data.get_member_baru,
+            });
+        });
         this.HandleChangeLokasi = this.HandleChangeLokasi.bind(this);
     }
-    generateDayWiseTimeSeries(baseval, count, yrange) {
-        let i = 0;
-        let series = [];
-        while (i < count) {
-            let y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-            series.push([baseval, y]);
-            baseval += 86400000;
-            i++;
-        }
-        return series;
-    }
-
 
     componentWillReceiveProps = (nextProps) => {
-        this.setState({
-            isDaily:nextProps.skipped
-        })
+     
         if (nextProps.auth.user) {
           let lk = [{
               value: "-",
@@ -144,10 +190,10 @@ class Dashboard extends Component {
       }
 
     refreshData(start=null,end=null){
-        // socket.emit('get_dashboard', {
-        //     datefrom: start!==null?start:this.state.startDate,
-        //     dateto: end!==null?end:this.state.endDate,
-        // })
+        socket.emit('get_dashboard_bo', {
+            datefrom: start!==null?start:this.state.startDate,
+            dateto: end!==null?end:this.state.endDate,
+        })
     }
 
     componentWillMount(){
@@ -173,11 +219,6 @@ class Dashboard extends Component {
         });
         this.refreshData(awal,akhir);
     };
-
-    handleDailyProfit(e){
-        e.preventDefault();
-        // this.props.dispatch(storeDailyProfit());
-    }
 
     handleSubmit = (event) => {
         event.preventDefault()
@@ -217,57 +258,121 @@ class Dashboard extends Component {
 
                         </div>
                     </div>
-                    <div className="col-md-12">
-                        <Filter
-                            className="mb-3"
-                            handleEvent={this.handleEvent}
-                            startDate={this.state.startDate}
-                            endDate={this.state.endDate}
-                            location_data={this.state.location_data}
-                            HandleChangeLokasi={this.HandleChangeLokasi}
-                            location={this.state.location}
-                            handleDailyProfit={this.handleDailyProfit.bind(this)}
-                            isDaily={this.state.isDaily}
-                            isLoadingDaily={this.props.isLoadingCheck}
-                        />
-                    </div>
 
                     <div className="col-md-12">
                         {/* Dashboard Widget Area */}
                         <div className="row">
-                            <Cards title="TOTAL INVESTMENT" data={this.state.totalInvest} icon="fa fa-area-chart text-primary"/>
-                            <Cards title="ACTIVE BALANCE" data={this.state.totalBalance} icon="fa fa-area-chart text-primary"/>
-                            <Cards title="TOTAL WITHDRAW" data={this.state.totalWD} icon="fa fa-area-chart text-primary"/>
-                            <Cards title="MEMBER ACTIVE" data={this.state.totalMember} icon="fa fa-area-chart text-primary"/>
+                            <Cards title="TOTAL SALDO MEMBER" data={"Rp "+toRp(this.state.saldo_member)} icon="fa fa-money text-primary"/>
+                            <Cards title="TOTAL PENARIKAN" data={"Rp "+toRp(this.state.total_penarikan)} icon="fa fa-dollar text-primary"/>
+                            <Cards title="TOTAL PENJUALAN" data={"Rp "+toRp(this.state.total_penjualan)} icon="fa fa-shopping-cart text-primary"/>
+                            <Cards title="MEMBER AKTIF" data={toRp(this.state.total_member)} icon="fa fa-users text-primary"/>
                         </div>
                         {/* Dashboard Widget Area */}
                     </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-7 box-margin">
+                        <Chart
+                        data={this.state.penjualan_pin}
+                        title="Penjualan PIN"
+                        type="area"
+                        height={300} />
+                    </div>
+                    <div className="col-md-5 col-xl-5 box-margin">
+                        <Chart
+                        style={{marginTop:'30px'}}
+                        data={this.state.pie_membership}
+                        title="Membership Status"
+                        type="pie"
+                        height={300} />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-5 col-xl-5 box-margin">
+                        <Chart
+                        style={{marginTop:'30px'}}
+                        data={this.state.pie_karir}
+                        title="Jenjang Karir Member"
+                        type="pie"
+                        height={300} />
+                    </div>
+                    <div className="col-md-7 box-margin">
+                        <Chart
+                        data={this.state.penjualan_paket}
+                        title="Penjualan Paket"
+                        type="area"
+                        height={300} />
+                    </div>
 
-
-                    <div className="col-md-12">
+                </div>
+                <div className="row">
+                    <div className="col-md-3 col-xl-3 box-margin">
                         <div className="card">
-                            <div className="card-body">
-                                <div className="card-header bg-transparent text-center">
-                                    <h4 className="card-title mt-3">ACTIVE BALANCE</h4>
-                                </div>
-                                <ReactApexChart options={this.state.options} series={this.state.series} type="area" height={350} />
-
-                                {/*<div className="row">*/}
-                                {/*<div className="col-md-12">*/}
-                                {/*<Chart*/}
-                                {/*options={this.state.options}*/}
-                                {/*series={this.state.series}*/}
-                                {/*height="400"*/}
-                                {/*/>*/}
-                                {/*</div>*/}
-                                {/*</div>*/}
+                            <div className="card-header bg-transparent user-area d-flex align-items-center justify-content-between">
+                            <h5 className="card-title mb-0">Member Baru</h5>
                             </div>
+                            <div className="card-body" style={{overflowX: 'auto', height: '340px'}}>
+                                <ul className="total-earnings-list">
+                                    {
+                                        this.state.get_member_baru.length > 0 ? this.state.get_member_baru.map(item=>(
+                                            <li>
+                                                <div className="author-info d-flex align-items-center">
+                                                    <div className="author-img mr-3">
+                                                        <img src={item.picture} alt={item.full_name} />
+                                                    </div>
+                                                    <div className="author-text">
+                                                    <h6 className="mb-0">{item.full_name}</h6>
+                                                    <p className="mb-0" style={{fontSize:'.7em'}}>Join: {moment(item.created_at).format("yyyy-MM-DD")}</p>
+                                                    </div>
+                                                </div>
+                                                <a className="text-light badge badge-primary">{item.membership}</a>
+                                            </li>
+                                            )
+                                        ):''
+                                    }
+                                </ul>
+                                </div>
                         </div>
                     </div>
-                    {/*<Info handleSubmit={this.handleSubmit}/>*/}
+                    <div className="col-md-4 col-xl-4 box-margin">
+                        <div className="card">
+                            <div className="card-header bg-transparent user-area d-flex align-items-center justify-content-between">
+                            <h5 className="card-title mb-0">10 Sponsor terbaik</h5>
+                            </div>
+                            <div className="card-body" style={{overflowX: 'auto', height: '340px'}}>
+                                <ul className="total-earnings-list">
+                                    {
+                                        this.state.get_sponsor_terbaik.length > 0 ? this.state.get_sponsor_terbaik.map(item=>(
+                                            <li>
+                                                <div className="author-info d-flex align-items-center">
+                                                    <div className="author-img mr-3">
+                                                    <img src={item.picture} alt={item.title} />
+                                                    </div>
+                                                    <div className="author-text">
+                                                    <h6 className="mb-0">{item.full_name} <img src={item.membership} width={20} alt={item.title} /></h6>
+                                                    <p className="mb-0">{item.jenjang_karir}</p>
+                                                    </div>
+                                                </div>
+                                                <a className="text-light badge badge-warning">{item.sponsor}<br/>Sponsor</a>
+                                            </li>
+                                            )
+                                        ):''
+                                    }
+                                    
+                                </ul>
+                                </div>
+                        </div>
+                    </div>
+                    <div className="col-md-5 col-xl-5 box-margin">
+                        <Chart
+                        style={{marginTop:'30px'}}
+                        data={this.state.pie_signup}
+                        title="Platform Pendaftaran"
+                        type="pie"
+                        height={300} />
+                    </div>
                 </div>
 
-                {/* Dashboard Filter Area */}
 
         </Layout>
        

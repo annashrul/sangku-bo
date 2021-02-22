@@ -1,12 +1,12 @@
 import axios from "axios"
 import Swal from "sweetalert2";
-import {SALDO, HEADERS,NOTIF_ALERT} from "../_constants";
+import {CLAIM, HEADERS,NOTIF_ALERT} from "../_constants";
 import {ModalToggle} from "../modal.action";
 
 
 export function setLoading(load) {
     return {
-        type: SALDO.LOADING,
+        type: CLAIM.LOADING,
         load
     }
 }
@@ -14,54 +14,54 @@ export function setLoading(load) {
 
 export function setLoadingDetail(load) {
     return {
-        type: SALDO.LOADING_DETAIL,
+        type: CLAIM.LOADING_DETAIL,
         load
     }
 }
 export function setLoadingPost(load) {
     return {
-        type: SALDO.LOADING_POST,
+        type: CLAIM.LOADING_POST,
         load
     }
 }
 export function setIsError(load) {
     return {
-        type: SALDO.IS_ERROR,
+        type: CLAIM.IS_ERROR,
         load
     }
 }
 
 export function setData(data = []) {
     return {
-        type: SALDO.SUCCESS,
+        type: CLAIM.SUCCESS,
         data
     }
 }
 
 export function setDataEdit(data = []) {
     return {
-        type: SALDO.EDIT,
+        type: CLAIM.EDIT,
         data
     }
 }
 export function setDataDetail(data = []) {
     return {
-        type: SALDO.DETAIL,
+        type: CLAIM.DETAIL,
         data
     }
 }
 
 export function setDataFailed(data = []) {
     return {
-        type: SALDO.FAILED,
+        type: CLAIM.FAILED,
         data
     }
 }
 
-export const getLaporanSaldo = (where='') => {
+export const fetchData = (where='') => {
     return (dispatch) => {
         dispatch(setLoading(true));
-        let url = 'transaction/history/member';
+        let url = 'transaction/reward/report';
         if(where!==''){
             url+=`?${where}`;
         }
@@ -84,31 +84,3 @@ export const getLaporanSaldo = (where='') => {
 
     }
 };
-
-export const getDetailLaporanSaldo = (where='') => {
-    return (dispatch) => {
-        dispatch(setLoadingDetail(true));
-        let url = 'transaction/history';
-        if(where!==''){
-            url+=`?${where}`;
-        }
-        axios.get(HEADERS.URL + `${url}`)
-            .then(function (response) {
-                const data = response.data;
-                dispatch(setDataDetail(data));
-                dispatch(setLoadingDetail(false));
-            })
-            .catch(function (error) {
-                dispatch(setLoadingDetail(false));
-                if (error.message === 'Network Error') {
-                    Swal.fire(
-                        'Network Failed!.',
-                        'Please check your connection',
-                        'error'
-                    );
-                }
-            })
-
-    }
-};
-

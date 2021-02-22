@@ -7,9 +7,7 @@ import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import moment from "moment";
-import FormPenarikanBonus from '../modals/laporan/form_penarikan_bonus';
-import {getDeposit, postDeposit} from "../../../redux/actions/ewallet/deposit.action";
-import Select from 'react-select';
+import DetailLaporanSaldo from '../modals/laporan/detail_laporan_saldo';
 import * as Swal from "sweetalert2";
 import {getPenarikan, postPenarikan} from "../../../redux/actions/ewallet/penarikan.action";
 import {getLaporanSaldo} from "../../../redux/actions/ewallet/saldo.action";
@@ -56,7 +54,6 @@ class IndexSaldo extends Component{
         localStorage.removeItem("pageLaporanSaldo");
     }
     componentWillMount(){
-
         let where=this.handleValidate();
         console.log(where);
         this.props.dispatch(getLaporanSaldo(where));
@@ -84,8 +81,12 @@ class IndexSaldo extends Component{
             dateTo:to
         });
     };
-    handleDetail(e,id){
+    handleDetail(e,id,nama){
         e.preventDefault();
+        this.setState({detail:{"id":id,"nama":nama}});
+        const bool = !this.props.isOpen;
+        this.props.dispatch(ModalToggle(bool));
+        this.props.dispatch(ModalType("detailLaporanSaldo"));
     }
 
     render(){
@@ -154,14 +155,13 @@ class IndexSaldo extends Component{
                                             <th className="text-black" rowSpan="2" style={columnStyle}>NAMA</th>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>MEMBERSHIP</th>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>PLAFON</th>
-                                            <th className="text-black" colSpan="2" style={columnStyle}>SALDO</th>
-                                            <th className="text-black" colSpan="2" style={columnStyle}>TRANSAKSI</th>
+                                            <th className="text-black" colSpan="4" style={columnStyle}>SALDO</th>
                                         </tr>
                                         <tr>
                                             <th className="text-black" style={columnStyle}>AWAL</th>
-                                            <th className="text-black" style={columnStyle}>AKHIR</th>
                                             <th className="text-black" style={columnStyle}>MASUK</th>
                                             <th className="text-black" style={columnStyle}>KELUAR</th>
+                                            <th className="text-black" style={columnStyle}>AKHIR</th>
                                         </tr>
 
 
@@ -182,16 +182,17 @@ class IndexSaldo extends Component{
                                                                 <span className="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
                                                             </td>
                                                             <td style={columnStyle}>
-                                                                <button className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleDetail(e,v.id)}><i className={"fa fa-eye"}/></button>
+                                                                <button className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleDetail(e,v.id,v.full_name)}><i className={"fa fa-eye"}/></button>
                                                             </td>
 
                                                             <td style={columnStyle}>{v.full_name}</td>
                                                             <td style={columnStyle}>{v.membership}</td>
                                                             <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.plafon,10)===0?0:toCurrency(v.plafon)} .-</td>
                                                             <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.saldo_awal,10)===0?0:toCurrency(v.saldo_awal)} .-</td>
-                                                            <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.saldo_akhir,10)===0?0:toCurrency(v.saldo_akhir)} .-</td>
                                                             <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.trx_in,10)===0?0:toCurrency(v.trx_in)} .-</td>
                                                             <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.trx_out,10)===0?0:toCurrency(v.trx_out)} .-</td>
+                                                            <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.saldo_akhir,10)===0?0:toCurrency(v.saldo_akhir)} .-</td>
+
                                                         </tr>
                                                     );
                                                 })
@@ -226,9 +227,10 @@ class IndexSaldo extends Component{
                                             <th colSpan={4}>TOTAL PERHALAMAN</th>
                                             <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totPlafon===0?0:toCurrency(totPlafon)} .-</th>
                                             <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totSaldoAwal===0?0:toCurrency(totSaldoAwal)} .-</th>
-                                            <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totSaldoAkhir===0?0:toCurrency(totSaldoAkhir)} .-</th>
                                             <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totTrxIn===0?0:toCurrency(totTrxIn)} .-</th>
                                             <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totTrxOut===0?0:toCurrency(totTrxOut)} .-</th>
+                                            <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totSaldoAkhir===0?0:toCurrency(totSaldoAkhir)} .-</th>
+
                                         </tr>
                                         {
 
@@ -237,9 +239,10 @@ class IndexSaldo extends Component{
                                                     <th colSpan={4}>TOTAL KESELURUHAN</th>
                                                     <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.plafon,10)===0?0:toCurrency(parseInt(summary.plafon,10))} .-</th>
                                                     <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.saldo_awal,10)===0?0:toCurrency(parseInt(summary.saldo_awal,10))} .-</th>
-                                                    <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.saldo_akhir,10)===0?0:toCurrency(parseInt(summary.saldo_akhir,10))} .-</th>
                                                     <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.trx_in,10)===0?0:toCurrency(parseInt(summary.trx_in,10))} .-</th>
                                                     <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.trx_out,10)===0?0:toCurrency(parseInt(summary.trx_out,10))} .-</th>
+                                                    <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.saldo_akhir,10)===0?0:toCurrency(parseInt(summary.saldo_akhir,10))} .-</th>
+
                                                 </tr>
                                             ):null:null
                                         }
@@ -260,12 +263,9 @@ class IndexSaldo extends Component{
                         </div>
                     </div>
                 </div>
-                {/*{*/}
-                {/*this.props.isOpen===true?<FormPenarikanBonus*/}
-                {/*detail={this.state.detail}*/}
-                {/*/>:null*/}
-                {/*}*/}
-                {/*<FormPaket/>*/}
+                {
+                    this.props.isOpen===true?<DetailLaporanSaldo detail={this.state.detail}/>:null
+                }
             </Layout>
         );
     }

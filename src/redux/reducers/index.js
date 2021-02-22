@@ -28,6 +28,7 @@ import {barangRewardReducer} from "./paket/barang_reward.reducer";
 import {voucherReducer} from "./masterdata/voucher.reducer";
 import {reportRedeemReducer} from "./laporan/report_redeem.reducer";
 import {reportRewardReducer} from "./laporan/report_reward.reducer";
+import {claimReducer} from './laporan/claim.reducer'
 
 export default combineReducers({
     modalReducer,
@@ -58,6 +59,7 @@ export default combineReducers({
     kurirReducer,
     bonusSettingReducer,
     banksReducer,
+    claimReducer,
 
     auth: authReducer,
     errors : errorsReducer

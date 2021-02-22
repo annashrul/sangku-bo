@@ -20,7 +20,6 @@ export const NOTIF_ALERT = {
 }
 
 export const HEADERS ={
-  // URL: atob(document.getElementById("hellyeah").value),
   // URL       : "http://192.168.100.10:3010/",
   URL: 'http://ptnetindo.com:6694/',
   TOKEN     : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwY2RiN2M5OC0wNWNmLTQ4NDgtOGM3Yy0yZTFiYTczZGUwNmYiLCJpYXQiOjE1NzAxNzM0ODYsImV4cCI6MTU3MDc3ODI4Nn0.1NiWtt2luG83am8FJSvWpL5p35Oxd8GSJJTwhFmAdgw",
@@ -403,4 +402,16 @@ export const BANKS = {
   SUCCESS: `SUCCESS_${mbank}`,
   LISTBANK: `LISTBANK_${mbank}`,
   FAILED: `FAILED_${mbank}`,
+}
+
+/****************
+ CLAIM REWARD
+ *****************/
+let claim_reward = 'claim_reward';
+export const CLAIM = {
+  LOADING: `SET_${claim_reward}_LOADING`,
+  IS_ERROR: `SET_${claim_reward}_IS_ERROR`,
+  SUCCESS: `SUCCESS_${claim_reward}`,
+  LISTBANK: `LISTBANK_${claim_reward}`,
+  FAILED: `FAILED_${claim_reward}`,
 }
