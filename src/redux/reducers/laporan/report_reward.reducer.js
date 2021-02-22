@@ -1,61 +1,51 @@
 
 
-import {SALDO} from "../../actions/_constants";
+import {REPORT_REWARD} from "../../actions/_constants";
 
 const initialState = {
     isLoading: true,
     isLoadingDetail: true,
     isLoadingPost: false,
-    isLoadingExcel: false,
     isError: false,
     status: "",
     msg: "",
     data: [],
     edit:[],
-    detail:[],
-    excel:[],
+    detail:[]
 }
 
-export const saldoReducer = (state = initialState, action) => {
+export const reportRewardReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SALDO.SUCCESS:
+        case REPORT_REWARD.SUCCESS:
             return Object.assign({}, state, {
                 status: action.data.status,
                 msg: action.data.msg,
                 data: action.data.result,
             });
 
-        case SALDO.DETAIL:
+        case REPORT_REWARD.DETAIL:
             return Object.assign({}, state, {
                 detail: action.data.result,
             });
-        case SALDO.EXCEL:
-            return Object.assign({}, state, {
-                excel: action.data.result,
-            });
-        case SALDO.FAILED:
+        case REPORT_REWARD.FAILED:
             return Object.assign({}, state, {
                 status: action.data.status,
                 msg: action.data.msg,
                 data: action.data.data,
             });
-        case SALDO.LOADING:
+        case REPORT_REWARD.LOADING:
             return Object.assign({}, state, {
                 isLoading: action.load
             });
-        case SALDO.LOADING_EXCEL:
-            return Object.assign({}, state, {
-                isLoadingExcel: action.load
-            });
-        case SALDO.LOADING_DETAIL:
+        case REPORT_REWARD.LOADING_DETAIL:
             return Object.assign({}, state, {
                 isLoadingDetail: action.load
             });
-        case SALDO.LOADING_POST:
+        case REPORT_REWARD.LOADING_POST:
             return Object.assign({}, state, {
                 isLoadingPost: action.load
             });
-        case SALDO.IS_ERROR:
+        case REPORT_REWARD.IS_ERROR:
             return Object.assign({}, state, {
                 isError: action.load
             });

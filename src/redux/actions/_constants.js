@@ -280,6 +280,20 @@ export const REPORT_REDEEM = {
     DETAIL: `DETAIL_${prefReportRedeem}`,
     EDIT: `EDIT_${prefReportRedeem}`
 }
+/****************
+ REPORT_REWARD
+ *****************/
+let prefReportReward='REPORT_REWARD';
+export const REPORT_REWARD = {
+    LOADING: `SET_${prefReportReward}_LOADING`,
+    LOADING_DETAIL: `SET_${prefReportReward}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefReportReward}_LOADING_POST`,
+    IS_ERROR: `SET_${prefReportReward}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefReportReward}`,
+    FAILED: `FAILED_${prefReportReward}`,
+    DETAIL: `DETAIL_${prefReportReward}`,
+    EDIT: `EDIT_${prefReportReward}`
+}
 
 /****************
  DEPOSIT
@@ -308,6 +322,26 @@ export const PENARIKAN = {
     FAILED: `FAILED_${prefPenarikan}`,
     DETAIL: `DETAIL_${prefPenarikan}`,
     EDIT: `EDIT_${prefPenarikan}`
+
+}
+/****************
+ REPORT_BARANG
+ *****************/
+let prefReportBarang='REPORT_BARANG';
+export const REPORT_BARANG = {
+    LOADING: `SET_${prefReportBarang}_LOADING`,
+    LOADING_DETAIL: `SET_${prefReportBarang}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefReportBarang}_LOADING_POST`,
+    IS_ERROR: `SET_${prefReportBarang}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefReportBarang}`,
+    FAILED: `FAILED_${prefReportBarang}`,
+    DETAIL: `DETAIL_${prefReportBarang}`,
+    EDIT: `EDIT_${prefReportBarang}`,
+    EXCEL: `EXCEL_${prefReportBarang}`,
+    LOADING_EXCEL: `SET_${prefReportBarang}_LOADING_EXCEL`,
+    DETAIL_EXCEL: `DETAIL_EXCEL_${prefReportBarang}`,
+    LOADING_DETAIL_EXCEL: `SET_${prefReportBarang}_LOADING_DETAIL_EXCEL`,
+
 }
 /****************
  BONUS
@@ -335,7 +369,11 @@ export const SALDO = {
     SUCCESS: `SUCCESS_${prefSaldo}`,
     FAILED: `FAILED_${prefSaldo}`,
     DETAIL: `DETAIL_${prefSaldo}`,
-    EDIT: `EDIT_${prefSaldo}`
+    EDIT: `EDIT_${prefSaldo}`,
+    EXCEL: `EXCEL_${prefSaldo}`,
+    LOADING_EXCEL: `SET_${prefSaldo}_LOADING_EXCEL`,
+
+
 }
 /****************
  SETTING

@@ -2,18 +2,19 @@ import React,{Component} from 'react';
 import {connect} from "react-redux";
 import Layout from 'components/Layout';
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
-import Paginationq, {rangeDate, noImage, rmComma, ToastQ, toCurrency, toRp, toExcel} from "../../../helper";
+import Paginationq, {
+    rangeDate, noImage, rmComma, ToastQ, toCurrency, toRp, toExcel,
+    statusOrder
+} from "../../../helper";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import moment from "moment";
-import DetailLaporanSaldo from '../modals/laporan/detail_laporan_saldo';
-import {getExcelLaporanSaldo, getLaporanSaldo} from "../../../redux/actions/ewallet/saldo.action";
-import XLSX from 'xlsx'
-import {fetchKategori} from "../../../redux/actions/kategori/kategori.action";
-import Select from 'react-select';
+import DetailLaporanBarang from '../modals/laporan/detail_laporan_barang';
+import {getExcelReportBarang, getReportBarang} from "../../../redux/actions/laporan/report_barang.action";
+import imgDefault from 'assets/default.png'
 
-class IndexSaldo extends Component{
+class IndexReportBarang extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -22,9 +23,7 @@ class IndexSaldo extends Component{
             dateFrom:moment(new Date()).format("yyyy-MM-DD"),
             dateTo:moment(new Date()).format("yyyy-MM-DD"),
             data:[],
-            isLoading:true,
-            membership_data:[],
-            membership:''
+            isLoading:false,
         };
         this.handleChange      = this.handleChange.bind(this);
         this.handlePage      = this.handlePage.bind(this);
@@ -32,7 +31,6 @@ class IndexSaldo extends Component{
         this.handleEvent      = this.handleEvent.bind(this);
         this.handleDetail      = this.handleDetail.bind(this);
         this.printDocumentXLsx      = this.printDocumentXLsx.bind(this);
-        this.HandleChangeMembership      = this.HandleChangeMembership.bind(this);
 
     }
     handleValidate(){
@@ -40,14 +38,11 @@ class IndexSaldo extends Component{
         let dateFrom=localStorage.dateFromLaporanSaldo!==undefined?localStorage.dateFromLaporanSaldo:this.state.dateFrom;
         let dateTo=localStorage.dateToLaporanSaldo!==undefined?localStorage.dateToLaporanSaldo:this.state.dateTo;
         let any = this.state.any;
-        let membership = this.state.membership;
         let where=`page=${page}&perpage=10&datefrom=${dateFrom}&dateto=${dateTo}`;
         if(any!==null&&any!==undefined&&any!==""){
             where+=`&q=${any}`;
         }
-        if(membership!==null&&membership!==undefined&&membership!==""){
-            where+=`&membership=${membership}`;
-        }
+
         return where;
 
     }
@@ -57,46 +52,86 @@ class IndexSaldo extends Component{
         })
     }
     componentWillUnmount(){
-        localStorage.removeItem("dateFromLaporanSaldo");
-        localStorage.removeItem("dateToLaporanSaldo");
-        localStorage.removeItem("pageLaporanSaldo");
+        localStorage.removeItem("dateFromReportBarang");
+        localStorage.removeItem("dateToReportBarang");
+        localStorage.removeItem("pageReportBarang");
     }
     componentWillMount(){
         let where=this.handleValidate();
-        this.props.dispatch(getLaporanSaldo(where));
-        this.props.dispatch(fetchKategori(`membership`));
+        this.props.dispatch(getReportBarang(where));
 
     }
-    componentWillReceiveProps(nextProps){
-        let membership=[];
-        if(nextProps.kategori.data!==undefined){
-            if(nextProps.kategori.data.length>0){
-                nextProps.kategori.data.map((v,i)=>{
-                    membership.push({value:v.title,label:v.title});
-                })
-            }else {
-                membership = [];
-            }
-            this.setState({membership_data:membership});
+    componentDidUpdate(prevProps, prevState) {
+        if(prevProps.dataExcel.data!==this.props.dataExcel.data){
+            this.getProps(this.props);
         }
     }
-    HandleChangeMembership(val){
-        this.setState({
-            membership:val.value
-        })
+    getProps(props){
+        if(props.dataExcel.data!==undefined){
+            if(props.dataExcel.data.length>0){
+                let content=[],totMenungguPembayaran=0,totDikemas=0,totDikirim=0,totSelesai=0,totDibatalkan=0,totOmset=0;
+                props.dataExcel.data.map((v,i)=>{
+                    content.push([
+                        v.title,
+                        parseInt(v.menunggu_pembayaran,10),
+                        parseInt(v.dikemas,10),
+                        parseInt(v.dikirim,10),
+                        parseInt(v.selesai,10),
+                        parseInt(v.dibatalkan,10),
+                        parseInt(v.total_omset,10),
+                    ]);
+                    totMenungguPembayaran=totMenungguPembayaran+parseInt(v.menunggu_pembayaran,10);
+                    totDikemas=totDikemas+parseInt(v.dikemas,10);
+                    totDikirim=totDikirim+parseInt(v.dikirim,10);
+                    totSelesai=totSelesai+parseInt(v.selesai,10);
+                    totDibatalkan=totDibatalkan+parseInt(v.dibatalkan,10);
+                    totOmset=totOmset+parseInt(v.total_omset,10);
+                });
+                console.log(content);
+                toExcel(
+                    'LAPORAN TRASANSAKSI BARANG',
+                    `${this.state.dateFrom} - ${this.state.dateTo}`,
+                    [
+                        'NAMA',
+                        'MENUNGGU PEMBAYARAN',
+                        'DIKEMAS',
+                        'DIKIRIM',
+                        'SELESAI',
+                        'DIBATALKAN',
+                        'TOTAL OMSET'
+                    ],
+                    content,
+                    [
+                        [''],
+                        [''],
+                        [
+                            'TOTAL',
+                            totMenungguPembayaran,
+                            totDikemas,
+                            totDikirim,
+                            totSelesai,
+                            totDibatalkan,
+                            totOmset,
+                        ]
+                    ]
+
+
+                )
+            }
+        }
     }
     handleSearch(e){
         e.preventDefault();
-        localStorage.setItem("dateFromLaporanSaldo",`${this.state.dateFrom}`);
-        localStorage.setItem("dateToLaporanSaldo",`${this.state.dateTo}`);
-        localStorage.removeItem("pageLaporanSaldo");
+        localStorage.setItem("dateFromReportBarang",`${this.state.dateFrom}`);
+        localStorage.setItem("dateToReportBarang",`${this.state.dateTo}`);
+        localStorage.removeItem("pageReportBarang");
         let where = this.handleValidate();
-        this.props.dispatch(getLaporanSaldo(where));
+        this.props.dispatch(getReportBarang(where));
     }
     handlePage(num){
         localStorage.setItem("pageLaporanSaldo",num);
         let where = this.handleValidate();
-        this.props.dispatch(getLaporanSaldo(where));
+        this.props.dispatch(getReportBarang(where));
 
     }
     handleEvent = (event, picker) => {
@@ -110,82 +145,30 @@ class IndexSaldo extends Component{
     };
     handleDetail(e,id,nama){
         e.preventDefault();
-        this.setState({detail:{"id":id,"nama":nama}});
+        this.setState({detail:{"id":id,"nama":nama,dateFrom:this.state.dateFrom,dateTo:this.state.dateTo}});
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
-        this.props.dispatch(ModalType("detailLaporanSaldo"));
-    }
-    componentDidUpdate(prevProps, prevState) {
-        if(prevProps.dataExcel.data!==this.props.dataExcel.data){
-            this.getExcel(this.props);
-        }
-    }
-    getExcel(props){
-        if(props.dataExcel.data!==undefined){
-            if(props.dataExcel.data.length>0){
-                let content=[];
-                props.dataExcel.data.map((v,i)=>{
-                    content.push([
-                        v.full_name,
-                        v.membership,
-                        parseInt(v.plafon,10),
-                        parseInt(v.saldo_awal,10),
-                        parseInt(v.trx_in,10),
-                        parseInt(v.trx_out,10),
-                        parseInt(v.saldo_akhir,10),
-                    ]);
-                });
-                toExcel(
-                    'LAPORAN TRASANSAKSI MEMBER',
-                    `${this.state.dateFrom} - ${this.state.dateTo}`,
-                    [
-                        'NAMA',
-                        'MEMBERSHIP',
-                        'PLAFON',
-                        'SALDO AWAL',
-                        'SALDO MASUK',
-                        'SALDO KELUAR',
-                        'SALDO AKHIR',
-                    ],
-                    content,
-                    [
-                        [''],
-                        [''],
-                        [
-                            'TOTAL',
-                            '',
-                            props.dataExcel.summary===undefined?0:parseInt(props.dataExcel.summary.plafon,10),
-                            props.dataExcel.summary===undefined?0:parseInt(props.dataExcel.summary.saldo_awal,10),
-                            props.dataExcel.summary===undefined?0:parseInt(props.dataExcel.summary.trx_in,10),
-                            props.dataExcel.summary===undefined?0:parseInt(props.dataExcel.summary.trx_out,10),
-                            props.dataExcel.summary===undefined?0:parseInt(props.dataExcel.summary.saldo_akhir,10)
-                        ]
-                    ]
-                )
-            }
-        }
+        this.props.dispatch(ModalType("detailLaporanBarang"));
     }
     printDocumentXLsx = (e,param) => {
-        e.preventDefault();
         let where=`perpage=${param}&datefrom=${this.state.dateFrom}&dateto=${this.state.dateTo}`;
         if(this.state.any!==null&&this.state.any!==undefined&&this.state.any!==""){
             where+=`&q=${this.state.any}`;
         }
-        if(this.state.membership!==null&&this.state.membership!==undefined&&this.state.membership!==""){
-            where+=`&membership=${this.state.membership}`;
-        }
-        this.props.dispatch(getExcelLaporanSaldo(where));
+        this.props.dispatch(getExcelReportBarang(where));
+
     }
 
     render(){
         const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const numStyle ={verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
         // const data = this.state.data;
-        let totPlafon=0;
-        let totSaldoAwal=0;
-        let totSaldoAkhir=0;
-        let totTrxIn=0;
-        let totTrxOut=0;
+        let tot0=0;
+        let tot1=0;
+        let tot2=0;
+        let tot3=0;
+        let tot4=0;
+        let totOmset=0;
         const {
             total,
             per_page,
@@ -229,30 +212,6 @@ class IndexSaldo extends Component{
                                                     <input type="text" className="form-control" name="any" placeholder={"cari disini"} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                                 </div>
                                             </div>
-                                            <div className="col-12 col-xs-12 col-md-3">
-                                                <div className="form-group">
-                                                    <label>Membership</label>
-                                                    {
-                                                        typeof this.props.kategori.data === 'object' ?
-                                                            (
-                                                                <Select
-                                                                    options={this.state.membership_data}
-                                                                    placeholder="Pilih Membership"
-                                                                    onChange={this.HandleChangeMembership}
-                                                                    value={
-                                                                        this.state.membership_data.find(op => {
-                                                                            return op.value === this.state.membership
-                                                                        })
-                                                                    }
-
-                                                                />
-                                                            )
-                                                            : <Skeleton height={40}/>
-                                                    }
-
-                                                </div>
-                                            </div>
-
                                         </div>
                                     </div>
                                     <div className="col-6 col-xs-6 col-md-2" style={{textAlign:"right"}}>
@@ -276,16 +235,18 @@ class IndexSaldo extends Component{
                                         <tr>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>NO</th>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>#</th>
+                                            <th className="text-black" rowSpan="2" style={columnStyle}>GAMBAR</th>
                                             <th className="text-black" rowSpan="2" style={columnStyle}>NAMA</th>
-                                            <th className="text-black" rowSpan="2" style={columnStyle}>MEMBERSHIP</th>
-                                            <th className="text-black" rowSpan="2" style={columnStyle}>PLAFON</th>
-                                            <th className="text-black" colSpan="4" style={columnStyle}>SALDO</th>
+                                            <th className="text-black" colSpan="5" style={columnStyle}>STATUS</th>
+                                            <th className="text-black" rowSpan="2" style={columnStyle}>TOTAL OMSET</th>
+
                                         </tr>
                                         <tr>
-                                            <th className="text-black" style={columnStyle}>AWAL</th>
-                                            <th className="text-black" style={columnStyle}>MASUK</th>
-                                            <th className="text-black" style={columnStyle}>KELUAR</th>
-                                            <th className="text-black" style={columnStyle}>AKHIR</th>
+                                            <th className="text-black" style={columnStyle}>MENUNGGU PEMBAYARAN</th>
+                                            <th className="text-black" style={columnStyle}>DIKEMAS</th>
+                                            <th className="text-black" style={columnStyle}>DIKIRIM</th>
+                                            <th className="text-black" style={columnStyle}>SELESAI</th>
+                                            <th className="text-black" style={columnStyle}>DIBATALKAN</th>
                                         </tr>
 
 
@@ -295,36 +256,53 @@ class IndexSaldo extends Component{
 
                                             !this.props.isLoading? typeof data==='object'? data.length > 0 ?
                                                 data.map((v, i) => {
-                                                    totPlafon=totPlafon+parseInt(v.plafon,10);
-                                                    totSaldoAwal=totSaldoAwal+parseInt(v.saldo_awal,10);
-                                                    totSaldoAkhir=totSaldoAkhir+parseInt(v.saldo_akhir,10);
-                                                    totTrxIn=totTrxIn+parseInt(v.trx_in,10);
-                                                    totTrxOut=totTrxOut+parseInt(v.trx_out,10);
+                                                tot0=tot0+parseInt(v.menunggu_pembayaran,10);
+                                                tot1=tot1+parseInt(v.dikemas,10);
+                                                tot2=tot2+parseInt(v.dikirim,10);
+                                                tot3=tot3+parseInt(v.selesai,10);
+                                                tot4=tot4+parseInt(v.dibatalkan,10);
+                                                totOmset=totOmset+parseInt(v.total_omset,10);
                                                     return (
                                                         <tr key={i}>
                                                             <td style={columnStyle}>
                                                                 <span className="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
                                                             </td>
                                                             <td style={columnStyle}>
-                                                                <button className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleDetail(e,v.id,v.full_name)}><i className={"fa fa-eye"}/></button>
+                                                                <button className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleDetail(e,v.id,v.title)}><i className={"fa fa-eye"}/></button>
                                                             </td>
-
-                                                            <td style={columnStyle}>{v.full_name}</td>
-                                                            <td style={columnStyle}>{v.membership}</td>
-                                                            <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.plafon,10)===0?0:toCurrency(v.plafon)} .-</td>
-                                                            <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.saldo_awal,10)===0?0:toCurrency(v.saldo_awal)} .-</td>
-                                                            <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.trx_in,10)===0?0:toCurrency(v.trx_in)} .-</td>
-                                                            <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.trx_out,10)===0?0:toCurrency(v.trx_out)} .-</td>
-                                                            <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.saldo_akhir,10)===0?0:toCurrency(v.saldo_akhir)} .-</td>
-
+                                                            <td style={columnStyle}>
+                                                                <img  style={{height:'50px',width:'50px',objectFit:"scaleDown"}} src={v.foto} onError={(e)=>{e.target.onerror = null; e.target.src=`${noImage()}`}} alt="member image"/>
+                                                            </td>
+                                                            <td style={columnStyle}>{v.title}</td>
+                                                            <td style={numStyle}>
+                                                                <img alt="images" onError={(e)=>{e.target.onerror = null; e.target.src=`${imgDefault}`}} className="svg icon" id="BelumBayar" src={statusOrder('dollar',4)}/>
+                                                                &nbsp;&nbsp;&nbsp;{v.menunggu_pembayaran}
+                                                            </td>
+                                                            <td style={numStyle}>
+                                                                <img alt="images" onError={(e)=>{e.target.onerror = null; e.target.src=`${imgDefault}`}} className="svg icon" id="Dikemas" src={statusOrder('packing',1)}/>
+                                                                &nbsp;&nbsp;&nbsp;{v.dikemas}
+                                                            </td>
+                                                            <td style={numStyle}>
+                                                                <img alt="images" onError={(e)=>{e.target.onerror = null; e.target.src=`${imgDefault}`}} className="svg icon" id="Dikirim" src={statusOrder('truck',2)}/>
+                                                                &nbsp;&nbsp;&nbsp;{v.dikirim}
+                                                            </td>
+                                                            <td style={numStyle}>
+                                                                <img alt="images" onError={(e)=>{e.target.onerror = null; e.target.src=`${imgDefault}`}} className="svg icon" id="Selesai" src={statusOrder('confirm',3)}/>
+                                                                &nbsp;&nbsp;&nbsp;{v.selesai}
+                                                                </td>
+                                                            <td style={numStyle}>
+                                                                <img alt="images" onError={(e)=>{e.target.onerror = null; e.target.src=`${imgDefault}`}} className="svg icon" id="Dibatalkan" src={statusOrder('dollar',4)}/>
+                                                                &nbsp;&nbsp;&nbsp;{v.dibatalkan}
+                                                            </td>
+                                                            <td className={"txtRed"} style={numStyle}>Rp {parseInt(v.total_omset,10)===0?0:toCurrency(v.total_omset)} .-</td>
                                                         </tr>
                                                     );
                                                 })
                                                 : <tr>
-                                                    <td colSpan={9} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
+                                                    <td colSpan={10} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
                                                 </tr>:
                                                 <tr>
-                                                    <td colSpan={9} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
+                                                    <td colSpan={10} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
                                                 </tr> : (()=>{
                                                 let container =[];
                                                 for(let x=0; x<10; x++){
@@ -332,6 +310,7 @@ class IndexSaldo extends Component{
                                                         <tr key={x}>
                                                             <td style={columnStyle}>{<Skeleton circle={true} height={40} width={40}/>}</td>
                                                             <td style={columnStyle}>{<Skeleton/>}</td>
+                                                            <td style={columnStyle}>{<Skeleton circle={true} height={40} width={40}/>}</td>
                                                             <td style={columnStyle}>{<Skeleton/>}</td>
                                                             <td style={columnStyle}>{<Skeleton/>}</td>
                                                             <td style={columnStyle}>{<Skeleton/>}</td>
@@ -349,28 +328,14 @@ class IndexSaldo extends Component{
                                         <tfoot style={{backgroundColor:"#EEEEEE"}}>
                                         <tr>
                                             <th colSpan={4}>TOTAL PERHALAMAN</th>
-                                            <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totPlafon===0?0:toCurrency(totPlafon)} .-</th>
-                                            <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totSaldoAwal===0?0:toCurrency(totSaldoAwal)} .-</th>
-                                            <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totTrxIn===0?0:toCurrency(totTrxIn)} .-</th>
-                                            <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totTrxOut===0?0:toCurrency(totTrxOut)} .-</th>
-                                            <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totSaldoAkhir===0?0:toCurrency(totSaldoAkhir)} .-</th>
+                                            <th colSpan={1} style={numStyle}>{tot0===0?0:toCurrency(tot0)}</th>
+                                            <th colSpan={1} style={numStyle}>{tot1===0?0:toCurrency(tot1)}</th>
+                                            <th colSpan={1} style={numStyle}>{tot2===0?0:toCurrency(tot2)}</th>
+                                            <th colSpan={1} style={numStyle}>{tot3===0?0:toCurrency(tot3)}</th>
+                                            <th colSpan={1} style={numStyle}>{tot4===0?0:toCurrency(tot4)}</th>
+                                            <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {totOmset===0?0:toCurrency(totOmset)} .-</th>
 
                                         </tr>
-                                        {
-
-                                            !this.props.isLoading?summary!==undefined?(
-                                                <tr>
-                                                    <th colSpan={4}>TOTAL KESELURUHAN</th>
-                                                    <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.plafon,10)===0?0:toCurrency(parseInt(summary.plafon,10))} .-</th>
-                                                    <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.saldo_awal,10)===0?0:toCurrency(parseInt(summary.saldo_awal,10))} .-</th>
-                                                    <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.trx_in,10)===0?0:toCurrency(parseInt(summary.trx_in,10))} .-</th>
-                                                    <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.trx_out,10)===0?0:toCurrency(parseInt(summary.trx_out,10))} .-</th>
-                                                    <th className={"txtRed"} colSpan={1} style={numStyle}>Rp {parseInt(summary.saldo_akhir,10)===0?0:toCurrency(parseInt(summary.saldo_akhir,10))} .-</th>
-
-                                                </tr>
-                                            ):null:null
-                                        }
-
                                         </tfoot>
                                     </table>
                                 </div>
@@ -388,7 +353,7 @@ class IndexSaldo extends Component{
                     </div>
                 </div>
                 {
-                    this.props.isOpen===true?<DetailLaporanSaldo detail={this.state.detail}/>:null
+                    this.props.isOpen===true?<DetailLaporanBarang detail={this.state.detail}/>:null
                 }
             </Layout>
         );
@@ -396,15 +361,13 @@ class IndexSaldo extends Component{
 }
 const mapStateToProps = (state) => {
     return {
-        isLoading: state.saldoReducer.isLoading,
-        isLoadingExcel: state.saldoReducer.isLoadingExcel,
         isOpen:state.modalReducer,
-        data:state.saldoReducer.data,
-        dataExcel:state.saldoReducer.excel,
-        kategori:state.kategoriReducer.data,
-
+        isLoading: state.reportBarangReducer.isLoading,
+        data:state.reportBarangReducer.data,
+        isLoadingExcel: state.reportBarangReducer.isLoadingExcel,
+        dataExcel:state.reportBarangReducer.excel,
     }
 }
 
 
-export default connect(mapStateToProps)(IndexSaldo);
+export default connect(mapStateToProps)(IndexReportBarang);

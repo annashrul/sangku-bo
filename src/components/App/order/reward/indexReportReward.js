@@ -1,42 +1,81 @@
 import React,{Component} from 'react';
 import Layout from "../../../Layout";
 import connect from "react-redux/es/connect/connect";
-import {getReportRedeem} from "../../../../redux/actions/laporan/report_redeem.action";
-import * as Toast from "sweetalert2";
-import Paginationq, {noImage, statusOrder, toCurrency,ToastQ} from "../../../../helper";
-import imgDefault from 'assets/default.png'
-import {Link} from "react-router-dom";
-import Skeleton from 'react-loading-skeleton';
+import {getReportReward} from "../../../../redux/actions/laporan/report_reward.action";
+import {DateRangePicker} from "react-bootstrap-daterangepicker";
+import Paginationq, {rangeDate, noImage, rmComma, ToastQ, toCurrency, toRp, statusOrder} from "../../../../helper";
+import {NOTIF_ALERT} from "../../../../redux/actions/_constants";
 import moment from "moment";
-import {lacakResi, updateResi} from "../../../../redux/actions/laporan/laporan_penjualan.action";
+import imgDefault from 'assets/default.png'
+import Skeleton from 'react-loading-skeleton';
 
-class ReportRedeem extends Component{
+const prefix='ReportReward';
+
+class IndexReportReward extends Component{
     constructor(props){
         super(props);
-        this.state = {
-            dateFrom: moment().format('YYYY-MM-DD'),
-            dateTo: moment().format('YYYY-MM-DD'),
-            resi:'',
-            dataPenjualan:[]
-
+        this.state={
+            detail:{},
+            any:"",
+            dateFrom:moment(new Date()).format("yyyy-MM-DD"),
+            dateTo:moment(new Date()).format("yyyy-MM-DD"),
         };
-        this.handlePageChange = this.handlePageChange.bind(this)
-        this.handleResi = this.handleResi.bind(this)
-        this.handleChange = this.handleChange.bind(this)
+        this.handleChange      = this.handleChange.bind(this);
+        this.handlePage      = this.handlePage.bind(this);
+        this.handleSearch      = this.handleSearch.bind(this);
+        this.handleEvent      = this.handleEvent.bind(this);
+
     }
-    componentWillReceiveProps = (nextProps) => {
-        if (nextProps.data.data !== undefined) {
-            const data=[];
-            if(nextProps.data.data.length>0){
-                for(let i=0;i<nextProps.data.data.length;i++){
-                    data.push(Object.assign(nextProps.data.data[i]));
-                }
-            }
-            this.setState({dataPenjualan:data});
+    handleValidate(){
+        let sessPage=localStorage.getItem(`page${prefix}`);
+        let sessDateFrom=localStorage.getItem(`dateFrom${prefix}`);
+        let sessDateTo=localStorage.getItem(`dateTo${prefix}`);
+        let page = sessPage!==null?sessPage:"1";
+        let dateFrom=sessDateFrom!==null?sessDateFrom:this.state.dateFrom;
+        let dateTo=sessDateTo!==null?sessDateTo:this.state.dateTo;
+        let any = this.state.any;
+        let where=`page=${page}&perpage=10&datefrom=${dateFrom}&dateto=${dateTo}`;
+        if(any!==null&&any!==undefined&&any!==""){
+            where+=`&q=${any}`;
         }
+        return where;
+    }
+    componentWillUnmount(){
+        localStorage.removeItem(`dateFrom${prefix}`);
+        localStorage.removeItem(`dateTo${prefix}`);
+        localStorage.removeItem(`page${prefix}`);
     }
     componentWillMount(){
-        this.props.dispatch(getReportRedeem('page=1'));
+        let where=this.handleValidate();
+        this.props.dispatch(getReportReward(where));
+    }
+    handleChange(e){
+        this.setState({
+            [e.target.name] : e.target.value
+        })
+    }
+    handlePage(num){
+        localStorage.setItem(`page${prefix}`,num);
+        let where = this.handleValidate();
+        this.props.dispatch(getReportReward(where));
+
+    }
+    handleEvent = (event, picker) => {
+        event.preventDefault();
+        const from = moment(picker.startDate._d).format('YYYY-MM-DD');
+        const to = moment(picker.endDate._d).format('YYYY-MM-DD');
+        this.setState({
+            dateFrom:from,
+            dateTo:to
+        });
+    };
+    handleSearch(e){
+        e.preventDefault();
+        localStorage.setItem(`dateFrom${prefix}`,`${this.state.dateFrom}`);
+        localStorage.setItem(`dateTo${prefix}`,`${this.state.dateTo}`);
+        localStorage.removeItem(`page${prefix}`);
+        let where = this.handleValidate();
+        this.props.dispatch(getReportReward(where));
     }
     rowProduk(image, title, qty, hrg){
         return (
@@ -54,49 +93,70 @@ class ReportRedeem extends Component{
             </div>
         )
     }
-    handleChange = (e,i) => {
-        let column = e.target.name;
-        let value = e.target.value;
-        let dataPenjualan = [...this.state.dataPenjualan];
-        dataPenjualan[i] = {...dataPenjualan[i], [column]: value};
-        this.setState({dataPenjualan:dataPenjualan});
-    }
-
-    handlePageChange(num){
-        this.props.dispatch(getReportRedeem('page='+num));
-    }
-
-    handleResi(e, kdtrx, resi,kurir, isLacak=false) {
-        e.preventDefault()
-        // this.setState({
-        //     dataTrx: [],
-        //     dataPenjualan: []
-        // })
-        if(!isLacak) this.props.dispatch(updateResi(kdtrx, resi));
-        else this.props.dispatch(lacakResi(kdtrx, resi, kurir));
-        console.log(resi);
-    }
     render(){
-
+        const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
+        const numStyle ={verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
+        // const data = this.state.data;
+        let totAmount=0;
         const {
-            last_page,
+            total,
             per_page,
+            offset,
+            to,
+            last_page,
             current_page,
-            data
+            from,
+            data,
         } = this.props.data;
-        console.log(data);
         return (
-            <Layout page="Report Redeem" headers="Report Redeem" >
-                <div className="row">
+            <Layout page="Report Reward" headers="Report Reward" >
+                <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Redeem</h5>
+                            <h5 className="mb-0 font-weight-bold">Report Reward</h5>
                         </div>
                     </div>
                 </div>
                 <div className="row">
+                <div className="col-12 box-margin">
+                    <div className="card">
+                        <div className="card-body">
+                            <div className="row" style={{zoom:"90%"}}>
+                                <div className="col-6 col-xs-6 col-md-2">
+                                    <div className="form-group">
+                                        <label>Periode </label>
+                                        <DateRangePicker
+                                            autoUpdateInput={true} showDropdowns={true} style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onApply={this.handleEvent}>
+                                            <input type="text" readOnly={true} className="form-control" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
+                                        </DateRangePicker>
+                                    </div>
+                                </div>
+
+                                <div className="col-12 col-xs-12 col-md-3">
+                                    <div className="form-group">
+                                        <label>Cari</label>
+                                        <input type="text" className="form-control" name="any" placeholder={"cari disini"} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
+                                    </div>
+                                </div>
+                                <div className="col-2 col-xs-2 col-md-4">
+                                    <div className="form-group">
+                                        <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                        <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleAdd(e)}><i className="fa fa-plus"/></button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+                <div className="row">
                     {
-                        !this.props.isLoading?data.length>0?this.state.dataPenjualan.map((v,i)=>{
+                        !this.props.isLoading?typeof data==='object'?data.length>0?data.map((v,i)=>{
                             return(
                                 <div className="col-md-6  box-margin" key={i}>
                                     <div className="card">
@@ -117,8 +177,7 @@ class ReportRedeem extends Component{
                                                             }
                                                         ><strong className={"txtGreen"}>#{v.kd_trx}</strong> <i className="fa fa-copy" style={{fontSize:'.5em'}}/> </a>
                                                     </p>
-                                                    <small>Pemesan</small>
-                                                    <p><span>{v.full_name}</span></p>
+
                                                     <small>Detail Alamat</small>
                                                     <p>
                                                         <span>{v.main_address}</span><br/>
@@ -139,8 +198,8 @@ class ReportRedeem extends Component{
                                                             {
                                                                 this.rowProduk(
                                                                     v.gambar,
-                                                                    v.title,
-                                                                    `${v.subtotal} POIN`,
+                                                                    v.reward,
+                                                                    v.karir,
                                                                     ""
                                                                 )
                                                             }
@@ -186,31 +245,7 @@ class ReportRedeem extends Component{
                                                                 <div id="no_resi">
                                                                     Resi: {v.resi} <small><a href="#">Lacak resi</a></small>
                                                                 </div>
-                                                            ):''
-                                                        }
-                                                        {
-                                                            v.valid_resi===0?(
-                                                                <div id="input_resi">
-                                                                    <input
-                                                                        type="text"
-                                                                        name='resi'
-                                                                        className="form-control form-control-sm"
-                                                                        placeholder="Cth. JO012XXXXXX"
-                                                                        value={v.resi}
-                                                                        onChange={(e)=>this.handleChange(e,i)}
-                                                                        onKeyPress = {
-                                                                            event => {
-                                                                                if (event.key === 'Enter') {
-                                                                                    this.handleResi(event, v.kd_trx, v.resi)
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    />
-                                                                    <small id="passwordHelpBlock" className="form-text text-muted">
-                                                                        Tekan enter untuk update
-                                                                    </small>
-                                                                </div>
-                                                            ):''
+                                                            ):'-'
                                                         }
                                                     </div>
 
@@ -223,29 +258,31 @@ class ReportRedeem extends Component{
                                     </div>
                                 </div>
                             );
-                        }):"":(() => {
+                        }): <img src={NOTIF_ALERT.NO_DATA} alt=""/>:<img src={NOTIF_ALERT.NO_DATA} alt=""/>:(() => {
                             const list=[]
                             for (let x = 0; x < 10; x++) {
                                 list.push(
-                                        <div className="col-md-6 box-margin" key={x}>
-                                            <Skeleton height={300} width={'100%'}/>
+                                    <div className="col-md-6 box-margin" key={x}>
+                                        <Skeleton height={300} width={'100%'}/>
 
-                                        </div>
+                                    </div>
                                 )
                             }
                             return list
                         })()
                     }
-                    <div style={{"marginTop":"20px","marginBottom":"20px",marginLeft:'20px',"float":"right"}}>
-                        <Paginationq
-                            current_page={current_page}
-                            per_page={per_page}
-                            total={per_page*last_page}
-                            callback={this.handlePageChange.bind(this)}
-                        />
+                    <div className="col-md-12">
+                        <div style={{"marginTop":"20px","marginBottom":"20px","float":"right"}}>
+                            <Paginationq
+                                current_page={current_page}
+                                per_page={per_page}
+                                total={total}
+                                callback={this.handlePage}
+                            />
+                        </div>
                     </div>
-
                 </div>
+
             </Layout>
         );
     }
@@ -254,11 +291,11 @@ class ReportRedeem extends Component{
 
 const mapStateToProps = (state) => {
     return {
-        isLoading: state.reportRedeemReducer.isLoading,
-        auth: state.auth,
-        data:state.reportRedeemReducer.data
+        data:state.reportRewardReducer.data,
+        isLoading: state.reportRewardReducer.isLoading,
+        auth: state.auth
 
     }
 }
 
-export default connect(mapStateToProps)(ReportRedeem)
+export default connect(mapStateToProps)(IndexReportReward)

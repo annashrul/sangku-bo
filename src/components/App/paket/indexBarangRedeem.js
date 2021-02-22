@@ -24,8 +24,6 @@ class IndexBarangRedeem extends Component{
         this.handleDelete      = this.handleDelete.bind(this);
         this.handleSearch      = this.handleSearch.bind(this);
         this.handlePage      = this.handlePage.bind(this);
-
-
     }
     handlePage(num){
         let where = this.handleValidate();
@@ -36,7 +34,7 @@ class IndexBarangRedeem extends Component{
         this.setState({
             isLoading:true
         });
-        let where=`perpage=3`;
+        let where=`perpage=9`;
         let any = this.state.any;
         if(any!==null&&any!==undefined&&any!==""){
             where+=`&q=${any}`;

@@ -38,7 +38,6 @@ class Order extends Component{
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.order.data !== undefined) {
             const data=[];
-            
             if(nextProps.order.data.length>0){
                 for(let i=0;i<nextProps.order.data.length;i++){
                     data.push(Object.assign(nextProps.order.data[i],{isChecked:false}));

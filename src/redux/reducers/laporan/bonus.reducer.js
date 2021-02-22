@@ -6,13 +6,14 @@ const initialState = {
     isLoading: true,
     isLoadingDetail: true,
     isLoadingPost: false,
+    isLoadingExcel: false,
     isError: false,
     status: "",
     msg: "",
     data: [],
     approval: [],
     edit:[],
-    detail:[]
+    detail:[],
 }
 
 export const bonusReducer = (state = initialState, action) => {
@@ -29,6 +30,7 @@ export const bonusReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 detail: action.data.result,
             });
+
         case BONUS.FAILED:
             return Object.assign({}, state, {
                 status: action.data.status,
@@ -39,6 +41,7 @@ export const bonusReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 isLoading: action.load
             });
+
         case BONUS.LOADING_DETAIL:
             return Object.assign({}, state, {
                 isLoadingDetail: action.load
