@@ -168,6 +168,8 @@ class IndexMember extends Component{
         }
 
         if(any!==null&&any!==undefined&&any!==""){
+            where+="&page=1";
+
             where+=`&q=${any}`;
         }
 
@@ -242,7 +244,6 @@ class IndexMember extends Component{
     render(){
         const headStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const numberStyle ={verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
-        const stringStyle ={verticalAlign: "middle", textAlign: "left",whiteSpace: "nowrap"};
         const {
             last_page,
             total,

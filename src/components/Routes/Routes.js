@@ -11,6 +11,7 @@ import BarangRedeem from '../App/paket/indexBarangRedeem';
 import BarangReward from '../App/paket/indexBarangReward';
 import Pin from '../App/pin';
 import Member from '../App/masterdata/member';
+import Member_approval from '../App/masterdata/member_approval';
 import Voucher from '../App/masterdata/voucher/indexVoucher';
 import UserList from '../App/masterdata/indexUserList';
 import UserLevel from '../App/masterdata/indexUserLevel';
@@ -28,6 +29,7 @@ import Saldo from '../App/laporan/indexSaldo';
 import Setting from '../App/setting/umum';
 import Website from '../App/setting/website';
 import Bank from '../App/setting/bank';
+import Ppob from '../App/setting/ppob';
 import PrintLaporanPenjualan from '../App/print/print_laporan_penjualan';
 
 const Routes = (
@@ -51,6 +53,7 @@ const Routes = (
             {/* MASTERDATA SECTION END */}
             {/* MANAGEMENT CONTENT SECTION START */}
             <PrivateRoute path="/member" exact strict component={Member} />
+            <PrivateRoute path="/member/ktp" exact strict component={Member_approval} />
             <PrivateRoute path="/voucher" exact strict component={Voucher} />
             <PrivateRoute path="/berita" exact strict component={Berita} />
             <PrivateRoute path="/testimoni" exact strict component={Testimoni} />
@@ -74,6 +77,7 @@ const Routes = (
             <PrivateRoute path="/setting" exact strict component={Setting} />
             <PrivateRoute path="/setting/website" exact strict component={Website} />
             <PrivateRoute path="/setting/bank" exact strict component={Bank} />
+            <PrivateRoute path="/setting/ppob" exact strict component={Ppob} />
 
             {/* PRINT SECTION START */}
             <PrivateRoute path="/print_laporan_penjualan" exact strict component={PrintLaporanPenjualan} />

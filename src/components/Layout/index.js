@@ -6,7 +6,6 @@ import SideMenu from './sideMenu'
 import {connect} from 'react-redux'
 import FreeScrollbar from 'react-free-scrollbar';
 import Default from 'assets/default.png';
-import Idle from 'react-idle'
 import { logoutUser } from "redux/actions/authActions";
 import PropTypes from "prop-types";
 import BgAuth from "assets/logo.png"

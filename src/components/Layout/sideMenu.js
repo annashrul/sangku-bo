@@ -18,6 +18,7 @@ class SideMenu extends Component {
             isStockist:false,
             isReport:false,
             isSetting:false,
+            isMember:false
         }
         this.changeMenu = this.changeMenu.bind(this);
     }
@@ -33,7 +34,8 @@ class SideMenu extends Component {
                 isStockist: false,
                 isTrx: false,
                 isSetting: false,
-                isReport: false
+                isReport: false,
+                isMember:false
 
         };
         sts[param] = !this.state[param];
@@ -85,8 +87,13 @@ class SideMenu extends Component {
                 isReport:true
             })
         }
+        if (path === '/member'||path==='/member/ktp') {
+            this.setState({
+                isMember: true
+            })
+        }
 
-        if (path === '/setting' || path === '/setting/website' || path === '/setting/bank') {
+        if (path === '/setting' || path === '/setting/website' || path === '/setting/bank' || path === '/setting/ppob') {
             this.setState({
                 isSetting:true
             })
@@ -131,7 +138,13 @@ class SideMenu extends Component {
                     <li  className={path==='/'?"active":''}><Link to="/"> <i className="fa fa-dashboard" /><span> Dashboard</span></Link></li>
                     {/* DASHBOARD MODUL END */}
                     {/* PIN MODUL START */}
-                    <li  className={path==='/member'?"active":''}><Link to="/member"> <i className="fa fa-users" /><span> Member</span></Link></li>
+                    <li className={"treeview" +(this.state.isMember===true || path==='/member' || path==='member/ktp' ?" active menu-open" : "")}>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isMember')}><i className="fa fa-users" /> <span>Member</span> <i className="fa fa-angle-right" /></a>
+                        <ul className={"treeview-menu"} style={{display:this.state.isMember===true?"block":"none"}}>
+                            <li className={path==='/member'?"active":''}><Link to="/member" style={{width:'fit-content'}}> List Member</Link></li>
+                            <li className={path==='member/ktp'?"active":''}><Link to="member/ktp" style={{width:'fit-content'}}> Approval KTP member</Link></li>
+                        </ul>
+                    </li>
                     <li  className={path==='/voucher'?"active":''}><Link to="/voucher"> <i className="fa fa-code" /><span> Voucher</span></Link></li>
                     {/* PIN MODUL END */}
                     {/* PIN MODUL START */}
@@ -167,7 +180,7 @@ class SideMenu extends Component {
                    
                     {/* PAKET MODUL START */}
                     <li className={"treeview" +(this.state.isPaket===true || path==='/paket' || path==='/barang' || path==='/barang_redeem' || path==='/barang_reward'?" active menu-open" : "")}>
-                        <a href="!#" onClick={(e) => this.changeMenu(e,'isPaket')}><i className="fa fa-folder-o	" /> <span>Paket</span> <i className="fa fa-angle-right" /></a>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isPaket')}><i className="fa fa-folder-o	" /> <span>Manajemen Paket</span> <i className="fa fa-angle-right" /></a>
                         <ul className={"treeview-menu"} style={{display:this.state.isPaket===true?"block":"none"}}>
                             <li className={path==='/paket'?"active":''}><Link to="/paket" style={{width:'fit-content'}}> Paket</Link></li>
                             <li className={path==='/barang'?"active":''}><Link to="/barang" style={{width:'fit-content'}}> Barang</Link></li>
@@ -211,11 +224,12 @@ class SideMenu extends Component {
                     {/* MASTERDATA MODUL END */}
 
                     {/* Setting MODUL START */}
-                    <li className={"treeview" +(this.state.isSetting===true || path==='/setting' || path==='/setting/website'  || path==='/setting/bank' ?" active menu-open" : "")}>
+                    <li className={"treeview" +(this.state.isSetting===true || path==='/setting' || path==='/setting/website'  || path==='/setting/bank' || path === '/setting/ppob' ?" active menu-open" : "")}>
                         <a href="!#" onClick={(e) => this.changeMenu(e,'isSetting')}><i className="fa fa-cogs" /> <span>Pengaturan</span> <i className="fa fa-angle-right" /></a>
                         <ul className={"treeview-menu"} style={{display:this.state.isSetting===true?"block":"none"}}>
                             <li className={path==='/setting'?"active":''}><Link to="/setting" style={{width:'fit-content'}}> Pengaturan Umum</Link></li>
                             <li className={path==='/setting/website'?"active":''}><Link to="/setting/website" style={{width:'fit-content'}}> Pengaturan Website</Link></li>
+                            <li className={path=== '/setting/ppob'?"active":''}><Link to="/setting/ppob" style={{width:'fit-content'}}> Pengaturan PPOB</Link></li>
                             <li className={path==='/setting/bank'?"active":''}><Link to="/setting/bank" style={{width:'fit-content'}}> Pengaturan bank</Link></li>
                         </ul>
                     </li>

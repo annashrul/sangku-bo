@@ -194,7 +194,6 @@ class Index extends Component{
     }
 
     handleChangeProvinsi(val) {
-        fetchKecamatan
         this.props.dispatch(fetchKota(val.value))
         this.setState({
             id_prov: val.value,

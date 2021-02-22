@@ -20,9 +20,11 @@ class IndexBonus extends Component{
             dateFrom:moment(new Date()).format("yyyy-MM-DD"),
             dateTo:moment(new Date()).format("yyyy-MM-DD"),
             data:[],
-            isLoading:true
+            isLoading:true,
+            tipe:'aktivasi'
         };
-        this.handleModal      = this.handleModal.bind(this);
+        this.handleModal = this.handleModal.bind(this);
+        this.handleTipe = this.handleTipe.bind(this);
 
     }
     componentWillMount(){
@@ -52,79 +54,93 @@ class IndexBonus extends Component{
         this.setState({detail:{kode:kode}});
     }
 
+    handleTipe(e, type) {
+        e.preventDefault();
+        this.setState({
+            tipe: type
+        })
+        const tipe=type==='aktivasi'?'':'&type=ro'
+        this.props.dispatch(getBonus(`page=1${tipe}`));
+    }
+
 
     render(){
         const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
-        const numStyle ={verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
-        // const data = this.state.data;
-        let totTrxIn=0;
-        let totTrxOut=0;
-        let totTrxSaldo=0;
-        console.log(this.state.data.length);
         return(
-            <Layout page={"Bonus"}>
+            <Layout page={"Transaksi Bonus"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Bonus</h5>
+                            <h5 className="mb-0 font-weight-bold">Transaksi Bonus</h5>
+                        </div>
+                    </div>
+                    <div className="col-6">
+                        <div className="dashboard-header-title mb-3" style={{textAlign:'right'}}>
+                            <button style={{marginTop:"27px"}} type="button" className={this.state.tipe==='aktivasi'?"btn btn-success mb-2 mr-2":"btn btn-outline-success mb-2 mr-2"} onClick={(e)=>this.handleTipe(e,'aktivasi')}>Bonus Aktivasi/Registrasi</button>
+                            <button style={{marginTop:"27px"}} type="button" className={this.state.tipe==='ro'?"btn btn-success mb-2 mr-2":"btn btn-outline-success mb-2 mr-2"}  onClick={(e)=>this.handleTipe(e,'ro')}>Bonus Royalti/Repeat Order</button>
                         </div>
                     </div>
                 </div>
                 <div className="row">
-                    {
-                        this.state.isLoading===false ? this.state.data.length > 0 ?
-                            this.state.data.map((v, i) => {
-                                totTrxIn = totTrxIn+parseInt(v.trx_in);
-                                totTrxOut = totTrxIn+parseInt(v.trx_out);
-                                totTrxSaldo = totTrxIn+parseInt(v.total);
+                    <div className="col-md-12 col-lg-12">
+                        <div className="card">
+                            <div className="card-body">
+                                <table className='table table-bordered'>
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th rowSpan={2} style={columnStyle}>Jenis</th>
+                                            <th rowSpan={2} style={columnStyle}>Persentase</th>
+                                            <th colSpan={3} style={columnStyle}>Transaksi</th>
+                                            <th rowSpan={2} style={columnStyle}>Aksi</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Masuk</th>
+                                            <th>Keluar</th>
+                                            <th>Saldo saat ini</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                         {
+                                            this.state.isLoading===false ? this.state.data.length > 0 ?
+                                                this.state.data.map((v, i) => {
+                                                    return (
+                                                        <tr key={i}>
+                                                            <td>{v.note.toUpperCase()}</td>
+                                                            <td>{v.percentage} %</td>
+                                                            <td>{parseInt(v.trx_in)===0?0:toCurrency(v.trx_in)}</td>
+                                                            <td>{parseInt(v.trx_out)===0?0:toCurrency(v.trx_out)}</td>
+                                                            <td>{parseInt(v.total)===0?0:toCurrency(v.total)}</td>
+                                                            <td><button onClick={(e)=>this.handleModal(e,v.kode)} className={"btn btn-primary btn-block"}>Tarik Saldo</button></td>
+                                                        </tr>
+                                                    );
+                                                })
+                                                : <tr>
+                                                    <td colSpan={7} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
+                                                </tr>
+                                                :(()=>{
+                                                    let container =[];
+                                                    for(let x=0; x<10; x++){
+                                                        container.push(
+                                                            <tr key={x}>
+                                                            <td><Skeleton/></td>
+                                                            <td><Skeleton/></td>
+                                                            <td><Skeleton/></td>
+                                                            <td><Skeleton/></td>
+                                                            <td><Skeleton/></td>
+                                                            <td><Skeleton/></td>
+                                                        </tr>
+                                                        )
+                                                    }
+                                                    return container;
+                                                })()
+                                        }
+                                                            
+                                    </tbody>
+                                </table>
 
-                                return (
-                                    <div className="col-md-6 col-xl-4 box-margin">
-                                        <div className="card">
-                                            <div className="card-body">
-                                                <div className="bg-success p-3 text-center text-white font-20">{v.note.toUpperCase()}</div>
-                                                <br/>
-                                                <p className="d-flex align-items-center justify-content-between font-16">Persantase<span className="float-right font-12 success-text">{v.percentage} %</span></p>
-                                                <hr style={{border:'1px dashed #ddd'}}/>
-                                                <p className="d-flex align-items-center justify-content-between font-16">Transaksi Masuk<span className="float-right font-12 text-danger">Rp {parseInt(v.trx_in)===0?0:toCurrency(v.trx_in)} .-</span></p>
-                                                <hr style={{border:'1px dashed #ddd'}}/>
-                                                <p className="d-flex align-items-center justify-content-between font-16">Transaksi Keluar<span className="float-right font-12 text-danger">Rp {parseInt(v.trx_out)===0?0:toCurrency(v.trx_out)} .-</span></p>
-                                                <hr style={{border:'1px dashed #ddd'}}/>
-                                                <p className="d-flex align-items-center justify-content-between font-16">Saldo<span className="float-right font-12 text-danger">Rp {parseInt(v.total)===0?0:toCurrency(v.total)} .-</span></p>
-
-                                                <button onClick={(e)=>this.handleModal(e,v.kode)} className={"btn btn-primary btn-block"}>
-                                                    Penarikan
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })
-                            : <tr>
-                                <td colSpan={7} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
-                            </tr>
-                            :(()=>{
-                                let container =[];
-                                for(let x=0; x<10; x++){
-                                    container.push(
-                                        <div key={x} className="col-md-6 col-xl-4 box-margin">
-                                            <div className="card">
-                                                <div className="card-body">
-                                                    <h5 className="mb-30"><Skeleton/></h5>
-                                                    <p className="d-flex align-items-center justify-content-between font-16"><Skeleton width={100}/><span className="float-right font-18 success-text"><Skeleton width={100}/></span></p>
-                                                    <div className="progress h-8">
-                                                        <div className="progress-bar bg-default" role="progressbar" style={{width:'100%'}} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"/>
-                                                    </div>
-                                                    <p className="mt-3 mb-0 font-16 d-block"><Skeleton/></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )
-                                }
-                                return container;
-                            })()
-
-                    }
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {
                     this.props.isOpen===true?<FormPenarikanBonus

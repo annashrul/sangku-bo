@@ -1,69 +1,64 @@
 
 
-import {MEMBER} from "../../actions/_constants";
+import {PPOB} from "../../actions/_constants";
 
 const initialState = {
     isLoading: true,
     isLoadingDetail: true,
     isLoadingPost: false,
-    isLoadingExcel: false,
     isError: false,
     status: "",
     msg: "",
-    data: [],
+    produk: [],
+    operator: [],
+    kategori: [],
     edit:[],
-    detail:[],
-    excel:[],
-    approval:[]
+    detail:[]
 }
 
-export const memberReducer = (state = initialState, action) => {
+export const ppobReducer = (state = initialState, action) => {
     switch (action.type) {
-        case MEMBER.SUCCESS:
+        case PPOB.PRODUK:
             return Object.assign({}, state, {
                 status: action.data.status,
                 msg: action.data.msg,
-                data: action.data.result,
+                produk: action.data.result,
             });
-        case MEMBER.APPROVAL:
+        case PPOB.KATEGORI:
             return Object.assign({}, state, {
                 status: action.data.status,
                 msg: action.data.msg,
-                approval: action.data.result,
+                kategori: action.data.result,
             });
-
-
-        case MEMBER.DETAIL:
+    case PPOB.OPERATOR:
+        return Object.assign({}, state, {
+            status: action.data.status,
+            msg: action.data.msg,
+            operator: action.data.result,
+        });
+        case PPOB.DETAIL:
             return Object.assign({}, state, {
                 detail: action.data.result,
             });
-        case MEMBER.EXCEL:
-            return Object.assign({}, state, {
-                excel: action.data.result,
-            });
-        case MEMBER.FAILED:
+        case PPOB.FAILED:
             return Object.assign({}, state, {
                 status: action.data.status,
                 msg: action.data.msg,
                 data: action.data.data,
             });
-        case MEMBER.LOADING:
+        case PPOB.LOADING:
             return Object.assign({}, state, {
                 isLoading: action.load
             });
-        case MEMBER.LOADING_EXCEL:
-            return Object.assign({}, state, {
-                isLoadingExcel: action.load
-            });
-        case MEMBER.LOADING_DETAIL:
+        case PPOB.LOADING_DETAIL:
             return Object.assign({}, state, {
                 isLoadingDetail: action.load
             });
-        case MEMBER.LOADING_POST:
+        case PPOB.LOADING_POST:
             return Object.assign({}, state, {
                 isLoadingPost: action.load
             });
-        case MEMBER.IS_ERROR:
+        case PPOB.IS_ERROR:
             return Object.assign({}, state, {
                 isError: action.load
             });
