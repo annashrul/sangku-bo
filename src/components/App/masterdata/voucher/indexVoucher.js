@@ -136,11 +136,17 @@ class IndexVoucher extends Component{
                             {
                                 !this.props.isLoading?typeof data==='object'?data.length>0?data.map((v,i)=>{
                                         let color='';
+                                        let stts;
+                                        let txtStts='';
 
                                         if(v.status===0){
                                             color='ribbon-info';
+                                            stts='badge-info';
+                                            txtStts='Tidak Aktif';
                                         }else{
                                             color='ribbon-success';
+                                            stts='badge-success';
+                                            txtStts='Aktif';
                                         }
                                     return(
                                         <div key={i} className="col-md-3 col-lg-3 col-xl-3 box-margin">
@@ -149,6 +155,7 @@ class IndexVoucher extends Component{
                                                 <span>Kode Voucher <span style={{float:"right"}} className={"txtGreen"}>{v.kode}</span></span>
                                                 <span>Dari <span style={{float:"right"}} className={"txtRed"}>{moment(v.periode_start).format('lll')}</span></span>
                                                 <span>Sampai <span style={{float:"right"}} className={"txtRed"}>{moment(v.periode_end).format('lll')}</span></span>
+                                                <span>Status <span style={{float:"right"}} className={`badge ${stts}`}>{txtStts}</span></span>
                                                 <hr style={{borderStyle:"dotted"}}/>
                                                 <span>{v.deskripsi}</span>
                                                 <hr style={{borderStyle:"dotted"}}/>

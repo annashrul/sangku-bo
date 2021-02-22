@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fc56e2e0-5e65-4754-8b9b-96cb98d96b38" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/masterdata/member/index.js" afterPath="$PROJECT_DIR$/src/components/App/masterdata/member/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/masterdata/voucher/indexVoucher.js" afterPath="$PROJECT_DIR$/src/components/App/masterdata/voucher/indexVoucher.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/redux/actions/_constants.js" afterPath="$PROJECT_DIR$/src/redux/actions/_constants.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/redux/actions/masterdata/member.action.js" afterPath="$PROJECT_DIR$/src/redux/actions/masterdata/member.action.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/redux/reducers/masterdata/member.reducer.js" afterPath="$PROJECT_DIR$/src/redux/reducers/masterdata/member.reducer.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -20,71 +17,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="indexSaldo.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/App/laporan/indexSaldo.js">
+      <file leaf-file-name="indexVoucher.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/App/masterdata/voucher/indexVoucher.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1056">
-              <caret line="123" column="16" lean-forward="false" selection-start-line="123" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
+            <state relative-caret-position="354">
+              <caret line="157" column="127" lean-forward="false" selection-start-line="157" selection-start-column="127" selection-end-line="157" selection-end-column="127" />
               <folding>
-                <element signature="e#0#38#0" expanded="true" />
-                <element signature="n#!!block;n#handleValidate#0;n#IndexSaldo#0" expanded="false" />
-                <element signature="n#!!block;n#handleChange#0;n#IndexSaldo#0" expanded="false" />
-                <element signature="n#!!block;n#componentWillUnmount#0;n#IndexSaldo#0" expanded="false" />
-                <element signature="n#!!block;n#componentWillReceiveProps#0;n#IndexSaldo#0" expanded="false" />
-                <element signature="n#!!block;n#HandleChangeMembership#0;n#IndexSaldo#0" expanded="false" />
-                <element signature="n#!!block;n#handleSearch#0;n#IndexSaldo#0" expanded="false" />
-                <element signature="n#!!block;n#handlePage#0;n#IndexSaldo#0" expanded="false" />
-                <element signature="n#!!block;n#handleDetail#0;n#IndexSaldo#0" expanded="false" />
-                <element signature="e#4830#6668#0" expanded="false" />
-                <element signature="e#6712#7214#0" expanded="false" />
+                <element signature="n#!!block;n#handleValidate#0;n#IndexVoucher#0" expanded="false" />
+                <element signature="n#!!block;n#componentWillMount#0;n#IndexVoucher#0" expanded="false" />
+                <element signature="e#1954#2027#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/components/App/masterdata/member/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="16">
-              <caret line="73" column="59" lean-forward="false" selection-start-line="73" selection-start-column="59" selection-end-line="73" selection-end-column="59" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-                <element signature="n#!!block;n#HandleChangeMembership#0;n#IndexMember#0" expanded="false" />
-                <element signature="n#!!block;n#componentWillReceiveProps#0;n#IndexMember#0" expanded="false" />
-                <element signature="n#!!block;n#componentWillMount#0;n#IndexMember#0" expanded="false" />
-                <element signature="e#5829#5902#0" expanded="false" />
-                <element signature="n#!!block;n#handleValidate#0;n#IndexMember#0" expanded="false" />
-                <element signature="n#!!block;n#handlePage#0;n#IndexMember#0" expanded="false" />
-                <element signature="e#7023#7253#0" expanded="false" />
-                <element signature="n#!!block;n#handleSearch#0;n#IndexMember#0" expanded="false" />
-                <element signature="n#!!block;n#handleBank#0;n#IndexMember#0" expanded="false" />
-                <element signature="n#!!block;n#handleAlamat#0;n#IndexMember#0" expanded="false" />
-                <element signature="n#!!block;n#handleDetailTrx#0;n#IndexMember#0" expanded="false" />
-                <element signature="n#!!block;n#handleUpdate#0;n#IndexMember#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="member.action.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/redux/actions/masterdata/member.action.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1424">
-              <caret line="115" column="40" lean-forward="false" selection-start-line="115" selection-start-column="40" selection-end-line="115" selection-end-column="40" />
-              <folding>
-                <element signature="e#0#25#0" expanded="true" />
-                <element signature="e#1251#1998#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="member.reducer.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/redux/reducers/masterdata/member.reducer.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="672">
-              <caret line="42" column="45" lean-forward="false" selection-start-line="42" selection-start-column="45" selection-end-line="42" selection-end-column="45" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -167,7 +109,6 @@
         <option value="$PROJECT_DIR$/src/redux/actions/masterdata/voucher.action.js" />
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/src/components/App/modals/masterdata/voucher/form_voucher.js" />
-        <option value="$PROJECT_DIR$/src/components/App/masterdata/voucher/indexVoucher.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/laporan/report_redeem.action.js" />
         <option value="$PROJECT_DIR$/src/redux/reducers/laporan/report_redeem.reducer.js" />
         <option value="$PROJECT_DIR$/src/redux/reducers/laporan/report_reward.reducer.js" />
@@ -190,10 +131,11 @@
         <option value="$PROJECT_DIR$/src/components/App/order/reward/indexReportReward.js" />
         <option value="$PROJECT_DIR$/src/components/App/modals/laporan/detail_laporan_barang.js" />
         <option value="$PROJECT_DIR$/src/components/App/laporan/indexReportBarang.js" />
-        <option value="$PROJECT_DIR$/src/redux/actions/_constants.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/masterdata/member.action.js" />
-        <option value="$PROJECT_DIR$/src/redux/reducers/masterdata/member.reducer.js" />
         <option value="$PROJECT_DIR$/src/components/App/masterdata/member/index.js" />
+        <option value="$PROJECT_DIR$/src/redux/reducers/masterdata/member.reducer.js" />
+        <option value="$PROJECT_DIR$/src/redux/actions/_constants.js" />
+        <option value="$PROJECT_DIR$/src/components/App/masterdata/voucher/indexVoucher.js" />
       </list>
     </option>
   </component>
@@ -287,6 +229,23 @@
               <item name="sangku-bo" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="masterdata" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sangku-bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sangku-bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="masterdata" type="462c0819:PsiDirectoryNode" />
+              <item name="voucher" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sangku-bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sangku-bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="Routes" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -294,6 +253,13 @@
               <item name="sangku-bo" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="redux" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sangku-bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sangku-bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="redux" type="462c0819:PsiDirectoryNode" />
+              <item name="actions" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="sangku-bo" type="b2602c69:ProjectViewProjectNode" />
@@ -374,15 +340,16 @@
       <workItem from="1613807899227" duration="8593000" />
       <workItem from="1613907952271" duration="4946000" />
       <workItem from="1613969222459" duration="22661000" />
-      <workItem from="1613999542750" duration="81000" />
+      <workItem from="1613999542750" duration="408000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="252978000" />
+    <option name="totallyTimeSpent" value="253305000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17857143" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -391,7 +358,7 @@
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.76644737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5805921" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -445,7 +412,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/App/masterdata/member/index.js</url>
-          <line>222</line>
+          <line>224</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
@@ -468,23 +435,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/masterdata/voucher/indexVoucher.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="160" column="148" lean-forward="false" selection-start-line="160" selection-start-column="148" selection-end-line="160" selection-end-column="148" />
-          <folding>
-            <element signature="e#0#38#0" expanded="false" />
-            <element signature="n#!!block;n#handleValidate#0;n#IndexVoucher#0" expanded="false" />
-            <element signature="n#!!block;n#componentWillMount#0;n#IndexVoucher#0" expanded="false" />
-            <element signature="e#1954#2027#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/App/paket/indexBarang.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="312">
           <caret line="164" column="26" lean-forward="true" selection-start-line="160" selection-start-column="20" selection-end-line="164" selection-end-column="26" />
+          <folding>
+            <element signature="n#!!block;n#handleValidate#0;n#IndexBarang#0" expanded="false" />
+            <element signature="n#!!block;n#handlePage#0;n#IndexBarang#0" expanded="false" />
+            <element signature="e#2714#2944#0" expanded="false" />
+            <element signature="n#!!block;n#handleSearch#0;n#IndexBarang#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -534,6 +494,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2640">
           <caret line="183" column="28" lean-forward="false" selection-start-line="175" selection-start-column="7" selection-end-line="183" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#38#0" expanded="false" />
+            <element signature="e#6885#18498#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -562,6 +526,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="273">
           <caret line="74" column="45" lean-forward="false" selection-start-line="74" selection-start-column="45" selection-end-line="74" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#38#0" expanded="false" />
+            <element signature="n#!!block;n#rowProduk#0;n#ReportRedeem#0" expanded="false" />
+            <element signature="n#!!block;n#handlePageChange#0;n#ReportRedeem#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -583,6 +552,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-46">
           <caret line="25" column="58" lean-forward="false" selection-start-line="25" selection-start-column="58" selection-end-line="25" selection-end-column="58" />
+          <folding>
+            <element signature="n#!!block;n#handlePage#0;n#IndexBarangRedeem#0" expanded="false" />
+            <element signature="n#!!block;n#handleValidate#0;n#IndexBarangRedeem#0" expanded="false" />
+            <element signature="n#!!block;n#componentWillMount#0;n#IndexBarangRedeem#0" expanded="false" />
+            <element signature="e#1698#1771#0" expanded="false" />
+            <element signature="n#!!block;n#handleModal#0;n#IndexBarangRedeem#0" expanded="false" />
+            <element signature="n#!!block;n#handleDelete#0;n#IndexBarangRedeem#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -608,6 +585,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2704">
           <caret line="213" column="40" lean-forward="true" selection-start-line="179" selection-start-column="36" selection-end-line="213" selection-end-column="40" />
+          <folding>
+            <element signature="e#8842#11236#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -615,6 +595,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-738">
           <caret line="0" column="7" lean-forward="true" selection-start-line="0" selection-start-column="7" selection-end-line="0" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#25#0" expanded="false" />
+            <element signature="e#1178#1840#0" expanded="false" />
+            <element signature="e#1894#3609#0" expanded="false" />
+            <element signature="e#3643#4313#0" expanded="false" />
+            <element signature="e#4365#5933#0" expanded="false" />
+            <element signature="e#5966#6634#0" expanded="false" />
+            <element signature="e#6685#8295#0" expanded="false" />
+            <element signature="e#8331#9008#0" expanded="false" />
+            <element signature="e#9061#10630#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -677,6 +668,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2462">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#38#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -691,6 +685,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="80">
           <caret line="145" column="25" lean-forward="true" selection-start-line="145" selection-start-column="25" selection-end-line="145" selection-end-column="25" />
+          <folding>
+            <element signature="e#5460#7036#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -773,6 +770,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
           <caret line="220" column="197" lean-forward="true" selection-start-line="220" selection-start-column="185" selection-end-line="220" selection-end-column="197" />
+          <folding>
+            <element signature="e#0#38#0" expanded="false" />
+            <element signature="n#!!block;n#handleChange#0;n#IndexReportReward#0" expanded="false" />
+            <element signature="n#!!block;n#handlePage#0;n#IndexReportReward#0" expanded="false" />
+            <element signature="e#2434#2696#0" expanded="false" />
+            <element signature="e#16199#16513#0" expanded="false" />
+            <element signature="e#16677#17069#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -781,7 +786,7 @@
         <state relative-caret-position="-1067">
           <caret line="116" column="89" lean-forward="false" selection-start-line="116" selection-start-column="89" selection-end-line="116" selection-end-column="89" />
           <folding>
-            <element signature="e#0#38#0" expanded="true" />
+            <element signature="e#0#38#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -830,34 +835,47 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/redux/actions/_constants.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="181" column="17" lean-forward="false" selection-start-line="181" selection-start-column="17" selection-end-line="181" selection-end-column="17" />
+        <state relative-caret-position="-718">
+          <caret line="386" column="39" lean-forward="false" selection-start-line="386" selection-start-column="25" selection-end-line="386" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/redux/reducers/masterdata/member.reducer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-144">
+          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/redux/actions/masterdata/member.action.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1424">
-          <caret line="115" column="40" lean-forward="false" selection-start-line="115" selection-start-column="40" selection-end-line="115" selection-end-column="40" />
+        <state relative-caret-position="16">
+          <caret line="122" column="40" lean-forward="false" selection-start-line="122" selection-start-column="40" selection-end-line="122" selection-end-column="40" />
           <folding>
-            <element signature="e#0#25#0" expanded="true" />
-            <element signature="e#1251#1998#0" expanded="false" />
+            <element signature="e#0#25#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/redux/reducers/masterdata/member.reducer.js">
+    <entry file="file://$PROJECT_DIR$/src/components/App/masterdata/member/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="672">
-          <caret line="42" column="45" lean-forward="false" selection-start-line="42" selection-start-column="45" selection-end-line="42" selection-end-column="45" />
-          <folding />
+        <state relative-caret-position="16">
+          <caret line="73" column="59" lean-forward="false" selection-start-line="73" selection-start-column="59" selection-end-line="73" selection-end-column="59" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+            <element signature="n#!!block;n#HandleChangeMembership#0;n#IndexMember#0" expanded="false" />
+            <element signature="n#!!block;n#componentWillReceiveProps#0;n#IndexMember#0" expanded="false" />
+            <element signature="n#!!block;n#componentWillMount#0;n#IndexMember#0" expanded="false" />
+            <element signature="e#5829#5902#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/App/laporan/indexSaldo.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1056">
+        <state relative-caret-position="0">
           <caret line="123" column="16" lean-forward="false" selection-start-line="123" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
@@ -875,24 +893,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/masterdata/member/index.js">
+    <entry file="file://$PROJECT_DIR$/src/components/App/masterdata/voucher/indexVoucher.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="73" column="59" lean-forward="false" selection-start-line="73" selection-start-column="59" selection-end-line="73" selection-end-column="59" />
+        <state relative-caret-position="354">
+          <caret line="157" column="127" lean-forward="false" selection-start-line="157" selection-start-column="127" selection-end-line="157" selection-end-column="127" />
           <folding>
-            <element signature="e#0#38#0" expanded="true" />
-            <element signature="n#!!block;n#HandleChangeMembership#0;n#IndexMember#0" expanded="false" />
-            <element signature="n#!!block;n#componentWillReceiveProps#0;n#IndexMember#0" expanded="false" />
-            <element signature="n#!!block;n#componentWillMount#0;n#IndexMember#0" expanded="false" />
-            <element signature="e#5829#5902#0" expanded="false" />
-            <element signature="n#!!block;n#handleValidate#0;n#IndexMember#0" expanded="false" />
-            <element signature="n#!!block;n#handlePage#0;n#IndexMember#0" expanded="false" />
-            <element signature="e#7023#7253#0" expanded="false" />
-            <element signature="n#!!block;n#handleSearch#0;n#IndexMember#0" expanded="false" />
-            <element signature="n#!!block;n#handleBank#0;n#IndexMember#0" expanded="false" />
-            <element signature="n#!!block;n#handleAlamat#0;n#IndexMember#0" expanded="false" />
-            <element signature="n#!!block;n#handleDetailTrx#0;n#IndexMember#0" expanded="false" />
-            <element signature="n#!!block;n#handleUpdate#0;n#IndexMember#0" expanded="false" />
+            <element signature="n#!!block;n#handleValidate#0;n#IndexVoucher#0" expanded="false" />
+            <element signature="n#!!block;n#componentWillMount#0;n#IndexVoucher#0" expanded="false" />
+            <element signature="e#1954#2027#0" expanded="false" />
           </folding>
         </state>
       </provider>
