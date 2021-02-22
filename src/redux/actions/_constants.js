@@ -177,7 +177,10 @@ export const MEMBER = {
     SUCCESS: `SUCCESS_${prefMember}`,
     FAILED: `FAILED_${prefMember}`,
     DETAIL: `DETAIL_${prefMember}`,
-    EDIT: `EDIT_${prefMember}`
+    EDIT: `EDIT_${prefMember}`,
+    LOADING_EXCEL: `SET_${prefMember}_LOADING_EXCEL`,
+    EXCEL: `EXCEL_${prefMember}`,
+
 }
 /****************
  VOUCHER
