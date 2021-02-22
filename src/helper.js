@@ -23,6 +23,7 @@ import truck from 'assets/status/truck_y_non.svg'
 import confirmY from 'assets/status/confirmation.svg'
 import confirmWhite from 'assets/status/confirmation_white.svg'
 import confirm from 'assets/status/confirmation_non.svg'
+import XLSX from 'xlsx'
 
 export const statusOrder = (type, status, iswhite = false) => {
     if (type === 'dollar') {
@@ -38,6 +39,41 @@ export const statusOrder = (type, status, iswhite = false) => {
     }
 }
 
+export const toExcel=(title='',periode='',head=[],content=[],foot=[])=>{
+    let header = [
+        [title],
+        [`PERIODE : ${periode}`],
+        [''],
+        head
+    ];
+    let footer = foot;
+    let raw = content;
+    let body = header.concat(raw);
+    let data = footer===undefined||footer===[]?body:body.concat(footer);
+    console.log(`=========================> ${data} <==========================`);
+    let ws = XLSX.utils.json_to_sheet(data, {skipHeader:true});
+    let merge = [
+        {s: {r:0, c:0},e: {r:0, c:head.length}},
+        {s: {r:1, c:0},e: {r:1, c:head.length}},
+    ];
+    if(!ws['!merges']) ws['!merges'] = [];
+    ws['!merges'] = merge;
+    ws['!ref'] = XLSX.utils.encode_range({
+        s: { c: 0, r: 0 },
+        e: { c: head.length, r:data.length}
+    });
+    ws["A1"].s = {
+        alignment: {
+            vertical: 'center',
+        }
+    };
+
+    let wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, title);
+    let exportFileName = `${title.replaceAll(" ","_")}_${moment(new Date()).format('YYYYMMDDHHMMss')}.xlsx`;
+    XLSX.writeFile(wb, exportFileName, {type:'file', bookType:"xlsx"});
+    return;
+}
 
 export const isEmpty = (col)=>{
     return `${col} cannot be null`;

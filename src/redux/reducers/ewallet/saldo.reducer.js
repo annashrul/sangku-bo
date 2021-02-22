@@ -6,12 +6,14 @@ const initialState = {
     isLoading: true,
     isLoadingDetail: true,
     isLoadingPost: false,
+    isLoadingExcel: false,
     isError: false,
     status: "",
     msg: "",
     data: [],
     edit:[],
-    detail:[]
+    detail:[],
+    excel:[],
 }
 
 export const saldoReducer = (state = initialState, action) => {
@@ -27,6 +29,10 @@ export const saldoReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 detail: action.data.result,
             });
+        case SALDO.EXCEL:
+            return Object.assign({}, state, {
+                excel: action.data.result,
+            });
         case SALDO.FAILED:
             return Object.assign({}, state, {
                 status: action.data.status,
@@ -36,6 +42,10 @@ export const saldoReducer = (state = initialState, action) => {
         case SALDO.LOADING:
             return Object.assign({}, state, {
                 isLoading: action.load
+            });
+        case SALDO.LOADING_EXCEL:
+            return Object.assign({}, state, {
+                isLoadingExcel: action.load
             });
         case SALDO.LOADING_DETAIL:
             return Object.assign({}, state, {

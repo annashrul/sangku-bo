@@ -20,8 +20,8 @@ export const NOTIF_ALERT = {
 }
 
 export const HEADERS ={
-  // URL       : "http://192.168.100.10:3010/",
-  URL: 'http://ptnetindo.com:6694/',
+  URL       : "http://192.168.100.10:3010/",
+  // URL: 'http://ptnetindo.com:6694/',
   TOKEN     : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwY2RiN2M5OC0wNWNmLTQ4NDgtOGM3Yy0yZTFiYTczZGUwNmYiLCJpYXQiOjE1NzAxNzM0ODYsImV4cCI6MTU3MDc3ODI4Nn0.1NiWtt2luG83am8FJSvWpL5p35Oxd8GSJJTwhFmAdgw",
   USERNAME  : "netindo",
   PASSWORD  : "$2b$08$hLMU6rEvNILCMaQbthARK.iCmDRO7jNbUB8CcvyRStqsHD4UQxjDO"
@@ -321,6 +321,26 @@ export const PENARIKAN = {
     FAILED: `FAILED_${prefPenarikan}`,
     DETAIL: `DETAIL_${prefPenarikan}`,
     EDIT: `EDIT_${prefPenarikan}`
+
+}
+/****************
+ REPORT_BARANG
+ *****************/
+let prefReportBarang='REPORT_BARANG';
+export const REPORT_BARANG = {
+    LOADING: `SET_${prefReportBarang}_LOADING`,
+    LOADING_DETAIL: `SET_${prefReportBarang}_LOADING_DETAIL`,
+    LOADING_POST: `SET_${prefReportBarang}_LOADING_POST`,
+    IS_ERROR: `SET_${prefReportBarang}_IS_ERROR`,
+    SUCCESS: `SUCCESS_${prefReportBarang}`,
+    FAILED: `FAILED_${prefReportBarang}`,
+    DETAIL: `DETAIL_${prefReportBarang}`,
+    EDIT: `EDIT_${prefReportBarang}`,
+    EXCEL: `EXCEL_${prefReportBarang}`,
+    LOADING_EXCEL: `SET_${prefReportBarang}_LOADING_EXCEL`,
+    DETAIL_EXCEL: `DETAIL_EXCEL_${prefReportBarang}`,
+    LOADING_DETAIL_EXCEL: `SET_${prefReportBarang}_LOADING_DETAIL_EXCEL`,
+
 }
 /****************
  BONUS
@@ -348,7 +368,11 @@ export const SALDO = {
     SUCCESS: `SUCCESS_${prefSaldo}`,
     FAILED: `FAILED_${prefSaldo}`,
     DETAIL: `DETAIL_${prefSaldo}`,
-    EDIT: `EDIT_${prefSaldo}`
+    EDIT: `EDIT_${prefSaldo}`,
+    EXCEL: `EXCEL_${prefSaldo}`,
+    LOADING_EXCEL: `SET_${prefSaldo}_LOADING_EXCEL`,
+
+
 }
 /****************
  SETTING

@@ -80,7 +80,7 @@ class SideMenu extends Component {
                 isTrx:true
             })
         }
-        if(path==='/saldo'){
+        if(path==='/saldo'||path==='/report_barang'){
             this.setState({
                 isReport:true
             })
@@ -191,10 +191,11 @@ class SideMenu extends Component {
                     {/* E-WALLET MODUL START */}
 
                      {/* Report MODUL START */}
-                    <li className={"treeview" +(this.state.isReport===true || path==='/saldo' ?" active menu-open" : "")}>
+                    <li className={"treeview" +(this.state.isReport===true || path==='/saldo'|| path==='/report_barang' ?" active menu-open" : "")}>
                         <a href="!#" onClick={(e) => this.changeMenu(e,'isReport')}><i className="fa fa-file-text" /> <span>Laporan</span> <i className="fa fa-angle-right" /></a>
                         <ul className={"treeview-menu"} style={{display:this.state.isReport===true?"block":"none"}}>
                             <li className={path==='/saldo'?"active":''}><Link to="/saldo" style={{width:'fit-content'}}> Transaksi Member</Link></li>
+                            <li className={path==='/report_barang'?"active":''}><Link to="/report_barang" style={{width:'fit-content'}}> Barang</Link></li>
                         </ul>
                     </li>
                     {/* Report MODUL END */}

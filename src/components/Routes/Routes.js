@@ -19,6 +19,7 @@ import Testimoni from '../App/konten/indexTestimoni';
 import Penjualan from '../App/order';
 import ReportRedeem from '../App/order/redeem/report_redeem';
 import ReportReward from '../App/order/reward/indexReportReward';
+import ReportBarang from '../App/laporan/indexReportBarang';
 import Claim from '../App/order/claim';
 import Bonus from '../App/laporan/indexBonus';
 import Deposit from '../App/ewallet/indexDeposit';
@@ -59,6 +60,7 @@ const Routes = (
             <PrivateRoute path="/report_redeem" exact strict component={ReportRedeem} />
             <PrivateRoute path="/report_reward" exact strict component={ReportReward} />
             <PrivateRoute path="/redeem" exact strict component={ReportRedeem} />
+            <PrivateRoute path="/report_barang" exact strict component={ReportBarang} />
             <PrivateRoute path="/claim" exact strict component={Claim} />
             {/* LAPORAN SECTION END */}
             {/* E-WALLET SECTION START */}

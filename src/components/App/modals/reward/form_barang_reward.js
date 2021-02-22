@@ -128,7 +128,7 @@ class FormBarangReward extends Component{
                                 <input type="text" className={"form-control"} name={"title"} value={this.state.title} onChange={this.handleChange}/>
                             </div>
                             <div className="form-group">
-                                <label>Jenis Membership</label>
+                                <label>Jenis Karir</label>
                                 {
                                     typeof this.props.karir === 'object' ?
                                         (

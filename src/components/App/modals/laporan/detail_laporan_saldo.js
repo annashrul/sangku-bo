@@ -22,6 +22,7 @@ class DetailLaporanSaldo extends Component{
         this.handlePage = this.handlePage.bind(this);
     }
 
+
     toggle = (e) => {
         e.preventDefault();
         const bool = !this.props.isOpen;

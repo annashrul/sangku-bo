@@ -1,81 +1,92 @@
 import axios from "axios"
 import Swal from "sweetalert2";
-import {SALDO, HEADERS,NOTIF_ALERT} from "../_constants";
+import {REPORT_BARANG, HEADERS,NOTIF_ALERT} from "../_constants";
 import {ModalToggle} from "../modal.action";
 
 
 export function setLoading(load) {
     return {
-        type: SALDO.LOADING,
+        type: REPORT_BARANG.LOADING,
         load
     }
 }
 export function setLoadingExcel(load) {
     return {
-        type: SALDO.LOADING_EXCEL,
+        type: REPORT_BARANG.LOADING_EXCEL,
+        load
+    }
+}
+export function setLoadingDetailExcel(load) {
+    return {
+        type: REPORT_BARANG.LOADING_DETAIL_EXCEL,
         load
     }
 }
 
-
 export function setLoadingDetail(load) {
     return {
-        type: SALDO.LOADING_DETAIL,
+        type: REPORT_BARANG.LOADING_DETAIL,
         load
     }
 }
 export function setLoadingPost(load) {
     return {
-        type: SALDO.LOADING_POST,
+        type: REPORT_BARANG.LOADING_POST,
         load
     }
 }
 export function setIsError(load) {
     return {
-        type: SALDO.IS_ERROR,
+        type: REPORT_BARANG.IS_ERROR,
         load
     }
 }
 
 export function setData(data = []) {
     return {
-        type: SALDO.SUCCESS,
+        type: REPORT_BARANG.SUCCESS,
         data
     }
 }
 export function setExcel(data = []) {
     return {
-        type: SALDO.EXCEL,
+        type: REPORT_BARANG.EXCEL,
+        data
+    }
+}
+export function setDetailExcel(data = []) {
+    return {
+        type: REPORT_BARANG.DETAIL_EXCEL,
         data
     }
 }
 
 export function setDataEdit(data = []) {
     return {
-        type: SALDO.EDIT,
+        type: REPORT_BARANG.EDIT,
         data
     }
 }
 export function setDataDetail(data = []) {
     return {
-        type: SALDO.DETAIL,
+        type: REPORT_BARANG.DETAIL,
         data
     }
 }
 
 export function setDataFailed(data = []) {
     return {
-        type: SALDO.FAILED,
+        type: REPORT_BARANG.FAILED,
         data
     }
 }
 
-export const getLaporanSaldo = (where='') => {
+export const getReportBarang = (where = '') => {
     return (dispatch) => {
         dispatch(setLoading(true));
-        let url = 'transaction/history/member';
-        if(where!==''){
-            url+=`?${where}`;
+        let url = 'transaction/penjualan/bybarang';
+        if (where !== '') {
+            url += `?${where}`;
         }
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
@@ -96,11 +107,36 @@ export const getLaporanSaldo = (where='') => {
 
     }
 };
+export const getExcelReportBarang = (where = '') => {
+    return (dispatch) => {
+        dispatch(setLoadingExcel(true));
+        let url = 'transaction/penjualan/bybarang';
+        if (where !== '') {
+            url += `?${where}`;
+        }
+        axios.get(HEADERS.URL + `${url}`)
+            .then(function (response) {
+                const data = response.data;
+                dispatch(setExcel(data));
+                dispatch(setLoadingExcel(false));
+            })
+            .catch(function (error) {
+                dispatch(setLoadingExcel(false));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Network Failed!.',
+                        'Please check your connection',
+                        'error'
+                    );
+                }
+            })
 
-export const getDetailLaporanSaldo = (where='') => {
+    }
+};
+export const getDetailReportBarang = (param,where='') => {
     return (dispatch) => {
         dispatch(setLoadingDetail(true));
-        let url = 'transaction/history';
+        let url = 'transaction/penjualan/bybarang/'+btoa(param);
         if(where!==''){
             url+=`?${where}`;
         }
@@ -123,24 +159,21 @@ export const getDetailLaporanSaldo = (where='') => {
 
     }
 };
-
-export const getExcelLaporanSaldo = (where = '') => {
+export const getExcelDetailReportBarang = (param,where='') => {
     return (dispatch) => {
-        dispatch(setLoadingExcel(true));
-        let url = 'transaction/history/member';
-        if (where !== '') {
-            url += `?${where}`;
+        dispatch(setLoadingDetailExcel(true));
+        let url = 'transaction/penjualan/bybarang/'+btoa(param);
+        if(where!==''){
+            url+=`?${where}`;
         }
-        console.log(url);
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
-                console.log("RESPONSE EXCEL",response);
-                dispatch(setExcel(data));
-                dispatch(setLoadingExcel(false));
+                dispatch(setDetailExcel(data));
+                dispatch(setLoadingDetailExcel(false));
             })
             .catch(function (error) {
-                dispatch(setLoadingExcel(false));
+                dispatch(setLoadingDetailExcel(false));
                 if (error.message === 'Network Error') {
                     Swal.fire(
                         'Network Failed!.',
@@ -152,3 +185,7 @@ export const getExcelLaporanSaldo = (where = '') => {
 
     }
 };
+
+
+
+
