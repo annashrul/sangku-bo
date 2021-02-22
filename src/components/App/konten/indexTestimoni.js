@@ -4,12 +4,6 @@ import Layout from 'components/Layout';
 import {noImage, rmHtml, ToastQ, toCurrency} from "../../../helper";
 import Skeleton from 'react-loading-skeleton';
 import moment from "moment";
-import {
-    UncontrolledButtonDropdown,
-    DropdownMenu,
-    DropdownItem,
-    DropdownToggle, Dropdown
-} from 'reactstrap';
 import {deleteContent, getContent} from "../../../redux/actions/konten/konten.action";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import FormTestimoni from "../modals/konten/testimoni/form_testimoni"
@@ -242,7 +236,7 @@ class IndexBerita extends Component{
                     </div>
                 </div>
                 <div className="row">
-                    <div style={{width:"75%",zoom:'85%',display: 'flex', alignItems: 'flex-start',marginRight:'5px'}}>
+                    <div className='col-md-12' style={{zoom:'100%'}}>
                         <div className="card">
                             <div className="card-body">
                                 <div className="row">
@@ -261,112 +255,70 @@ class IndexBerita extends Component{
 
                                 </div>
                                 <div className="row">
-                                    {
-                                        !this.props.isLoading?typeof data === 'object' ? data.length>0 ? data.map((v,i)=>{
-                                            return(
-                                                <div key={i} className="col-xl-3">
-                                                    <div className="card">
-                                                        <img className="card-img-top" src={v.picture} onError={(e)=>{e.target.onerror = null; e.target.src=`${noImage()}`}} alt="member image"/>
-                                                        <div className="card-body">
-                                                            <div className="row">
-                                                                <div className="col-md-9">
-                                                                    <h5 className="card-title">{v.title} <span className={"badge badge-success"}>{v.category}</span></h5>
-                                                                </div>
-                                                                <div className="col-md-3">
-
-                                                                    <UncontrolledButtonDropdown nav>
-                                                                        <DropdownToggle className="d-inline-block">
-                                                                            <i className="fa fa-bars"/>
-                                                                        </DropdownToggle>
-                                                                        <DropdownMenu>
-                                                                            <DropdownItem onClick={(e)=>this.handleModal(e,i)}>Ubah</DropdownItem>
-                                                                            <DropdownItem onClick={(e)=>this.handleDelete(e,v.id)}>Hapus</DropdownItem>
-                                                                        </DropdownMenu>
-                                                                    </UncontrolledButtonDropdown>
-
-                                                                </div>
-                                                            </div>
-                                                            <p className="card-text">{v.caption.length>20?rmHtml(v.caption).substr(0,20)+' ...':rmHtml(v.caption)}</p>
-                                                            <p className="card-text"><small className="text-muted">{moment(v.created_at).startOf('hour').fromNow()}</small></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            );
-                                        }):"":"":(()=>{
-                                            let container =[];
-                                            for(let x=0; x<8; x++){
-                                                container.push(
-                                                    <div key={x} className="col-xl-3 height-card box-margin break-992-none break-768-none">
-                                                        <div className="card">
-                                                            <img src="https://www.sustainablesanantonio.com/wp-content/plugins/ldd-directory-lite/public/images/noimage.png" className="card-img-top" alt="..."/>
-                                                            <div className="card-body">
-                                                                <h5 className="card-title"><Skeleton width={100}/></h5>
-                                                                <p className="card-text"><Skeleton/></p>
-                                                                <p className="card-text"><Skeleton/></p>
-                                                                <p className="card-text"><Skeleton/></p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            }
-                                            return container;
-                                        })()
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style={{width:"24%", zoom:"90%"}}>
-                        <StickyBox offsetTop={120} offsetBottom={20}>
-                            <div className="card">
-                                <div className="card-body">
-                                    <div className="widgets-todo-list-area">
-                                        <form id="form-add-todo" className="form-add-todo d-flex">
-                                            <input type="text" className="form-control" name="title" value={this.state.title} onChange={this.handleChange}/>
-                                            <button className={"btn btn-primary"} onClick={(event)=>this.handleActionKategori(event,'tambah','')}>
-                                                {!this.props.isLoadingPost?<i className={"fa fa-send"}/>:<i className="fa fa-circle-o-notch fa-spin"/>}
-                                            </button>
-                                        </form>
-                                        <form id="form-todo-list">
-                                            <ul id="ecapsToDo-list" className="todo-list" style={{height:'450px',maxHeight:'100%',overflowY:'auto'}}>
+                                    <div className="col-md-12 col-sm-12 col-lg-12">
+                                        <div ClassName="table-responsive">
+                                            <table className="table table-bordered">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th style={{width:'1%'}}>No</th>
+                                                        <th  style={{width:'15%'}}>Penulis</th>
+                                                        <th  style={{width:'5%'}}>Pekerjaan</th>
+                                                        <th  style={{width:'40%'}}>Pesan</th>
+                                                        <th  style={{width:'10%'}}>Status</th>
+                                                        <th  style={{width:'15%'}}>Dibuat Pada</th>
+                                                        <th  style={{width:'10%'}}>Aksi</th>
+                                                    </tr>
+                                                </thead>
                                                 {
-                                                    !this.props.isLoadingKategori?typeof this.props.kategori.data==='object'? this.props.kategori.data.length>0?this.props.kategori.data.map((v,i)=>{
+                                                    !this.props.isLoading?typeof data === 'object' ? data.length>0 ? data.map((v,i)=>{
                                                         return(
-                                                            <li key={i} id={`item${i}`}>
-                                                                <label className="ckbox">
-                                                                    <button className={"btn btn-info btn-sm"} onClick={(event)=>this.handleActionKategori(event,'edit',i)}><i className={"todo-item-done fa fa-pencil"}/></button>
-                                                                    <span/>
-                                                                </label>
-                                                                <label className="ckbox">
-                                                                    <button className={"btn btn-danger btn-sm"} onClick={(event)=>this.handleActionKategori(event,'hapus',i)}><i className={"todo-item-done fa fa-close"}/></button>
-                                                                    <span/>
-                                                                </label>
-                                                                <h5 style={{fontSize:'12px'}}>{v.title}</h5>
-                                                            </li>
+                                                        <tr>
+                                                            <td style={{textAlign:'center'}}>
+                                                                {i+1 + (10 * (parseInt(current_page,10)-1))}
+                                                            </td>
+                                                            <td>{v.writer}</td>
+                                                            <td>{v.jobs}</td>
+                                                            <td>{v.caption}</td>
+                                                            <td>{v.status===0?<span style={{padding:'5px'}} className="badge badge-danger">Tidak Aktif</span>:<span style={{padding:'5px'}} className="badge badge-success">Aktif/Terpublikasi</span>}</td>
+                                                            <td>{moment(v.created_at).format("lll")}</td>
+                                                            <td>
+                                                                <button onClick={(e)=>this.handleModal(e,i)} className={"btn btn-secondary btn-sm"} style={{marginRight:"10px"}}><i className={"fa fa-eye"}/></button>
+                                                                {v.status === 0?
+                                                                    <button onClick={(e)=>this.handleDelete(e,v.id)} className={"btn btn-success btn-sm"}><i className={"fa fa-check"}/></button>
+                                                                    :
+                                                                    <button onClick={(e)=>this.handleDelete(e,v.id)} className={"btn btn-danger btn-sm"}><i className={"fa fa-close"}/></button>
+                                                                }
+                                                            </td>
+
+                                                        </tr>
                                                         );
                                                     }):"":"":(()=>{
                                                         let container =[];
                                                         for(let x=0; x<8; x++){
                                                             container.push(
-                                                                <li key={x}>
-                                                                    <Skeleton width={150}/>
-                                                                </li>
+                                                                <div key={x} className="col-xl-3 height-card box-margin break-992-none break-768-none">
+                                                                    <div className="card">
+                                                                        <img src="https://www.sustainablesanantonio.com/wp-content/plugins/ldd-directory-lite/public/images/noimage.png" className="card-img-top" alt="..."/>
+                                                                        <div className="card-body">
+                                                                            <h5 className="card-title"><Skeleton width={100}/></h5>
+                                                                            <p className="card-text"><Skeleton/></p>
+                                                                            <p className="card-text"><Skeleton/></p>
+                                                                            <p className="card-text"><Skeleton/></p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             )
                                                         }
                                                         return container;
                                                     })()
                                                 }
-                                            </ul>
-                                        </form>
-                                        <hr/>
-                                        <div className="form-group">
-                                            <button className={"btn btn-primary"} style={{width:"100%"}} onClick={this.handleLoadMore}>{this.props.isLoadingKategori?'tunggu sebentar ...':'tampilkan lebih banyak'}</button>
+                                            </table>
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
-                        </StickyBox>
+                        </div>
                     </div>
                 </div>
                 {

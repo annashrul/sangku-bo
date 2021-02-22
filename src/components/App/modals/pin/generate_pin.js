@@ -7,10 +7,8 @@ import {
     ModalFooter,
 } from 'reactstrap';
 import {ModalToggle} from "../../../../redux/actions/modal.action";
-import Paginationq, {ToastQ, toCurrency, toRp} from "../../../../helper";
+import {ToastQ} from "../../../../helper";
 import Select from 'react-select';
-import Skeleton from 'react-loading-skeleton';
-import {fetchPaket} from "../../../../redux/actions/paket/paket.action";
 import {generatePin} from "../../../../redux/actions/paket/pin.action";
 
 

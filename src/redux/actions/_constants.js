@@ -389,3 +389,15 @@ export const BANKS = {
   LISTBANK: `LISTBANK_${mbank}`,
   FAILED: `FAILED_${mbank}`,
 }
+
+/****************
+ CLAIM REWARD
+ *****************/
+let claim_reward = 'claim_reward';
+export const CLAIM = {
+  LOADING: `SET_${claim_reward}_LOADING`,
+  IS_ERROR: `SET_${claim_reward}_IS_ERROR`,
+  SUCCESS: `SUCCESS_${claim_reward}`,
+  LISTBANK: `LISTBANK_${claim_reward}`,
+  FAILED: `FAILED_${claim_reward}`,
+}

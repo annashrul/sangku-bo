@@ -51,7 +51,7 @@ class ReportRedeem extends Component{
                 <div className="row">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Report Redeem</h5>
+                            <h5 className="mb-0 font-weight-bold">Redeem</h5>
                         </div>
                     </div>
                 </div>
