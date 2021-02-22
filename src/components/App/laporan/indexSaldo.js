@@ -56,14 +56,7 @@ class IndexSaldo extends Component{
         localStorage.removeItem("pageLaporanSaldo");
     }
     componentWillMount(){
-        let getDateFrom=localStorage.dateFromLaporanSaldo;
-        let getDateTo=localStorage.dateToLaporanSaldo;
-        if(getDateFrom!==undefined&&getDateTo!==undefined){
-            this.setState({
-                dateFrom:getDateFrom,
-                dateTo:getDateTo,
-            })
-        }
+
         let where=this.handleValidate();
         console.log(where);
         this.props.dispatch(getLaporanSaldo(where));
