@@ -7,12 +7,9 @@ import {
     ModalFooter,
 } from 'reactstrap';
 import {ModalToggle} from "../../../../../redux/actions/modal.action";
-import Paginationq, {ToastQ, toCurrency, toRp} from "../../../../../helper";
+import {ToastQ} from "../../../../../helper";
 import Select from 'react-select';
-import Skeleton from 'react-loading-skeleton';
-import {fetchPaket} from "../../../../../redux/actions/paket/paket.action";
-import {generatePin} from "../../../../../redux/actions/paket/pin.action";
-import {fetchKategori, getKategori} from "../../../../../redux/actions/kategori/kategori.action";
+import {fetchKategori} from "../../../../../redux/actions/kategori/kategori.action";
 import File64 from "../../../../common/File64";
 import CKEditor from "react-ckeditor-component";
 import {postContent, putContent} from "../../../../../redux/actions/konten/konten.action";
@@ -49,6 +46,7 @@ class FormBerita extends Component{
 
                 nextProps.kategori.data.map((v,i)=>{
                     dataKategori.push({value:v.id,label:v.title})
+                    return;
                 });
             }
         }

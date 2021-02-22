@@ -6,11 +6,8 @@ import {
     ModalBody,
     ModalFooter,
 } from 'reactstrap';
-import Select from 'react-select';
-import {getUserLevel} from "../../../../../redux/actions/masterdata/user_level.action";
 import {ModalToggle} from "../../../../../redux/actions/modal.action";
 import {ToastQ} from "../../../../../helper";
-import {postUserList, putUserList} from "../../../../../redux/actions/masterdata/user_list.action";
 import {postVoucher, putVoucher} from "../../../../../redux/actions/masterdata/voucher.action";
 import moment from "moment";
 

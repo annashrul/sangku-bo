@@ -1,16 +1,17 @@
 import React,{Component} from 'react';
 import Layout from "../../../Layout";
 import connect from "react-redux/es/connect/connect";
-import {fetchData} from "redux/actions/laporan/claim.action";
-import Paginationq, {statusOrder, ToastQ} from "helper";
+import {fetchData,approval} from "redux/actions/laporan/claim.action";
+import Paginationq, {ToastQ} from "helper";
 import imgDefault from 'assets/default.png'
 import Skeleton from 'react-loading-skeleton';
 import moment from "moment";
+import * as Swal from "sweetalert2";
 
 class ReportRedeem extends Component{
     constructor(props){
         super(props);
-
+        this.handleApproval = this.handleApproval.bind(this)
     }
     componentWillMount(){
         this.props.dispatch(fetchData('page=1'));
@@ -34,6 +35,24 @@ class ReportRedeem extends Component{
 
     handlePageChange(num){
         this.props.dispatch(fetchData('page='+num));
+    }
+
+    handleApproval(e,trx,status){
+        e.preventDefault();
+        Swal.fire({
+            title: 'Perhatian !!!',
+            html: `anda yakin akan ${status===0?'Menolak':"Menerima"} transaksi ini?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Ya`,
+            cancelButtonText: 'Batal',
+        }).then((result) => {
+            if (result.value) {
+                this.props.dispatch(approval(trx,status))
+            }
+        })
     }
     render(){
 
@@ -107,14 +126,37 @@ class ReportRedeem extends Component{
                                                             }
                                                         </p>
                                                     </div>
-                                                    <div>
                                                         <p style={{marginTop:'10px',marginBottom:'5px'}}>
-                                                            <small>Konfirmasi</small>
+                                                            <small>Status</small>
                                                         </p>
-                                                        <button className="btn btn-success" style={{width:'100%'}}>Terima</button><br/>
-                                                        <button className="btn btn-danger" style={{width:'100%',marginTop:'10px'}}>Tolak</button>
+                                                        {
+                                                            v.status==0?
+                                                            <span className="badge badge-warning">Menunggu Konfirmasi</span>:
+                                                            v.status==1?
+                                                            <span className="badge badge-info">Disetujui</span>:
+                                                            v.status==2?
+                                                            <span className="badge badge-danger">Ditolak</span>:
+                                                            v.status==3?
+                                                            <span className="badge badge-warning">Reward diterima</span>:
+                                                            ''
+                                                        }
+                                                        
+
+                                                    <div>
+                                                        {
+                                                            v.status>0?'':(
+                                                                <div>
+                                                                    <p style={{marginTop:'10px',marginBottom:'5px'}}>
+                                                                        <small>Konfirmasi</small>
+                                                                    </p>
+                                                                    <button className="btn btn-success" onClick={event=>this.handleApproval(event,v.kd_trx,1)} style={{width:'100%'}}>Terima</button><br/>
+                                                                    <button className="btn btn-danger" onClick={event=>this.handleApproval(event,v.kd_trx,0)} style={{width:'100%',marginTop:'10px'}}>Tolak</button>
+                                                                </div>
+                                                            )
+                                                        }
                                                         
                                                     </div>
+                                                </div>
 
 
                                                 </div>
@@ -122,7 +164,6 @@ class ReportRedeem extends Component{
 
                                             </div>
                                         </div>
-                                    </div>
                                 </div>
                             );
                         }):"":"":(() => {

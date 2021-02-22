@@ -1,18 +1,13 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
 import Layout from 'components/Layout';
-import {noImage, rmHtml, ToastQ, toCurrency} from "../../../helper";
+import Paginationq from "helper";
 import Skeleton from 'react-loading-skeleton';
 import moment from "moment";
-import {deleteContent, getContent} from "../../../redux/actions/konten/konten.action";
-import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
+import {putContent, getContent} from "redux/actions/konten/konten.action";
+import {ModalToggle, ModalType} from "redux/actions/modal.action";
 import FormTestimoni from "../modals/konten/testimoni/form_testimoni"
 import * as Swal from "sweetalert2";
-import {
-    deleteKategori, fetchKategori, postKategori,
-    putKategori
-} from "../../../redux/actions/kategori/kategori.action";
-import StickyBox from "react-sticky-box";
 
 moment.locale('id');// en
 
@@ -31,9 +26,7 @@ class IndexBerita extends Component{
         this.handleChange   = this.handleChange.bind(this);
         this.handlePage     = this.handlePage.bind(this);
         this.handleSearch   = this.handleSearch.bind(this);
-        this.handleDelete   = this.handleDelete.bind(this);
-        this.handleActionKategori   = this.handleActionKategori.bind(this);
-        this.handleLoadMore   = this.handleLoadMore.bind(this);
+        this.handleApprove   = this.handleApprove.bind(this);
 
     }
 
@@ -51,7 +44,6 @@ class IndexBerita extends Component{
     }
     componentWillMount(){
         this.props.dispatch(getContent('testimoni',`page=1`));
-        this.props.dispatch(fetchKategori(`testimoni?page=1&perpage=${this.state.perpage}`));
 
     }
     handleChange = (event) => {
@@ -72,6 +64,28 @@ class IndexBerita extends Component{
             where+=`&q=${any}`;
         }
         return where;
+
+    }
+
+    handleApprove(e,id,status){
+        e.preventDefault()
+        Swal.fire({
+            title: 'Perhatian !!!',
+            html: `anda yakin akan ${status===0?'Me-nonaktifkan':"Mengaktifkan"} testimoni ini?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Ya, ubah`,
+            cancelButtonText: 'Batal',
+        }).then((result) => {
+            if (result.value) {
+                this.props.dispatch(putContent(id, {
+                    status: status
+                }, 'testimoni'));
+            }
+        })
+        
 
     }
 
@@ -117,95 +131,13 @@ class IndexBerita extends Component{
         this.props.dispatch(ModalType("formTestimoni"));
     }
 
-    handleDelete(e,id){
-        e.preventDefault();
-        Swal.fire({
-            title: 'Perhatian !!!',
-            html:`anda yakin akan menghapus data ini ??`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: `Oke, Hapus`,
-            cancelButtonText: 'Batal',
-        }).then((result) => {
-            if (result.value) {
-                this.props.dispatch(deleteContent(id,'testimoni'));
-            }
-        })
-    }
     clearState(){
         this.setState({
             title:'',
             id:''
         })
     }
-    handleActionKategori(e,param,i){
-        e.preventDefault();
-        let parsedata={title:this.state.title,type:1};
-        this.setState({
-            isScroll:false
-        })
-        if(param==='tambah'){
-            if(this.state.title===''){
-                ToastQ.fire({icon:'error',title:`inputan tidak boleh kosong`});
-                return;
-            }
-            else{
-                if(this.state.id===''){
-                    this.props.dispatch(postKategori(parsedata,'testimoni'));
-                }
-                else{
-                    this.props.dispatch(putKategori(this.state.id,parsedata,'testimoni'));
-
-                }
-                this.clearState();
-            }
-        }
-        if(param==='edit'){
-            this.setState({
-                title:this.props.kategori.data[i].title,
-                id:this.props.kategori.data[i].id,
-            })
-        }
-        if(param==='hapus'){
-            Swal.fire({
-                title: 'Perhatian !!!',
-                html:`anda yakin akan menghapus data ini ??`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: `Oke, Hapus`,
-                cancelButtonText: 'Batal',
-            }).then((result) => {
-                if (result.value) {
-                    this.props.dispatch(deleteKategori(this.props.kategori.data[i].id,'testimoni'));
-                }
-            })
-        }
-    }
-    handleLoadMore(){
-        this.setState({
-            isScroll:true
-        });
-        let perpage = parseInt(this.props.kategori.per_page,10);
-        let lengthBrg = parseInt(this.props.kategori.data.length,10);
-        console.log("perpage",perpage);
-        console.log("lengthBrg",lengthBrg);
-        if(perpage===lengthBrg || perpage<lengthBrg){
-            this.props.dispatch(fetchKategori(`testimoni?page=1&perpage=${this.state.perpage}`));
-            this.setState({scrollPage:this.state.scrollPage+5});
-        }
-        else{
-            Swal.fire({allowOutsideClick: false,
-                title: 'Perhatian',
-                icon: 'warning',
-                text: 'Tidak ada data.',
-            });
-        }
-
-    }
+    
     handleScroll(){
         let divToScrollTo;
         divToScrollTo = document.getElementById(`item${this.state.scrollPage}`);
@@ -284,9 +216,9 @@ class IndexBerita extends Component{
                                                             <td>
                                                                 <button onClick={(e)=>this.handleModal(e,i)} className={"btn btn-secondary btn-sm"} style={{marginRight:"10px"}}><i className={"fa fa-eye"}/></button>
                                                                 {v.status === 0?
-                                                                    <button onClick={(e)=>this.handleDelete(e,v.id)} className={"btn btn-success btn-sm"}><i className={"fa fa-check"}/></button>
+                                                                    <button onClick={(e)=>this.handleApprove(e,v.id,1)} className={"btn btn-success btn-sm"}><i className={"fa fa-check"}/></button>
                                                                     :
-                                                                    <button onClick={(e)=>this.handleDelete(e,v.id)} className={"btn btn-danger btn-sm"}><i className={"fa fa-close"}/></button>
+                                                                    <button onClick={(e)=>this.handleApprove(e,v.id,0)} className={"btn btn-danger btn-sm"}><i className={"fa fa-close"}/></button>
                                                                 }
                                                             </td>
 
@@ -315,6 +247,14 @@ class IndexBerita extends Component{
                                             </table>
                                         </div>
                                     </div>
+                                    <div style={{"marginTop":"20px","marginBottom":"20px","float":"right"}}>
+                                    <Paginationq
+                                        current_page={current_page}
+                                        per_page={per_page}
+                                        total={total}
+                                        callback={this.handlePage}
+                                    />
+                                </div>
 
                                 </div>
                             </div>

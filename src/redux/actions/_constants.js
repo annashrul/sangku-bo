@@ -20,8 +20,8 @@ export const NOTIF_ALERT = {
 }
 
 export const HEADERS ={
-  // URL       : "http://192.168.100.10:3010/",
-  URL: 'http://ptnetindo.com:6694/',
+  URL       : "http://192.168.100.10:3010/",
+  // URL: 'http://ptnetindo.com:6694/',
   TOKEN     : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwY2RiN2M5OC0wNWNmLTQ4NDgtOGM3Yy0yZTFiYTczZGUwNmYiLCJpYXQiOjE1NzAxNzM0ODYsImV4cCI6MTU3MDc3ODI4Nn0.1NiWtt2luG83am8FJSvWpL5p35Oxd8GSJJTwhFmAdgw",
   USERNAME  : "netindo",
   PASSWORD  : "$2b$08$hLMU6rEvNILCMaQbthARK.iCmDRO7jNbUB8CcvyRStqsHD4UQxjDO"
@@ -175,6 +175,7 @@ export const MEMBER = {
     LOADING_POST: `SET_${prefMember}_LOADING_POST`,
     IS_ERROR: `SET_${prefMember}_IS_ERROR`,
     SUCCESS: `SUCCESS_${prefMember}`,
+    APPROVAL: `APPROVAL_${prefMember}`,
     FAILED: `FAILED_${prefMember}`,
     DETAIL: `DETAIL_${prefMember}`,
     EDIT: `EDIT_${prefMember}`
@@ -400,4 +401,18 @@ export const CLAIM = {
   SUCCESS: `SUCCESS_${claim_reward}`,
   LISTBANK: `LISTBANK_${claim_reward}`,
   FAILED: `FAILED_${claim_reward}`,
+}
+/****************
+ CLAIM REWARD
+ *****************/
+let PPOB_const = 'PPOB';
+export const PPOB = {
+  LOADING: `SET_${PPOB_const}_LOADING`,
+  IS_ERROR: `SET_${PPOB_const}_IS_ERROR`,
+  SUCCESS: `SUCCESS_${PPOB_const}`,
+  LISTBANK: `LISTBANK_${PPOB_const}`,
+  FAILED: `FAILED_${PPOB_const}`,
+  PRODUK: `PRODUK_${PPOB_const}`,
+  OPERATOR: `OPERATOR_${PPOB_const}`,
+  KATEGORI: `KATEGORI_${PPOB_const}`,
 }

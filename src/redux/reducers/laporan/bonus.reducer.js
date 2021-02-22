@@ -10,6 +10,7 @@ const initialState = {
     status: "",
     msg: "",
     data: [],
+    approval: [],
     edit:[],
     detail:[]
 }
@@ -23,7 +24,7 @@ export const bonusReducer = (state = initialState, action) => {
                 msg: action.data.msg,
                 data: action.data.result,
             });
-
+        
         case BONUS.DETAIL:
             return Object.assign({}, state, {
                 detail: action.data.result,

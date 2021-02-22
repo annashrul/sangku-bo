@@ -69,6 +69,8 @@ class IndexMember extends Component{
         }
 
         if(any!==null&&any!==undefined&&any!==""){
+            where+="&page=1";
+
             where+=`&q=${any}`;
         }
         return where;
@@ -143,7 +145,6 @@ class IndexMember extends Component{
     render(){
         const headStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const numberStyle ={verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
-        const stringStyle ={verticalAlign: "middle", textAlign: "left",whiteSpace: "nowrap"};
         const {
             total,
             per_page,

@@ -67,7 +67,7 @@ class Website extends Component{
                 id: snap[indexAbout].id,
                 title: snap[indexAbout].title,
                 deskripsi: snap[indexAbout].deskripsi,
-            },
+            }
             howto={
                 id: snap[indexhowto].id,
                 title: snap[indexhowto].title,

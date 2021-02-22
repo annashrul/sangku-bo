@@ -31,6 +31,13 @@ export function setIsError(load) {
     }
 }
 
+export function setApproval(data = []) {
+    return {
+        type: MEMBER.APPROVAL,
+        data
+    }
+}
+
 export function setData(data = []) {
     return {
         type: MEMBER.SUCCESS,
@@ -86,6 +93,34 @@ export const getMember = (where) => {
     }
 };
 
+export const getListApproval = (where) => {
+    return (dispatch) => {
+        dispatch(setLoading(true));
+        let url = 'member/validasi/ktp';
+        if(where){
+            url+=`?${where}`;
+        }
+
+        axios.get(HEADERS.URL + `${url}`)
+            .then(function (response) {
+                const data = response.data;
+                dispatch(setApproval(data));
+                dispatch(setLoading(false));
+            })
+            .catch(function (error) {
+                dispatch(setLoading(false));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Network Failed!.',
+                        'Please check your connection',
+                        'error'
+                    );
+                }
+            })
+
+    }
+};
+
 export const putMember = (data,id) => {
     return (dispatch) => {
         Swal.fire({
@@ -112,6 +147,7 @@ export const putMember = (data,id) => {
                                 text: NOTIF_ALERT.SUCCESS,
                             });
                             dispatch(getMember('page=1'));
+                            dispatch(getListApproval())
                         } else {
                             Swal.fire({
                                 title: 'failed',
