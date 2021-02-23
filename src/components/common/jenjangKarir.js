@@ -15,11 +15,26 @@ class JenjangKarir extends Component{
         this.HandleChangeKarir=this.HandleChangeKarir.bind(this);
     }
     componentWillMount(){
-        // this.getProps(this.props);
+        this.getProps(this.props);
         this.props.dispatch(fetchKarir());
     }
+    componentDidMount(){
+        this.getProps(this.props);
+    }
+    getProps(props){
+        if(props.id!==''){
+            this.setState({karir:props.id});
+        }
+    }
+
     componentWillReceiveProps(nextProps){
+        this.getProps(nextProps);
         let karir=[];
+        if(nextProps.id==='semua'){
+            karir.push({value:'-',label:'Semua'});
+        }else{
+            karir=[];
+        }
         if(nextProps.karir!==undefined){
             if(nextProps.karir.length>0){
                 nextProps.karir.map((v,i)=>{

@@ -22,7 +22,8 @@ import {fetchKategori} from "../../../../redux/actions/kategori/kategori.action"
 import Select from 'react-select';
 import {getExcelMember} from "../../../../redux/actions/masterdata/member.action";
 import {toExcel} from "../../../../helper";
-
+import Membership from "../../../common/membership";
+import JenjangKarir from "../../../common/jenjangKarir";
 
 class IndexMember extends Component{
     constructor(props){
@@ -32,15 +33,17 @@ class IndexMember extends Component{
             any:"",
             dateFrom:moment(new Date()).format("yyyy-MM-DD"),
             dateTo:moment(new Date()).format("yyyy-MM-DD"),
-            status:'',
-            status_data:[
-                {value:'status',label:'Status'},
+            searchBy:'full_name',
+            searchByData:[
                 {value:'full_name',label:'Nama'},
                 {value:'referral_code',label:'User ID'},
                 {value:'mobile_no',label:'Telepon'},
-                {value:'membership',label:'Membership'},
-                {value:'jenjang_karir',label:'Karir'},
             ],
+            membership:'',
+            jenjangKarir:'',
+            status:'',
+            statusData:[{value:'-',label:"Semua"},{value:0,label:"Tidak Aktif"},{value:1,label:"Aktif"}]
+
         };
         this.handleEvent    = this.handleEvent.bind(this);
         this.handleChange   = this.handleChange.bind(this);
@@ -50,11 +53,22 @@ class IndexMember extends Component{
         this.handleBank   = this.handleBank.bind(this);
         this.handleDetailTrx   = this.handleDetailTrx.bind(this);
         this.handleUpdate   = this.handleUpdate.bind(this);
-        this.HandleChangeMembership      = this.HandleChangeMembership.bind(this);
+        this.handleSearchBy      = this.handleSearchBy.bind(this);
         this.printDocumentXLsx      = this.printDocumentXLsx.bind(this);
-
-
+        this.handleKarir      = this.handleKarir.bind(this);
+        this.handleMembership      = this.handleMembership.bind(this);
+        this.handleStatus      = this.handleStatus.bind(this);
     }
+    handleKarir(val){
+        this.setState({jenjangKarir:val.label});
+    }
+    handleMembership(val){
+        this.setState({membership:val.label});
+    }
+    handleStatus(val){
+        this.setState({status:val.value});
+    }
+
     componentDidUpdate(prevProps, prevState) {
         if(prevProps.dataExcel.data!==this.props.dataExcel.data){
             this.getExcel(this.props);
@@ -117,9 +131,10 @@ class IndexMember extends Component{
         let where=this.handleValidate();
         this.props.dispatch(getExcelMember(`perpage=${param}&${where}`));
     }
-    HandleChangeMembership(val){
+    handleSearchBy(val){
+        console.log(val.value);
         this.setState({
-            status:val.value
+            searchBy:val.value,
         })
     }
     componentWillReceiveProps(nextProps){
@@ -152,7 +167,10 @@ class IndexMember extends Component{
         let dateFrom = this.state.dateFrom;
         let dateTo = this.state.dateTo;
         let any = this.state.any;
-        let searchBy = this.state.status;
+        let searchBy = this.state.searchBy;
+        let membership = this.state.membership;
+        let status = this.state.status;
+        let jenjang_karir = this.state.jenjangKarir;
         localStorage.setItem("dateFromMember",`${dateFrom}`);
         localStorage.setItem("dateToMember",`${dateTo}`);
         if(page!==null&&page!==undefined&&page!==""){
@@ -166,7 +184,15 @@ class IndexMember extends Component{
         if(searchBy!==null&&searchBy!==undefined&&searchBy!==""){
             where+=`&searchby=${searchBy}`;
         }
-
+        if(jenjang_karir!==null&&jenjang_karir!==undefined&&jenjang_karir!==""&&jenjang_karir!=="Semua"){
+            where+=`&karir=${jenjang_karir}`;
+        }
+        if(membership!==null&&membership!==undefined&&membership!==""&&membership!=="Semua"){
+            where+=`&membership=${membership}`;
+        }
+        if(status!==null&&status!==undefined&&status!==""&&status!=="-"){
+            where+=`&status=${status}`;
+        }
         if(any!==null&&any!==undefined&&any!==""){
             where+="&page=1";
 
@@ -193,6 +219,7 @@ class IndexMember extends Component{
     handleSearch(e){
         e.preventDefault();
         let where = this.handleValidate();
+        console.log(where);
         this.props.dispatch(getMember(where));
     }
     handleBank(e,par){
@@ -267,25 +294,56 @@ class IndexMember extends Component{
                     <div className="col-12 box-margin">
                         <div className="card">
                             <div className="card-body">
-                                <div className="row" style={{zoom:"90%"}}>
+                                <div className="row" style={{zoom:"80%"}}>
                                     <div className="col-md-10">
                                         <div className="row">
-                                            <div className="col-12 col-xs-12 col-md-3">
+
+                                            <div className="col-12 col-xs-12 col-md-2">
                                                 <div className="form-group">
-                                                    <label>Filter Berdasarkan</label>
+                                                    <label>Status</label>
                                                     <Select
-                                                        options={this.state.status_data}
-                                                        placeholder="Filter Berdasarkan"
-                                                        onChange={this.HandleChangeMembership}
+                                                        options={this.state.statusData}
+                                                        placeholder="Status"
+                                                        onChange={this.handleStatus}
                                                         value={
-                                                            this.state.status_data.find(op => {
+                                                            this.state.statusData.find(op => {
                                                                 return op.value === this.state.status
                                                             })
                                                         }
                                                     />
                                                 </div>
                                             </div>
-                                            <div className="col-12 col-xs-12 col-md-3">
+
+                                            <div className="col-12 col-xs-12 col-md-2">
+                                                <div className="form-group">
+                                                    <label>Membership</label>
+                                                    <Membership handleChange={this.handleMembership} id={"semua"}/>
+                                                </div>
+                                            </div>
+                                            <div className="col-12 col-xs-12 col-md-2">
+                                                <div className="form-group">
+                                                    <label>Jenjang Karir</label>
+                                                    <JenjangKarir handleChange={this.handleKarir} id={"semua"}/>
+                                                </div>
+                                            </div>
+                                            <div className="col-12 col-xs-12 col-md-2">
+                                                <div className="form-group">
+                                                    <label htmlFor="">Kolom</label>
+                                                    <Select
+                                                        options={this.state.searchByData}
+                                                        placeholder="Kolom"
+                                                        onChange={this.handleSearchBy}
+                                                        value={
+                                                            this.state.searchByData.find(op => {
+                                                                return op.value === this.state.searchBy
+                                                            })
+                                                        }
+                                                    />
+
+                                                </div>
+
+                                            </div>
+                                            <div className="col-12 col-xs-12 col-md-4">
                                                 <div className="form-group">
                                                     <label>Tulis Pencarian Disini</label>
                                                     <input type="text" className="form-control" name="any" placeholder={"Tulis Pencarian Disini"} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
@@ -297,7 +355,7 @@ class IndexMember extends Component{
                                         <div className="row">
                                             <div className="col-md-12">
                                                 <div className="form-group">
-                                                    <button style={{marginTop:"28px",marginRight:"5px"}} className="btn btn-primary" onClick={this.handleSearch}>
+                                                    <button style={{marginTop:"28px",marginRight:"5px"}} className="btn btn-primary"  onClick={this.handleSearch}>
                                                         <i className="fa fa-search"/>
                                                     </button>
                                                     <button style={{marginTop:"28px",marginRight:"5px"}} className="btn btn-primary"  onClick={(e => this.printDocumentXLsx(e,per_page*last_page))}>

@@ -37,7 +37,7 @@ class FormPaket extends Component{
             any:'',
             isSelected:false,
             kategori_data:[],
-            kategori: "3a385e1d-21f7-4c73-9554-c818f0078c6f",
+            kategori: "",
             id:"",
             title:"",
             harga:0,

@@ -2,16 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fc56e2e0-5e65-4754-8b9b-96cb98d96b38" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/components/common/jenjangKarir.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/components/common/membership.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Dashboard/Dashboard.js" afterPath="$PROJECT_DIR$/src/components/App/Dashboard/Dashboard.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/laporan/indexBonus.js" afterPath="$PROJECT_DIR$/src/components/App/laporan/indexBonus.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/masterdata/member/index.js" afterPath="$PROJECT_DIR$/src/components/App/masterdata/member/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/masterdata/voucher/indexVoucher.js" afterPath="$PROJECT_DIR$/src/components/App/masterdata/voucher/indexVoucher.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/modals/masterdata/voucher/form_voucher.js" afterPath="$PROJECT_DIR$/src/components/App/modals/masterdata/voucher/form_voucher.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/modals/paket/form_paket.js" afterPath="$PROJECT_DIR$/src/components/App/modals/paket/form_paket.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/modals/reward/form_barang_reward.js" afterPath="$PROJECT_DIR$/src/components/App/modals/reward/form_barang_reward.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/paket/indexBarangReward.js" afterPath="$PROJECT_DIR$/src/components/App/paket/indexBarangReward.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/paket/indexPaket.js" afterPath="$PROJECT_DIR$/src/components/App/paket/indexPaket.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/helper.js" afterPath="$PROJECT_DIR$/src/helper.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/common/jenjangKarir.js" afterPath="$PROJECT_DIR$/src/components/common/jenjangKarir.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/common/membership.js" afterPath="$PROJECT_DIR$/src/components/common/membership.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -25,69 +22,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="jenjangKarir.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/common/jenjangKarir.js">
+      <file leaf-file-name="indexVoucher.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/App/masterdata/voucher/indexVoucher.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="6" column="24" lean-forward="true" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+            <state relative-caret-position="450">
+              <caret line="160" column="22" lean-forward="true" selection-start-line="160" selection-start-column="22" selection-end-line="160" selection-end-column="22" />
               <folding>
-                <element signature="e#1#39#0" expanded="true" />
+                <element signature="n#!!block;n#handleValidate#0;n#IndexVoucher#0" expanded="false" />
+                <element signature="n#!!block;n#componentWillMount#0;n#IndexVoucher#0" expanded="false" />
+                <element signature="e#1954#2027#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="form_paket.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/App/modals/paket/form_paket.js">
+      <file leaf-file-name="form_voucher.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/App/modals/masterdata/voucher/form_voucher.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="143">
-              <caret line="527" column="135" lean-forward="true" selection-start-line="527" selection-start-column="135" selection-end-line="527" selection-end-column="135" />
+            <state relative-caret-position="256">
+              <caret line="51" column="79" lean-forward="true" selection-start-line="51" selection-start-column="58" selection-end-line="51" selection-end-column="79" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
-                <element signature="n#!!block;n#handleChangeDynamic#0;n#FormPaket#0" expanded="false" />
-                <element signature="n#!!block;n#clearState#0;n#FormPaket#0" expanded="false" />
-                <element signature="e#6075#6229#0" expanded="false" />
-                <element signature="e#6261#6711#0" expanded="false" />
-                <element signature="n#!!block;n#handleValidation#0;n#FormPaket#0" expanded="false" />
-                <element signature="n#!!block;n#handleAddBarang#0;n#FormPaket#0" expanded="false" />
-                <element signature="n#!!block;n#removeItemOnce#0;n#FormPaket#0" expanded="false" />
-                <element signature="n#!!block;n#handleRemove#0;n#FormPaket#0" expanded="false" />
-                <element signature="n#!!block;n#handleFile#0;n#FormPaket#0" expanded="false" />
-                <element signature="n#!!block;n#handleLoadMore#0;n#FormPaket#0" expanded="false" />
-                <element signature="n#!!block;n#handleScroll#0;n#FormPaket#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="indexPaket.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/App/paket/indexPaket.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3216">
-              <caret line="11" column="36" lean-forward="true" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="membership.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/components/common/membership.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="28" column="47" lean-forward="false" selection-start-line="28" selection-start-column="47" selection-end-line="28" selection-end-column="47" />
-              <folding>
-                <element signature="e#1#39#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="kategori.action.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/redux/actions/kategori/kategori.action.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="52" column="13" lean-forward="false" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="13" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -104,7 +60,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>barang</find>
       <find>laporan</find>
       <find>SALDO</find>
       <find>font-famil</find>
@@ -134,6 +89,7 @@
       <find>handleResi</find>
       <find>Default</find>
       <find>onDone</find>
+      <find>status</find>
     </findStrings>
     <replaceStrings>
       <replace>colSpan</replace>
@@ -154,7 +110,6 @@
         <option value="$PROJECT_DIR$/src/redux/reducers/masterdata/voucher.reducer.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/masterdata/voucher.action.js" />
         <option value="$PROJECT_DIR$/public/index.html" />
-        <option value="$PROJECT_DIR$/src/components/App/modals/masterdata/voucher/form_voucher.js" />
         <option value="$PROJECT_DIR$/src/redux/reducers/laporan/report_redeem.reducer.js" />
         <option value="$PROJECT_DIR$/src/redux/reducers/laporan/report_reward.reducer.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/laporan/report_reward.action.js" />
@@ -173,9 +128,7 @@
         <option value="$PROJECT_DIR$/src/components/App/modals/laporan/detail_laporan_barang.js" />
         <option value="$PROJECT_DIR$/src/components/App/laporan/indexReportBarang.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/masterdata/member.action.js" />
-        <option value="$PROJECT_DIR$/src/components/App/masterdata/member/index.js" />
         <option value="$PROJECT_DIR$/src/redux/reducers/masterdata/member.reducer.js" />
-        <option value="$PROJECT_DIR$/src/components/App/masterdata/voucher/indexVoucher.js" />
         <option value="$PROJECT_DIR$/src/components/App/modals/masterdata/user_list/form_user_list.js" />
         <option value="$PROJECT_DIR$/src/components/App/modals/masterdata/user_level/form_user_level.js" />
         <option value="$PROJECT_DIR$/src/components/Layout/sideMenu.js" />
@@ -192,12 +145,15 @@
         <option value="$PROJECT_DIR$/src/components/Layout/header.js" />
         <option value="$PROJECT_DIR$/src/components/App/Dashboard/Dashboard.js" />
         <option value="$PROJECT_DIR$/src/helper.js" />
-        <option value="$PROJECT_DIR$/src/components/common/jenjangKarir.js" />
-        <option value="$PROJECT_DIR$/src/components/App/modals/reward/form_barang_reward.js" />
         <option value="$PROJECT_DIR$/src/components/App/paket/indexBarangReward.js" />
         <option value="$PROJECT_DIR$/src/components/App/paket/indexPaket.js" />
-        <option value="$PROJECT_DIR$/src/components/App/modals/paket/form_paket.js" />
+        <option value="$PROJECT_DIR$/src/components/App/modals/reward/form_barang_reward.js" />
+        <option value="$PROJECT_DIR$/src/components/common/jenjangKarir.js" />
         <option value="$PROJECT_DIR$/src/components/common/membership.js" />
+        <option value="$PROJECT_DIR$/src/components/App/masterdata/member/index.js" />
+        <option value="$PROJECT_DIR$/src/components/App/modals/paket/form_paket.js" />
+        <option value="$PROJECT_DIR$/src/components/App/modals/masterdata/voucher/form_voucher.js" />
+        <option value="$PROJECT_DIR$/src/components/App/masterdata/voucher/indexVoucher.js" />
       </list>
     </option>
   </component>
@@ -212,7 +168,7 @@
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="569" />
     <option name="y" value="93" />
     <option name="width" value="697" />
@@ -291,6 +247,23 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="masterdata" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sangku-bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sangku-bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="masterdata" type="462c0819:PsiDirectoryNode" />
+              <item name="member" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sangku-bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sangku-bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
               <item name="modals" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -299,7 +272,36 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="App" type="462c0819:PsiDirectoryNode" />
-              <item name="order" type="462c0819:PsiDirectoryNode" />
+              <item name="modals" type="462c0819:PsiDirectoryNode" />
+              <item name="masterdata" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sangku-bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sangku-bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="modals" type="462c0819:PsiDirectoryNode" />
+              <item name="masterdata" type="462c0819:PsiDirectoryNode" />
+              <item name="voucher" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sangku-bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sangku-bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="modals" type="462c0819:PsiDirectoryNode" />
+              <item name="paket" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sangku-bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sangku-bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="modals" type="462c0819:PsiDirectoryNode" />
+              <item name="reward" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="sangku-bo" type="b2602c69:ProjectViewProjectNode" />
@@ -315,6 +317,12 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="common" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sangku-bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sangku-bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -382,16 +390,15 @@
       <workItem from="1613907952271" duration="4946000" />
       <workItem from="1613969222459" duration="22661000" />
       <workItem from="1613999542750" duration="11211000" />
-      <workItem from="1614058074673" duration="18826000" />
+      <workItem from="1614058074673" duration="24541000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="282934000" />
+    <option name="totallyTimeSpent" value="288649000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17857143" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -400,7 +407,7 @@
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.029605264" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31907895" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -454,7 +461,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/App/masterdata/member/index.js</url>
-          <line>224</line>
+          <line>251</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -463,20 +470,18 @@
           <properties />
           <option name="timeStamp" value="14" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/App/masterdata/member/index.js</url>
+          <line>163</line>
+          <properties />
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="15" />
+      <option name="time" value="16" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/redux/reducers/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="58" column="12" lean-forward="true" selection-start-line="58" selection-start-column="12" selection-end-line="58" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/redux/reducers/ewallet/saldo.reducer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
@@ -488,6 +493,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="133" column="25" lean-forward="false" selection-start-line="133" selection-start-column="25" selection-end-line="133" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#25#0" expanded="false" />
+            <element signature="e#2073#2861#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -598,6 +607,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-144">
           <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -605,19 +615,8 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="16">
           <caret line="122" column="40" lean-forward="false" selection-start-line="122" selection-start-column="40" selection-end-line="122" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/masterdata/member/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="73" column="59" lean-forward="false" selection-start-line="73" selection-start-column="59" selection-end-line="73" selection-end-column="59" />
           <folding>
-            <element signature="e#0#38#0" expanded="true" />
-            <element signature="n#!!block;n#HandleChangeMembership#0;n#IndexMember#0" expanded="false" />
-            <element signature="n#!!block;n#componentWillReceiveProps#0;n#IndexMember#0" expanded="false" />
-            <element signature="n#!!block;n#componentWillMount#0;n#IndexMember#0" expanded="false" />
-            <element signature="e#5829#5902#0" expanded="false" />
+            <element signature="e#0#25#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -638,18 +637,6 @@
             <element signature="n#!!block;n#handleDetail#0;n#IndexSaldo#0" expanded="false" />
             <element signature="e#4830#6668#0" expanded="false" />
             <element signature="e#6712#7214#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/masterdata/voucher/indexVoucher.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="157" column="127" lean-forward="false" selection-start-line="157" selection-start-column="127" selection-end-line="157" selection-end-column="127" />
-          <folding>
-            <element signature="n#!!block;n#handleValidate#0;n#IndexVoucher#0" expanded="false" />
-            <element signature="n#!!block;n#componentWillMount#0;n#IndexVoucher#0" expanded="false" />
-            <element signature="e#1954#2027#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -983,19 +970,17 @@
         <state relative-caret-position="240">
           <caret line="146" column="75" lean-forward="false" selection-start-line="146" selection-start-column="75" selection-end-line="146" selection-end-column="75" />
           <folding>
-            <element signature="e#0#38#0" expanded="true" />
+            <element signature="e#0#38#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/modals/reward/form_barang_reward.js">
+    <entry file="file://$PROJECT_DIR$/src/components/App/paket/indexPaket.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="672">
-          <caret line="180" column="0" lean-forward="false" selection-start-line="180" selection-start-column="0" selection-end-line="180" selection-end-column="0" />
+        <state relative-caret-position="258">
+          <caret line="305" column="5" lean-forward="true" selection-start-line="305" selection-start-column="5" selection-end-line="305" selection-end-column="5" />
           <folding>
-            <element signature="e#0#38#0" expanded="true" />
-            <element signature="n#!!block;n#clearState#0;n#FormBarangReward#0" expanded="false" />
-            <element signature="n#!!block;n#getProps#0;n#FormBarangReward#0" expanded="false" />
+            <element signature="e#0#38#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1008,34 +993,35 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/common/jenjangKarir.js">
+    <entry file="file://$PROJECT_DIR$/src/components/App/modals/reward/form_barang_reward.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="6" column="24" lean-forward="true" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+        <state relative-caret-position="231">
+          <caret line="119" column="118" lean-forward="false" selection-start-line="119" selection-start-column="118" selection-end-line="119" selection-end-column="118" />
           <folding>
-            <element signature="e#1#39#0" expanded="true" />
+            <element signature="n#!!block;n#clearState#0;n#FormBarangReward#0" expanded="false" />
+            <element signature="n#!!block;n#getProps#0;n#FormBarangReward#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/paket/indexPaket.js">
+    <entry file="file://$PROJECT_DIR$/src/components/common/membership.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3216">
-          <caret line="11" column="36" lean-forward="true" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
+        <state relative-caret-position="112">
+          <caret line="34" column="32" lean-forward="false" selection-start-line="34" selection-start-column="27" selection-end-line="34" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/App/modals/paket/form_paket.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="527" column="135" lean-forward="true" selection-start-line="527" selection-start-column="135" selection-end-line="527" selection-end-column="135" />
+        <state relative-caret-position="-528">
+          <caret line="39" column="23" lean-forward="false" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
             <element signature="n#!!block;n#handleChangeDynamic#0;n#FormPaket#0" expanded="false" />
             <element signature="n#!!block;n#clearState#0;n#FormPaket#0" expanded="false" />
-            <element signature="e#6075#6229#0" expanded="false" />
-            <element signature="e#6261#6711#0" expanded="false" />
+            <element signature="e#6039#6193#0" expanded="false" />
+            <element signature="e#6225#6675#0" expanded="false" />
             <element signature="n#!!block;n#handleValidation#0;n#FormPaket#0" expanded="false" />
             <element signature="n#!!block;n#handleAddBarang#0;n#FormPaket#0" expanded="false" />
             <element signature="n#!!block;n#removeItemOnce#0;n#FormPaket#0" expanded="false" />
@@ -1047,12 +1033,56 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/common/membership.js">
+    <entry file="file://$PROJECT_DIR$/src/components/common/jenjangKarir.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="28" column="47" lean-forward="false" selection-start-line="28" selection-start-column="47" selection-end-line="28" selection-end-column="47" />
+        <state relative-caret-position="192">
+          <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/masterdata/member/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="319" column="113" lean-forward="false" selection-start-line="319" selection-start-column="113" selection-end-line="319" selection-end-column="113" />
           <folding>
-            <element signature="e#1#39#0" expanded="true" />
+            <element signature="e#0#38#0" expanded="true" />
+            <element signature="n#!!block;n#componentDidUpdate#0;n#IndexMember#0" expanded="false" />
+            <element signature="n#!!block;n#getExcel#0;n#IndexMember#0" expanded="false" />
+            <element signature="n#!!block;n#printDocumentXLsx#0;n#IndexMember#0" expanded="false" />
+            <element signature="n#!!block;n#handleSearchBy#0;n#IndexMember#0" expanded="false" />
+            <element signature="n#!!block;n#componentWillReceiveProps#0;n#IndexMember#0" expanded="false" />
+            <element signature="n#!!block;n#componentWillMount#0;n#IndexMember#0" expanded="false" />
+            <element signature="e#6408#6481#0" expanded="false" />
+            <element signature="n#!!block;n#handlePage#0;n#IndexMember#0" expanded="false" />
+            <element signature="e#8213#8443#0" expanded="false" />
+            <element signature="n#!!block;n#handleBank#0;n#IndexMember#0" expanded="false" />
+            <element signature="n#!!block;n#handleAlamat#0;n#IndexMember#0" expanded="false" />
+            <element signature="n#!!block;n#handleDetailTrx#0;n#IndexMember#0" expanded="false" />
+            <element signature="n#!!block;n#handleUpdate#0;n#IndexMember#0" expanded="false" />
+            <element signature="e#13567#14633#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/modals/masterdata/voucher/form_voucher.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="51" column="79" lean-forward="true" selection-start-line="51" selection-start-column="58" selection-end-line="51" selection-end-column="79" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/masterdata/voucher/indexVoucher.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="160" column="22" lean-forward="true" selection-start-line="160" selection-start-column="22" selection-end-line="160" selection-end-column="22" />
+          <folding>
+            <element signature="n#!!block;n#handleValidate#0;n#IndexVoucher#0" expanded="false" />
+            <element signature="n#!!block;n#componentWillMount#0;n#IndexVoucher#0" expanded="false" />
+            <element signature="e#1954#2027#0" expanded="false" />
           </folding>
         </state>
       </provider>

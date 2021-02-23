@@ -11,7 +11,7 @@ class Membership extends Component{
         super(props);
         this.state={
             kategori_data:[],
-            kategori: "3a385e1d-21f7-4c73-9554-c818f0078c6f",
+            kategori: "",
         };
         this.HandleChangeMembership=this.HandleChangeMembership.bind(this);
     }
@@ -32,12 +32,18 @@ class Membership extends Component{
     componentWillReceiveProps(nextProps){
         this.getProps(nextProps);
         let kategori_data=[];
+        if(nextProps.id==='semua'){
+            kategori_data.push({value:'-',label:'Semua'});
+        }else{
+            kategori_data=[];
+        }
         if(nextProps.kategori.data!==undefined){
             nextProps.kategori.data.map((v,i)=>{
                 kategori_data.push({value:v.id,label:v.title});
             });
-            this.setState({kategori_data:kategori_data});
         }
+        this.setState({kategori_data:kategori_data});
+
 
     }
     HandleChangeMembership(val){

@@ -117,7 +117,7 @@ class FormBarangReward extends Component{
                             <div className="form-group">
                                 <label>Jenis Karir</label>
 
-                                <JenjangKarir handleChange={this.HandleChangeKarir.bind(this)}/>
+                                <JenjangKarir handleChange={this.HandleChangeKarir.bind(this)} id={this.state.id_karir}/>
 
                                 {/*{*/}
                                     {/*typeof this.props.karir === 'object' ?*/}
