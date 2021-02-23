@@ -139,15 +139,21 @@ class IndexVoucher extends Component{
                                         let color='';
                                         let stts;
                                         let txtStts='';
-                                        if(v.status!==0&&moment(v.periode_end).format('yyyy-MM-DD')<moment(new Date()).format('yyyy-MM-DD')){
-                                            color='ribbon-default';
-                                            stts='badge-secondary';
-                                            txtStts='Aktif';
-                                        }
-                                        if(v.status===0&&moment(v.periode_end).format('yyyy-MM-DD')<moment(new Date()).format('yyyy-MM-DD')){
-                                            color='ribbon-default';
-                                            stts='badge-secondary';
-                                            txtStts='Tidak Aktif';
+
+                                        if(v.status===0||moment(v.periode_end).format('yyyy-MM-DD')<moment(new Date()).format('yyyy-MM-DD')){
+                                            if(v.status===0){
+                                                color='ribbon-default';
+                                                stts='badge-secondary';
+                                                txtStts='Tidak Aktif';
+                                            }else{
+
+                                            }
+                                            if(moment(v.periode_end).format('yyyy-MM-DD')<moment(new Date()).format('yyyy-MM-DD')){
+                                                color='ribbon-default';
+                                                stts='badge-secondary';
+                                                txtStts='Aktif';
+                                            }
+
                                         }else{
                                             color='ribbon-success';
                                             stts='badge-success';
