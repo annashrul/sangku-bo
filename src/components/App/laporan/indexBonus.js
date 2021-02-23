@@ -86,7 +86,7 @@ class IndexBonus extends Component{
                         <div className="card">
                             <div className="card-body">
                                 <table className='table table-bordered'>
-                                    <thead class="thead-light">
+                                    <thead className="thead-light">
                                         <tr>
                                             <th rowSpan={2} style={columnStyle}>Jenis</th>
                                             <th rowSpan={2} style={columnStyle}>Persentase</th>
@@ -121,7 +121,7 @@ class IndexBonus extends Component{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){
                                                         container.push(
-                                                            <tr key={x}>
+                                                        <tr key={x}>
                                                             <td><Skeleton/></td>
                                                             <td><Skeleton/></td>
                                                             <td><Skeleton/></td>

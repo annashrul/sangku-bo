@@ -24,7 +24,8 @@ import confirmY from 'assets/status/confirmation.svg'
 import confirmWhite from 'assets/status/confirmation_white.svg'
 import confirm from 'assets/status/confirmation_non.svg'
 import XLSX from 'xlsx'
-
+import Select from 'react-select';
+import Skeleton from 'react-loading-skeleton';
 export const statusOrder = (type, status, iswhite = false) => {
     if (type === 'dollar') {
         return (!iswhite ? (status ? dollarY : dollar) : dollarWhite)

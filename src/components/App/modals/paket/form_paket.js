@@ -14,6 +14,8 @@ import {postPaket, putPaket} from "../../../../redux/actions/paket/paket.action"
 import File64 from "components/common/File64";
 import {HEADERS, NOTIF_ALERT} from "../../../../redux/actions/_constants";
 import {fetchBarang} from "../../../../redux/actions/paket/barang.action";
+import Membership from "../../../common/membership";
+
 import * as Swal from "sweetalert2";
 
 
@@ -25,7 +27,6 @@ class FormPaket extends Component{
         this.toggle = this.toggle.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleValidation = this.handleValidation.bind(this);
-        this.HandleChangeCategory = this.HandleChangeCategory.bind(this);
         this.handleChangeDynamic = this.handleChangeDynamic.bind(this);
         this.handleAddBarang = this.handleAddBarang.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
@@ -90,7 +91,6 @@ class FormPaket extends Component{
     }
 
     getProps(param){
-        let kategori = typeof param.kategori.data === 'object' ? param.kategori.data : [];
         let barang=[];
 
         if(typeof param.barang.data==='object'){
@@ -123,10 +123,7 @@ class FormPaket extends Component{
         else{
             barang = [];
         }
-        let valKategori = [];
-        for(let i=0;i<kategori.length;i++){
-            valKategori.push({value:kategori[i].id,label:kategori[i].title})
-        }
+
         if(param.detail.id!==''){
             if(param.paketDetail.detail!==undefined){
                 if(param.paketDetail.detail.length>0){
@@ -159,7 +156,6 @@ class FormPaket extends Component{
 
 
         this.setState({
-            kategori_data:valKategori,
             barang_data:barang,
         });
 
@@ -371,6 +367,8 @@ class FormPaket extends Component{
 
 
     render(){
+        console.log("FORM PAKET",this.state.kategori);
+
         if(this.state.isScroll===true)this.handleScroll();
         const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace:"nowrap"};
         return (
@@ -527,23 +525,24 @@ class FormPaket extends Component{
                                         <div className="col-md-12 col-sm-12">
                                             <div className="form-group">
                                                 <label>Jenis Membership</label>
-                                                {
-                                                    typeof this.props.kategori.data === 'object' ?
-                                                        (
-                                                            <Select
-                                                                options={this.state.kategori_data}
-                                                                placeholder="Pilih Membership"
-                                                                onChange={this.HandleChangeCategory}
-                                                                value={
-                                                                this.state.kategori_data.find(op => {
-                                                                    return op.value === this.state.kategori
-                                                                })
-                                                            }
+                                                <Membership handleChange={this.HandleChangeCategory.bind(this)} id={this.state.kategori}/>
+                                                {/*{*/}
+                                                    {/*typeof this.props.kategori.data === 'object' ?*/}
+                                                        {/*(*/}
+                                                            {/*<Select*/}
+                                                                {/*options={this.state.kategori_data}*/}
+                                                                {/*placeholder="Pilih Membership"*/}
+                                                                {/*onChange={this.HandleChangeCategory}*/}
+                                                                {/*value={*/}
+                                                                {/*this.state.kategori_data.find(op => {*/}
+                                                                    {/*return op.value === this.state.kategori*/}
+                                                                {/*})*/}
+                                                            {/*}*/}
 
-                                                            />
-                                                        )
-                                                    : <Skeleton height={40}/>
-                                                }
+                                                            {/*/>*/}
+                                                        {/*)*/}
+                                                    {/*: <Skeleton height={40}/>*/}
+                                                {/*}*/}
 
                                             </div>
                                         </div>

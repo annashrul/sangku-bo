@@ -13,6 +13,8 @@ import Filter from './src/Filter'
 import Info from './src/Info'
 import Chart from './src/charts'
 import Clock from "../../common/clock";
+import Default from 'assets/default.png';
+
 const socket = socketIOClient(HEADERS.URL);
 
 class Dashboard extends Component {
@@ -314,11 +316,12 @@ class Dashboard extends Component {
                             <div className="card-body" style={{overflowX: 'auto', height: '340px'}}>
                                 <ul className="total-earnings-list">
                                     {
-                                        this.state.get_member_baru.length > 0 ? this.state.get_member_baru.map(item=>(
-                                            <li>
+                                        this.state.get_member_baru.length > 0 ? this.state.get_member_baru.map((item,i)=>(
+                                            <li key={i}>
                                                 <div className="author-info d-flex align-items-center">
                                                     <div className="author-img mr-3">
-                                                        <img src={item.picture} alt={item.full_name} />
+                                                        <img src={item.picture} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt={item.full_name}/>
+
                                                     </div>
                                                     <div className="author-text">
                                                     <h6 className="mb-0">{item.full_name}</h6>
@@ -342,11 +345,11 @@ class Dashboard extends Component {
                             <div className="card-body" style={{overflowX: 'auto', height: '340px'}}>
                                 <ul className="total-earnings-list">
                                     {
-                                        this.state.get_sponsor_terbaik.length > 0 ? this.state.get_sponsor_terbaik.map(item=>(
-                                            <li>
+                                        this.state.get_sponsor_terbaik.length > 0 ? this.state.get_sponsor_terbaik.map((item,i)=>(
+                                            <li key={i}>
                                                 <div className="author-info d-flex align-items-center">
                                                     <div className="author-img mr-3">
-                                                    <img src={item.picture} alt={item.title} />
+                                                    <img src={item.picture} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt={item.title}/>
                                                     </div>
                                                     <div className="author-text">
                                                     <h6 className="mb-0">{item.full_name} <img src={item.membership} width={20} alt={item.title} /></h6>

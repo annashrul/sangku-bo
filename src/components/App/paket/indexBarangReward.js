@@ -144,7 +144,7 @@ class IndexBarangReward extends Component{
                             {
                                 !this.props.isLoading?typeof data==='object'?data.length>0?data.map((v,i)=>{
                                     return(
-                                        <div className="col-md-6" key={i}>
+                                        <div className="col-md-6 box-margin" key={i}>
                                             <div className="card">
                                                 <div className="card-body">
                                                     <div className="mb-3">
