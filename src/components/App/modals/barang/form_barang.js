@@ -115,8 +115,6 @@ class FormBarang extends Component{
 
     }
     render(){
-        console.log("form");
-        const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace:"nowrap"};
         return (
             <WrapperModal isOpen={this.props.isOpen && this.props.type === "formBarang"} size="md">
                 <ModalHeader toggle={this.toggle}>{this.props.detail.id===''?"Tambah Barang":"Ubah Barang"}</ModalHeader>

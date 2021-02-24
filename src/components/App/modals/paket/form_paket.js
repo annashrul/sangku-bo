@@ -7,20 +7,15 @@ import {
     ModalFooter,
 } from 'reactstrap';
 import {ModalToggle} from "../../../../redux/actions/modal.action";
-import Paginationq, {noImage, rmComma, ToastQ, toCurrency, toRp} from "../../../../helper";
-import Select from 'react-select';
-import Skeleton from 'react-loading-skeleton';
+import  { rmComma, ToastQ, toCurrency} from "../../../../helper";
 import {postPaket, putPaket} from "../../../../redux/actions/paket/paket.action";
 import File64 from "components/common/File64";
-import {HEADERS, NOTIF_ALERT} from "../../../../redux/actions/_constants";
+import {NOTIF_ALERT} from "../../../../redux/actions/_constants";
 import {fetchBarang} from "../../../../redux/actions/paket/barang.action";
 import Membership from "../../../common/membership";
 
 import * as Swal from "sweetalert2";
 
-
-
-var noBrgSelected=0;
 class FormPaket extends Component{
     constructor(props){
         super(props);
@@ -404,6 +399,7 @@ class FormPaket extends Component{
                                                         descColor='white';
                                                         isCheck='fa-close';
                                                     }
+                                                    return null;
                                                 });
 
                                                 return (
