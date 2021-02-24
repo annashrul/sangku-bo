@@ -1,12 +1,8 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
 import Layout from 'components/Layout';
-import {DateRangePicker} from "react-bootstrap-daterangepicker";
 import Paginationq, {noImage, rangeDate, statusQ, toCurrency, toRp} from "helper";
 import {NOTIF_ALERT} from "redux/actions/_constants";
-import {ModalToggle, ModalType} from "redux/actions/modal.action";
-import Skeleton from 'react-loading-skeleton';
-import moment from "moment";
 import FormVoucher from "../../modals/masterdata/voucher/form_voucher"
 import {fetchKategori, fetchProduk,fetchOperator} from "redux/actions/setting/ppob.action";
 import * as Swal from "sweetalert2";
@@ -84,33 +80,22 @@ class PPOB extends Component{
     handlePage(num){
         let where = this.handleValidate();
         where+=`&page=${num}`;
-        this.props.dispatch(fetchKategori(where));
+        this.props.dispatch(fetchProduk(where));
     }
     handleValidate(){
         this.setState({
             isLoading:true
         });
-        let where=`perpage=8`;
-        let any = this.state.any;
-        if(any!==null&&any!==undefined&&any!==""){
-            where+=`&q=${any}`;
-        }
+        let where = `perpage=20&kategori=${this.state.kategori}`;
+        
         return where;
 
     }
     componentDidMount(){
-        let where = this.handleValidate();
-        this.props.dispatch(fetchKategori(where));
-        //
-        // if(localStorage.valuePPOB!==undefined){
-        //     this.handleChangeKategori({value:localStorage.valuePPOB,label:localStorage.labelPPOB})
-        //     this.setState({kategori:localStorage.valuePPOB});
-        // }
+        this.props.dispatch(fetchKategori());
 
     }
-    componentWillMount(){
-
-    }
+    
     handleChange = (event,i) => {
         this.state.data_produk[i].margin=event.target.value;
         this.setState({[event.target.name]: event.target.value});
@@ -121,8 +106,6 @@ class PPOB extends Component{
             kategori: val.value,
             operator:''
         });
-        // localStorage.setItem("valuePPOB",val.value);
-        // localStorage.setItem("labelPPOB",val.label);
     }
     handleChangeOperator(val) {
         this.props.dispatch(fetchProduk(`operator=${val.value}`))
@@ -138,12 +121,17 @@ class PPOB extends Component{
     }
 
     render(){
+        const {
+            total,
+            per_page,
+            current_page
+        } = this.props.produk;
         return(
             <Layout page={"Setting Margin PPOB"}>
                 <div className="row align-items-center">
                     <div className="col-12">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Setting Margin PPOB <small className={"txtRed"} style={{float:"right"}}>( Badge warna biru <b className={"text-info"}>Tidak Aktif</b> dan hijau <b className={"text-success"}>Aktif</b> )</small></h5>
+                            <h5 className="mb-0 font-weight-bold">Setting Margin PPOB</h5>
                         </div>
                     </div>
                 </div>
@@ -214,7 +202,7 @@ class PPOB extends Component{
                                                             this.state.data_produk.map((v,i)=>{
                                                                 return (
                                                                     <tr key={i}>
-                                                                        <td>No</td>
+                                                                        <td>{i+1 + (10 * (parseInt(current_page,10)-1))}</td>
                                                                         <td>{v.provider}</td>
                                                                         <td>{v.note}</td>
                                                                         <td>{toCurrency(v.raw_price)}</td>
@@ -227,7 +215,14 @@ class PPOB extends Component{
                                                                         }
                                                                         /></td>
                                                                         <td>{v.status===0?<span className="badge badge-danger">Tidak Aktif</span>:<span className="badge badge-success">Aktif</span>}</td>
-                                                                        <td><button onClick={(e)=>this.handleSubmit(e,v.id,{'status':v.status===0?1:0})} className="badge badge-success"><i className="fa fa-check"/></button></td>
+                                                                        <td>
+                                                                            {
+                                                                                v.status===1?
+                                                                                <button onClick={(e)=>this.handleSubmit(e,v.id,{'status':0})} className="btn btn-danger btn-sm"><i className="fa fa-remove"/> Non-aktifkan</button>
+                                                                                :
+                                                                                <button onClick={(e)=>this.handleSubmit(e,v.id,{'status':1})} className="btn btn-success btn-sm"><i className="fa fa-check"/> Aktifkan</button>
+                                                                            }
+                                                                            </td>
                                                                     </tr>
 
                                                                 )})
@@ -244,19 +239,16 @@ class PPOB extends Component{
                             </div>
                         </div>
                         <div style={{"marginTop":"20px","marginBottom":"20px","float":"right"}}>
-                            {/* <Paginationq
+                            <Paginationq
                                 current_page={current_page}
                                 per_page={per_page}
                                 total={total}
                                 callback={this.handlePage}
-                            /> */}
+                            />
                         </div>
 
                     </div>
                 </div>
-                {
-                    this.props.isOpen?<FormVoucher detail={this.state.detail}/>:null
-                }
             </Layout>
         );
     }

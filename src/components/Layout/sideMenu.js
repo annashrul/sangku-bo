@@ -227,9 +227,7 @@ class SideMenu extends Component {
                                 </ul>
                             </li>
                             {/* ===================================MEMBER MODUL END=================================== */}
-                            {/* ===================================VOUCHER MODUL START=================================== */}
-                            <li style={{display:aksesMember[10].value==='1'?'block':'none'}}  className={path==='/voucher'?"active":''}><Link to="/voucher"> <i className="fa fa-code" /><span> Voucher</span></Link></li>
-                            {/* ===================================VOUCHER MODUL END=================================== */}
+
                             {/* ===================================STOCKIST MODUL START=================================== */}
                             <li style={{display:isShowStockist?'block':'none'}} className={"treeview" +(isStockist===true || path==='/pin/aktivasi' || path==='/pin/ro' ?" active menu-open" : "")}>
                                 <a href="!#" onClick={(e) => this.changeMenu(e,'isStockist')}><i className="fa fa-tasks" /> <span>Stockist</span> <i className="fa fa-angle-right" /></a>
@@ -281,18 +279,21 @@ class SideMenu extends Component {
                                 </ul>
                             </li>
                             {/* ===================================MANAJEMEN KONTENT MODUL END=================================== */}
+                            {/* ===================================VOUCHER MODUL START=================================== */}
+                            <li style={{display:aksesMember[10].value==='1'?'block':'none'}}  className={path==='/voucher'?"active":''}><Link to="/voucher"> <i className="fa fa-code" /><span> Voucher</span></Link></li>
+                            {/* ===================================VOUCHER MODUL END=================================== */}
                             {/* ===================================LAPORAN MODUL START=================================== */}
                             <li style={{display:isShowLaporan?'block':'none'}} className={"treeview" +(isLaporan===true || path==='/saldo'|| path==='/report_barang' ?" active menu-open" : "")}>
                                 <a href="!#" onClick={(e) => this.changeMenu(e,'isLaporan')}><i className="fa fa-file-text" /> <span>Laporan</span> <i className="fa fa-angle-right" /></a>
                                 <ul className={"treeview-menu"} style={{display:isLaporan===true?"block":"none"}}>
                                     <li style={{display:aksesMember[70].value==='1'?'block':'none'}} className={path==='/saldo'?"active":''}><Link to="/saldo" style={{width:'fit-content'}}> Transaksi Member</Link></li>
-                                    <li style={{display:aksesMember[71].value==='1'?'block':'none'}} className={path==='/report_barang'?"active":''}><Link to="/report_barang" style={{width:'fit-content'}}> Barang</Link></li>
+                                    <li style={{display:aksesMember[71].value==='1'?'block':'none'}} className={path==='/report_barang'?"active":''}><Link to="/report_barang" style={{width:'fit-content'}}> Penjualan Paket</Link></li>
                                 </ul>
                             </li>
                             {/* ===================================LAPORAN MODUL END=================================== */}
                             {/* ===================================USER MODUL START=================================== */}
                             <li style={{display:isShowUser?'block':'block'}} className={"treeview" +(isUser===true || path==='/user_list' || path==='/user_level' ?" active menu-open" : "")}>
-                                <a href="!#" onClick={(e) => this.changeMenu(e,'isUser')}><i className="fa fa-user" /> <span>User</span> <i className="fa fa-angle-right" /></a>
+                                <a href="!#" onClick={(e) => this.changeMenu(e,'isUser')}><i className="fa fa-user" /> <span>Manajemen User</span> <i className="fa fa-angle-right" /></a>
                                 <ul className={"treeview-menu"} style={{display:isUser===true?"block":"none"}}>
                                     <li style={{display:aksesMember[80].value==='1'?'block':'block'}} className={path==='/user_list'?"active":''}><Link to="/user_list" style={{width:'fit-content'}}> User List</Link></li>
                                     <li style={{display:aksesMember[81].value==='1'?'block':'block'}} className={path==='/user_level'?"active":''}><Link to="/user_level" style={{width:'fit-content'}}> User Level</Link></li>

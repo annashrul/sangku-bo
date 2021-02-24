@@ -100,7 +100,6 @@ class IndexVoucher extends Component{
             current_page,
             data
         } = this.props.data;
-        console.log(data);
 
         return(
             <Layout page={"Voucher"}>
@@ -145,13 +144,10 @@ class IndexVoucher extends Component{
                                                 color='ribbon-default';
                                                 stts='badge-secondary';
                                                 txtStts='Tidak Aktif';
-                                            }else{
-
-                                            }
-                                            if(moment(v.periode_end).format('yyyy-MM-DD')<moment(new Date()).format('yyyy-MM-DD')){
+                                            }else if(moment(v.periode_end).format('yyyy-MM-DD')<moment(new Date()).format('yyyy-MM-DD')){
                                                 color='ribbon-default';
-                                                stts='badge-secondary';
-                                                txtStts='Aktif';
+                                                stts='badge-danger';
+                                                txtStts='Expired';
                                             }
 
                                         }else{
@@ -171,8 +167,8 @@ class IndexVoucher extends Component{
                                                 <span>Dari <span style={{float:"right"}} className={"txtRed"}>{moment(v.periode_start).format('lll')}</span></span>
                                                 <span>Sampai <span style={{float:"right"}} className={"txtRed"}>{moment(v.periode_end).format('lll')}</span></span>
                                                 <span>Status <span style={{float:"right"}} className={`badge ${stts}`}>{txtStts}</span></span>
-                                                <span>Limit Pemakaian Voucher <span style={{float:"right"}}>{v.max_uses}</span></span>
                                                 <span>Limit Pemakaian <span style={{float:"right"}}>{v.max_uses}</span></span>
+                                                <span>Limit Permember <span style={{float:"right"}}>{v.max_uses_user}</span></span>
                                                 <hr style={{borderStyle:"dotted"}}/>
                                                 <span>{v.deskripsi}</span>
                                                 <hr style={{borderStyle:"dotted"}}/>
