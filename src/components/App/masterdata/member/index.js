@@ -18,7 +18,12 @@ import DropdownItem from "reactstrap/es/DropdownItem";
 import {getDetailAlamat} from "redux/actions/masterdata/alamat.action";
 import {getDetailBank} from "redux/actions/masterdata/bank.action";
 import * as Swal from "sweetalert2";
-
+import {fetchKategori} from "../../../../redux/actions/kategori/kategori.action";
+import Select from 'react-select';
+import {getExcelMember} from "../../../../redux/actions/masterdata/member.action";
+import {toExcel} from "../../../../helper";
+import Membership from "../../../common/membership";
+import JenjangKarir from "../../../common/jenjangKarir";
 
 class IndexMember extends Component{
     constructor(props){
@@ -27,7 +32,18 @@ class IndexMember extends Component{
             detail:{},
             any:"",
             dateFrom:moment(new Date()).format("yyyy-MM-DD"),
-            dateTo:moment(new Date()).format("yyyy-MM-DD")
+            dateTo:moment(new Date()).format("yyyy-MM-DD"),
+            searchBy:'full_name',
+            searchByData:[
+                {value:'full_name',label:'Nama'},
+                {value:'referral_code',label:'User ID'},
+                {value:'mobile_no',label:'Telepon'},
+            ],
+            membership:'',
+            jenjangKarir:'',
+            status:'',
+            statusData:[{value:'-',label:"Semua"},{value:0,label:"Tidak Aktif"},{value:1,label:"Aktif"}]
+
         };
         this.handleEvent    = this.handleEvent.bind(this);
         this.handleChange   = this.handleChange.bind(this);
@@ -37,28 +53,126 @@ class IndexMember extends Component{
         this.handleBank   = this.handleBank.bind(this);
         this.handleDetailTrx   = this.handleDetailTrx.bind(this);
         this.handleUpdate   = this.handleUpdate.bind(this);
-
+        this.handleSearchBy      = this.handleSearchBy.bind(this);
+        this.printDocumentXLsx      = this.printDocumentXLsx.bind(this);
+        this.handleKarir      = this.handleKarir.bind(this);
+        this.handleMembership      = this.handleMembership.bind(this);
+        this.handleStatus      = this.handleStatus.bind(this);
+    }
+    handleKarir(val){
+        this.setState({jenjangKarir:val.label});
+    }
+    handleMembership(val){
+        this.setState({membership:val.label});
+    }
+    handleStatus(val){
+        this.setState({status:val.value});
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if(prevProps.dataExcel.data!==this.props.dataExcel.data){
+            this.getExcel(this.props);
+        }
+    }
+    getExcel(props){
+        if(props.dataExcel.data!==undefined){
+            if(props.dataExcel.data.length>0){
+                let content=[];
+                console.log(props.dataExcel.data);
+                props.dataExcel.data.map((v,i)=>{
+                    content.push([
+                        v.full_name,
+                        v.referral_code,
+                        v.membership,
+                        v.jenjang_karir,
+                        v.status===0?'Tidak Aktif':'Aktif',
+                        v.mobile_no,
+                        parseInt(v.saldo,10),
+                        parseInt(v.total_payment,10),
+                        parseInt(v.sponsor,10),
+                        parseInt(v.pin),
+                        parseInt(v.left_pv,10),
+                        parseInt(v.right_pv,10),
+                        parseInt(v.left_reward_point,10),
+                        parseInt(v.right_reward_point,10),
+                        parseInt(v.plafon,10),
+                        parseInt(v.point_ro,10),
+                    ]);
+                });
+                toExcel(
+                    'LAPORAN MEMBER',
+                    `SEMUA PERIODE`,
+                    [
+                        'NAMA',
+                        'USER ID',
+                        'MEMBERSHIP',
+                        'JENJANG KARIR',
+                        'STATUS',
+                        'TELEPON',
+                        'SALDO',
+                        'PENARIKAN',
+                        'JUMLAH SPONSOR',
+                        'JUMLAH PIN',
+                        'PV KIRI',
+                        'PV KANAN',
+                        'REWARD KIRI',
+                        'REWARD KANAN',
+                        'PLAFON',
+                        'POIN RO',
+                    ],
+                    content,
+                )
+            }
+        }
+
+    }
+    printDocumentXLsx(e,param){
+        e.preventDefault();
+        let where=this.handleValidate();
+        this.props.dispatch(getExcelMember(`perpage=${param}&${where}`));
+    }
+    handleSearchBy(val){
+        console.log(val.value);
+        this.setState({
+            searchBy:val.value,
+        })
+    }
+    componentWillReceiveProps(nextProps){
+        let membership=[];
+        if(nextProps.kategori.data!==undefined){
+            if(nextProps.kategori.data.length>0){
+                nextProps.kategori.data.map((v,i)=>{
+                    membership.push({value:v.title,label:v.title});
+                })
+            }else {
+                membership = [];
+            }
+            this.setState({membership_data:membership});
+        }
+    }
     componentWillMount(){
         localStorage.removeItem("isAlamat");
         localStorage.removeItem("isBank");
         localStorage.removeItem("isDetail");
         this.props.dispatch(getMember(`page=1`));
+        this.props.dispatch(fetchKategori(`membership`));
+
     }
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
     }
-
     handleValidate(){
         let where="";
         let page = localStorage.getItem("pageMember");
         let dateFrom = this.state.dateFrom;
         let dateTo = this.state.dateTo;
         let any = this.state.any;
+        let searchBy = this.state.searchBy;
+        let membership = this.state.membership;
+        let status = this.state.status;
+        let jenjang_karir = this.state.jenjangKarir;
         localStorage.setItem("dateFromMember",`${dateFrom}`);
         localStorage.setItem("dateToMember",`${dateTo}`);
-
         if(page!==null&&page!==undefined&&page!==""){
             where+=`page=${page}`;
         }else{
@@ -67,16 +181,27 @@ class IndexMember extends Component{
         if(dateFrom!==null&&dateFrom!==undefined&&dateFrom!==""){
             where+=`&datefrom=${dateFrom}&dateto=${dateTo}`;
         }
-
+        if(searchBy!==null&&searchBy!==undefined&&searchBy!==""){
+            where+=`&searchby=${searchBy}`;
+        }
+        if(jenjang_karir!==null&&jenjang_karir!==undefined&&jenjang_karir!==""&&jenjang_karir!=="Semua"){
+            where+=`&karir=${jenjang_karir}`;
+        }
+        if(membership!==null&&membership!==undefined&&membership!==""&&membership!=="Semua"){
+            where+=`&membership=${membership}`;
+        }
+        if(status!==null&&status!==undefined&&status!==""&&status!=="-"){
+            where+=`&status=${status}`;
+        }
         if(any!==null&&any!==undefined&&any!==""){
             where+="&page=1";
 
             where+=`&q=${any}`;
         }
+
         return where;
 
     }
-
     handlePage(pageNumber){
         localStorage.setItem("pageMember",pageNumber);
         let where = this.handleValidate();
@@ -94,6 +219,7 @@ class IndexMember extends Component{
     handleSearch(e){
         e.preventDefault();
         let where = this.handleValidate();
+        console.log(where);
         this.props.dispatch(getMember(where));
     }
     handleBank(e,par){
@@ -146,6 +272,7 @@ class IndexMember extends Component{
         const headStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const numberStyle ={verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
         const {
+            last_page,
             total,
             per_page,
             current_page,
@@ -167,18 +294,79 @@ class IndexMember extends Component{
                     <div className="col-12 box-margin">
                         <div className="card">
                             <div className="card-body">
-                                <div className="row" style={{zoom:"90%"}}>
-                                    <div className="col-12 col-xs-12 col-md-3">
-                                        <div className="form-group">
-                                            <label>Cari</label>
-                                            <input type="text" className="form-control" name="any" placeholder={"cari disini"} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
+                                <div className="row" style={{zoom:"80%"}}>
+                                    <div className="col-md-10">
+                                        <div className="row">
+
+                                            <div className="col-12 col-xs-12 col-md-2">
+                                                <div className="form-group">
+                                                    <label>Status</label>
+                                                    <Select
+                                                        options={this.state.statusData}
+                                                        placeholder="Status"
+                                                        onChange={this.handleStatus}
+                                                        value={
+                                                            this.state.statusData.find(op => {
+                                                                return op.value === this.state.status
+                                                            })
+                                                        }
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="col-12 col-xs-12 col-md-2">
+                                                <div className="form-group">
+                                                    <label>Membership</label>
+                                                    <Membership handleChange={this.handleMembership} id={"semua"}/>
+                                                </div>
+                                            </div>
+                                            <div className="col-12 col-xs-12 col-md-2">
+                                                <div className="form-group">
+                                                    <label>Jenjang Karir</label>
+                                                    <JenjangKarir handleChange={this.handleKarir} id={"semua"}/>
+                                                </div>
+                                            </div>
+                                            <div className="col-12 col-xs-12 col-md-2">
+                                                <div className="form-group">
+                                                    <label htmlFor="">Kolom</label>
+                                                    <Select
+                                                        options={this.state.searchByData}
+                                                        placeholder="Kolom"
+                                                        onChange={this.handleSearchBy}
+                                                        value={
+                                                            this.state.searchByData.find(op => {
+                                                                return op.value === this.state.searchBy
+                                                            })
+                                                        }
+                                                    />
+
+                                                </div>
+
+                                            </div>
+                                            <div className="col-12 col-xs-12 col-md-4">
+                                                <div className="form-group">
+                                                    <label>Tulis Pencarian Disini</label>
+                                                    <input type="text" className="form-control" name="any" placeholder={"Tulis Pencarian Disini"} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="col-2 col-xs-2 col-md-4">
-                                        <div className="form-group">
-                                            <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                    <div className="col-6 col-xs-6 col-md-2" style={{textAlign:"right"}}>
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <div className="form-group">
+                                                    <button style={{marginTop:"28px",marginRight:"5px"}} className="btn btn-primary"  onClick={this.handleSearch}>
+                                                        <i className="fa fa-search"/>
+                                                    </button>
+                                                    <button style={{marginTop:"28px",marginRight:"5px"}} className="btn btn-primary"  onClick={(e => this.printDocumentXLsx(e,per_page*last_page))}>
+                                                        <i className="fa fa-print"/> {!this.props.isLoadingExcel?'Export':'loading...'}
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+
+
                                 </div>
                                 <div style={{overflowX: "auto",zoom:"90%"}}>
                                     <table className="table table-hover table-bordered">
@@ -267,10 +455,10 @@ class IndexMember extends Component{
                                                     );
                                                 })
                                                 : <tr>
-                                                    <td colSpan={14} style={headStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
+                                                    <td colSpan={19} style={headStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
                                                 </tr>
                                                 : <tr>
-                                                    <td colSpan={14} style={headStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
+                                                    <td colSpan={19} style={headStyle}><img src={NOTIF_ALERT.NO_DATA}/></td>
                                                 </tr>
                                                 :(()=>{
                                                     let container =[];
@@ -349,10 +537,15 @@ class IndexMember extends Component{
 const mapStateToProps = (state) => {
     return {
         isLoading: state.memberReducer.isLoading,
+        isLoadingExcel: state.memberReducer.isLoadingExcel,
         isOpen:state.modalReducer,
         data:state.memberReducer.data,
+        dataExcel:state.memberReducer.excel,
         detailAlamat:state.alamatReducer.data,
-        detailBank:state.bankReducer.data
+        detailBank:state.bankReducer.data,
+        kategori:state.kategoriReducer.data,
+
+
     }
 }
 

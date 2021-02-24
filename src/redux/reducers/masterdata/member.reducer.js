@@ -6,12 +6,14 @@ const initialState = {
     isLoading: true,
     isLoadingDetail: true,
     isLoadingPost: false,
+    isLoadingExcel: false,
     isError: false,
     status: "",
     msg: "",
     data: [],
     edit:[],
     detail:[],
+    excel:[],
     approval:[]
 }
 
@@ -35,6 +37,10 @@ export const memberReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 detail: action.data.result,
             });
+        case MEMBER.EXCEL:
+            return Object.assign({}, state, {
+                excel: action.data.result,
+            });
         case MEMBER.FAILED:
             return Object.assign({}, state, {
                 status: action.data.status,
@@ -44,6 +50,10 @@ export const memberReducer = (state = initialState, action) => {
         case MEMBER.LOADING:
             return Object.assign({}, state, {
                 isLoading: action.load
+            });
+        case MEMBER.LOADING_EXCEL:
+            return Object.assign({}, state, {
+                isLoadingExcel: action.load
             });
         case MEMBER.LOADING_DETAIL:
             return Object.assign({}, state, {

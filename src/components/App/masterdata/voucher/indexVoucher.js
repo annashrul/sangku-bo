@@ -100,13 +100,14 @@ class IndexVoucher extends Component{
             current_page,
             data
         } = this.props.data;
+        console.log(data);
 
         return(
             <Layout page={"Voucher"}>
                 <div className="row align-items-center">
                     <div className="col-12">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Voucher <small className={"txtRed"} style={{float:"right"}}>( Badge warna biru <b className={"text-info"}>Tidak Aktif</b> dan hijau <b className={"text-success"}>Aktif</b> )</small></h5>
+                            <h5 className="mb-0 font-weight-bold">Voucher <small className={"txtRed"} style={{float:"right"}}>( Badge warna HITAM <b className={"text-black"}>Tidak Aktif</b> dan HIJAU <b className={"text-success"}>Aktif</b> )</small></h5>
                         </div>
                     </div>
                 </div>
@@ -136,12 +137,32 @@ class IndexVoucher extends Component{
                             {
                                 !this.props.isLoading?typeof data==='object'?data.length>0?data.map((v,i)=>{
                                         let color='';
+                                        let stts;
+                                        let txtStts='';
 
-                                        if(v.status===0){
-                                            color='ribbon-info';
+                                        if(v.status===0||moment(v.periode_end).format('yyyy-MM-DD')<moment(new Date()).format('yyyy-MM-DD')){
+                                            if(v.status===0){
+                                                color='ribbon-default';
+                                                stts='badge-secondary';
+                                                txtStts='Tidak Aktif';
+                                            }else{
+
+                                            }
+                                            if(moment(v.periode_end).format('yyyy-MM-DD')<moment(new Date()).format('yyyy-MM-DD')){
+                                                color='ribbon-default';
+                                                stts='badge-secondary';
+                                                txtStts='Aktif';
+                                            }
+
                                         }else{
                                             color='ribbon-success';
+                                            stts='badge-success';
+                                            txtStts='Aktif';
                                         }
+                                        // console.log("TANGGAL DARI",moment(v.periode_start).format('yyyy-MM-DD'));
+                                        // console.log("TANGGAL SAMPAI",moment(v.periode_end).format('yyyy-MM-DD'));
+                                        // console.log("TANGGAL SEKARANG",moment(new Date()).format('yyyy-MM-DD'));
+
                                     return(
                                         <div key={i} className="col-md-3 col-lg-3 col-xl-3 box-margin">
                                             <div className="ribbon-wrapper card">
@@ -149,6 +170,9 @@ class IndexVoucher extends Component{
                                                 <span>Kode Voucher <span style={{float:"right"}} className={"txtGreen"}>{v.kode}</span></span>
                                                 <span>Dari <span style={{float:"right"}} className={"txtRed"}>{moment(v.periode_start).format('lll')}</span></span>
                                                 <span>Sampai <span style={{float:"right"}} className={"txtRed"}>{moment(v.periode_end).format('lll')}</span></span>
+                                                <span>Status <span style={{float:"right"}} className={`badge ${stts}`}>{txtStts}</span></span>
+                                                <span>Limit Pemakaian Voucher <span style={{float:"right"}}>{v.max_uses}</span></span>
+                                                <span>Limit Pemakaian <span style={{float:"right"}}>{v.max_uses}</span></span>
                                                 <hr style={{borderStyle:"dotted"}}/>
                                                 <span>{v.deskripsi}</span>
                                                 <hr style={{borderStyle:"dotted"}}/>

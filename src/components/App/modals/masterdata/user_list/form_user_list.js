@@ -88,10 +88,22 @@ class FormUserList extends Component{
         let parseData   = {};
         parseData['name']    = this.state.name;
         parseData['username']    = this.state.username;
-        parseData['password']    = this.props.detail.id===''?this.state.password:'-';
+        let pass='';
+        if(this.props.detail.id!==''){
+            if(this.state.password!=='-'||this.state.password!==''){
+                pass    = this.state.password;
+            }else{
+                pass = '-';
+            }
+        }else{
+            pass = this.state.password;
+        }
+        parseData['password'] = pass;
         parseData['conf_password']    = this.state.conf_password;
         parseData['level']    = this.state.level;
         parseData['status']    = this.state.status;
+
+        // if(parseData['password'])
 
         console.log(parseData);
         if(parseData['name']===''){

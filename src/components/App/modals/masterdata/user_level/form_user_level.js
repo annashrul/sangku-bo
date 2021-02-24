@@ -20,15 +20,21 @@ class FormUserLevel extends Component{
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
-            pin: [{id: 0, value: "0", isChecked: false,label:'PIN'}],
-            member: [{id: 1, value: "0", isChecked: false,label:'Member'}],
-            paket: [
-                {id: 2, value: "0", isChecked: false,label:'Paket'},
-                {id: 3, value: "0", isChecked: false,label:'Barang'},
+            member: [
+                {id: 0, value: "0", isChecked: false,label:'List Member'},
+                {id: 1, value: "0", isChecked: false,label:'Approval KTP Member'},
+                {id: 2, value: "0", isChecked: false,label:''},
+                {id: 3, value: "0", isChecked: false,label:''},
+                {id: 4, value: "0", isChecked: false,label:''},
+                {id: 5, value: "0", isChecked: false,label:''},
+                {id: 6, value: "0", isChecked: false,label:''},
+                {id: 7, value: "0", isChecked: false,label:''},
+                {id: 8, value: "0", isChecked: false,label:''},
+                {id: 9, value: "0", isChecked: false,label:''},
             ],
-            masterdata       : [
-                {id: 10, value: "0", isChecked: false,label:'User List'},
-                {id: 11, value: "0", isChecked: false,label:'User Level'},
+            voucher:[
+                {id: 10, value: "0", isChecked: false,label:'Voucher'},
+                {id: 11, value: "0", isChecked: false,label:''},
                 {id: 12, value: "0", isChecked: false,label:''},
                 {id: 13, value: "0", isChecked: false,label:''},
                 {id: 14, value: "0", isChecked: false,label:''},
@@ -38,9 +44,9 @@ class FormUserLevel extends Component{
                 {id: 18, value: "0", isChecked: false,label:''},
                 {id: 19, value: "0", isChecked: false,label:''},
             ],
-            konten       : [
-                {id: 20, value: "0", isChecked: false,label:'Berita'},
-                {id: 21, value: "0", isChecked: false,label:'Testimoni'},
+            stockist: [
+                {id: 20, value: "0", isChecked: false,label:'PIN Aktivasi'},
+                {id: 21, value: "0", isChecked: false,label:'PIN RO'},
                 {id: 22, value: "0", isChecked: false,label:''},
                 {id: 23, value: "0", isChecked: false,label:''},
                 {id: 24, value: "0", isChecked: false,label:''},
@@ -50,51 +56,171 @@ class FormUserLevel extends Component{
                 {id: 28, value: "0", isChecked: false,label:''},
                 {id: 29, value: "0", isChecked: false,label:''},
             ],
+            order: [
+                {id: 30, value: "0", isChecked: false,label:'Order Paket'},
+                {id: 31, value: "0", isChecked: false,label:'Redeem Point'},
+                {id: 32, value: "0", isChecked: false,label:'Claim Reward'},
+                {id: 33, value: "0", isChecked: false,label:''},
+                {id: 34, value: "0", isChecked: false,label:''},
+                {id: 35, value: "0", isChecked: false,label:''},
+                {id: 36, value: "0", isChecked: false,label:''},
+                {id: 37, value: "0", isChecked: false,label:''},
+                {id: 38, value: "0", isChecked: false,label:''},
+                {id: 39, value: "0", isChecked: false,label:''},
+            ],
+            ewallet: [
+                {id: 40, value: "0", isChecked: false,label:'Deposit'},
+                {id: 41, value: "0", isChecked: false,label:'Penarikan'},
+                {id: 42, value: "0", isChecked: false,label:'Bonus'},
+                {id: 43, value: "0", isChecked: false,label:''},
+                {id: 44, value: "0", isChecked: false,label:''},
+                {id: 45, value: "0", isChecked: false,label:''},
+                {id: 46, value: "0", isChecked: false,label:''},
+                {id: 47, value: "0", isChecked: false,label:''},
+                {id: 48, value: "0", isChecked: false,label:''},
+                {id: 49, value: "0", isChecked: false,label:''},
+            ],
+            manajemen_paket: [
+                {id: 50, value: "0", isChecked: false,label:'Paket'},
+                {id: 51, value: "0", isChecked: false,label:'Barang'},
+                {id: 52, value: "0", isChecked: false,label:'Barang Redeem'},
+                {id: 53, value: "0", isChecked: false,label:'Barang Reward'},
+                {id: 54, value: "0", isChecked: false,label:''},
+                {id: 55, value: "0", isChecked: false,label:''},
+                {id: 56, value: "0", isChecked: false,label:''},
+                {id: 57, value: "0", isChecked: false,label:''},
+                {id: 58, value: "0", isChecked: false,label:''},
+                {id: 59, value: "0", isChecked: false,label:''},
+            ],
+            manajemen_konten: [
+                {id: 60, value: "0", isChecked: false,label:'Berita'},
+                {id: 61, value: "0", isChecked: false,label:'Testimoni'},
+                {id: 62, value: "0", isChecked: false,label:''},
+                {id: 63, value: "0", isChecked: false,label:''},
+                {id: 64, value: "0", isChecked: false,label:''},
+                {id: 65, value: "0", isChecked: false,label:''},
+                {id: 66, value: "0", isChecked: false,label:''},
+                {id: 67, value: "0", isChecked: false,label:''},
+                {id: 68, value: "0", isChecked: false,label:''},
+                {id: 69, value: "0", isChecked: false,label:''},
+            ],
+            laporan: [
+                {id: 70, value: "0", isChecked: false,label:'Transaksi Member'},
+                {id: 71, value: "0", isChecked: false,label:'Barang'},
+                {id: 72, value: "0", isChecked: false,label:''},
+                {id: 73, value: "0", isChecked: false,label:''},
+                {id: 74, value: "0", isChecked: false,label:''},
+                {id: 75, value: "0", isChecked: false,label:''},
+                {id: 76, value: "0", isChecked: false,label:''},
+                {id: 77, value: "0", isChecked: false,label:''},
+                {id: 78, value: "0", isChecked: false,label:''},
+                {id: 79, value: "0", isChecked: false,label:''},
+            ],
+            user: [
+                {id: 80, value: "0", isChecked: false,label:'User List'},
+                {id: 81, value: "0", isChecked: false,label:'User Level'},
+                {id: 82, value: "0", isChecked: false,label:''},
+                {id: 83, value: "0", isChecked: false,label:''},
+                {id: 84, value: "0", isChecked: false,label:''},
+                {id: 85, value: "0", isChecked: false,label:''},
+                {id: 86, value: "0", isChecked: false,label:''},
+                {id: 87, value: "0", isChecked: false,label:''},
+                {id: 88, value: "0", isChecked: false,label:''},
+                {id: 89, value: "0", isChecked: false,label:''},
+            ],
+            pengaturan: [
+                {id: 90, value: "0", isChecked: false,label:'Umum'},
+                {id: 91, value: "0", isChecked: false,label:'Website'},
+                {id: 92, value: "0", isChecked: false,label:'PPOB'},
+                {id: 93, value: "0", isChecked: false,label:'Bank'},
+                {id: 94, value: "0", isChecked: false,label:''},
+                {id: 95, value: "0", isChecked: false,label:''},
+                {id: 96, value: "0", isChecked: false,label:''},
+                {id: 97, value: "0", isChecked: false,label:''},
+                {id: 98, value: "0", isChecked: false,label:''},
+                {id: 99, value: "0", isChecked: false,label:''},
+            ],
             lvl             : "",
             access          : [],
-            array_modul     : ['pin','member','paket','masterdata','konten'],
+            array_modul     : [
+                'member',
+                'voucher',
+                'stockist',
+                'order',
+                'ewallet',
+                'manajemen_paket',
+                'manajemen_konten',
+                'laporan',
+                'user',
+                'pengaturan',
+            ],
 
         }
     }
     clearState(){
         this.setState({
-            pin: [{id: 0, value: "0", isChecked: false,label:'PIN'}],
-            member: [{id: 1, value: "0", isChecked: false,label:'Member'}],
-            paket: [
-                {id: 2, value: "0", isChecked: false,label:'Paket'},
-                {id: 3, value: "0", isChecked: false,label:'Barang'},
+            member: [
+                {id: 0, value: "0", isChecked: false,label:'List Member'},
+                {id: 1, value: "0", isChecked: false,label:'Approval KTP Member'},
             ],
-            masterdata       : [
-                {id: 10, value: "0", isChecked: false,label:'User List'},
-                {id: 11, value: "0", isChecked: false,label:'User Level'},
-                {id: 12, value: "0", isChecked: false,label:''},
-                {id: 13, value: "0", isChecked: false,label:''},
-                {id: 14, value: "0", isChecked: false,label:''},
-                {id: 15, value: "0", isChecked: false,label:''},
-                {id: 16, value: "0", isChecked: false,label:''},
-                {id: 17, value: "0", isChecked: false,label:''},
-                {id: 18, value: "0", isChecked: false,label:''},
-                {id: 19, value: "0", isChecked: false,label:''},
+            voucher:[{id: 10, value: "0", isChecked: false,label:'Voucher'}],
+            stockist: [
+                {id: 20, value: "0", isChecked: false,label:'PIN Aktivasi'},
+                {id: 20, value: "0", isChecked: false,label:'PIN RO'},
             ],
-            konten       : [
-                {id: 20, value: "0", isChecked: false,label:'Berita'},
-                {id: 21, value: "0", isChecked: false,label:'Testimoni'},
-                {id: 22, value: "0", isChecked: false,label:''},
-                {id: 23, value: "0", isChecked: false,label:''},
-                {id: 24, value: "0", isChecked: false,label:''},
-                {id: 25, value: "0", isChecked: false,label:''},
-                {id: 26, value: "0", isChecked: false,label:''},
-                {id: 27, value: "0", isChecked: false,label:''},
-                {id: 28, value: "0", isChecked: false,label:''},
-                {id: 29, value: "0", isChecked: false,label:''},
+            order: [
+                {id: 30, value: "0", isChecked: false,label:'Order Paket'},
+                {id: 31, value: "0", isChecked: false,label:'Redeem Point'},
+                {id: 32, value: "0", isChecked: false,label:'Claim Reward'},
+            ],
+            ewallet: [
+                {id: 40, value: "0", isChecked: false,label:'Deposit'},
+                {id: 41, value: "0", isChecked: false,label:'Penarikan'},
+                {id: 42, value: "0", isChecked: false,label:'Bonus'},
+            ],
+            manajemen_paket: [
+                {id: 50, value: "0", isChecked: false,label:'Paket'},
+                {id: 51, value: "0", isChecked: false,label:'Barang'},
+                {id: 52, value: "0", isChecked: false,label:'Barang Redeem'},
+                {id: 53, value: "0", isChecked: false,label:'Barang Reward'},
+            ],
+            manajemen_konten: [
+                {id: 60, value: "0", isChecked: false,label:'Berita'},
+                {id: 61, value: "0", isChecked: false,label:'Testimoni'},
+            ],
+            laporan: [
+                {id: 70, value: "0", isChecked: false,label:'Transaksi Member'},
+                {id: 71, value: "0", isChecked: false,label:'Barang'},
+            ],
+            user: [
+                {id: 80, value: "0", isChecked: false,label:'User List'},
+                {id: 81, value: "0", isChecked: false,label:'User Level'},
+            ],
+            pengaturan: [
+                {id: 90, value: "0", isChecked: false,label:'Umum'},
+                {id: 91, value: "0", isChecked: false,label:'Website'},
+                {id: 92, value: "0", isChecked: false,label:'PPOB'},
+                {id: 93, value: "0", isChecked: false,label:'Bank'},
             ],
             lvl             : "",
             access          : [],
-            array_modul     : ['pin','member','paket','masterdata','konten'],
+            array_modul     : [
+                'member',
+                'voucher',
+                'stockist',
+                'order',
+                'ewallet',
+                'manajemen_paket',
+                'manajemen_konten',
+                'laporan',
+                'user',
+                'pengaturan',
+            ],
+
         })
     }
     getProps(param){
-        if (param.detail !== undefined && param.detail !== []) {
+        if (param.detail.id !== '') {
             let array=[];
 
             this.state.array_modul.map(val=>{
@@ -108,9 +234,7 @@ class FormUserLevel extends Component{
             );
             this.setState({lvl:param.detail.lvl});
         }
-        else{
-            this.clearState();
-        }
+
     }
     componentWillReceiveProps(nextProps) {
         this.getProps(nextProps);

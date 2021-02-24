@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import Layout from "../../../Layout";
 import connect from "react-redux/es/connect/connect";
-import {getReportRedeem} from "../../../../redux/actions/laporan/report_redeem.action";
+import {getReportRedeem, putReportRedeem} from "../../../../redux/actions/laporan/report_redeem.action";
 import * as Toast from "sweetalert2";
 import Paginationq, {noImage, statusOrder, toCurrency,ToastQ} from "../../../../helper";
 import imgDefault from 'assets/default.png'
@@ -66,15 +66,18 @@ class ReportRedeem extends Component{
         this.props.dispatch(getReportRedeem('page='+num));
     }
 
-    handleResi(e, kdtrx, resi,kurir, isLacak=false) {
+    handleResi(e, kdtrx, resi,isLacak=false) {
         e.preventDefault()
+        console.log(btoa(kdtrx));
+        console.log(resi);
+        this.props.dispatch(putReportRedeem(btoa(kdtrx),{"resi":resi},"page=1"));
         // this.setState({
         //     dataTrx: [],
         //     dataPenjualan: []
         // })
-        if(!isLacak) this.props.dispatch(updateResi(kdtrx, resi));
-        else this.props.dispatch(lacakResi(kdtrx, resi, kurir));
-        console.log(resi);
+        // if(!isLacak) this.props.dispatch(updateResi(kdtrx, resi));
+        // else this.props.dispatch(lacakResi(kdtrx, resi, kurir));
+        // console.log(resi);
     }
     render(){
 
@@ -184,7 +187,7 @@ class ReportRedeem extends Component{
                                                         {
                                                             v.resi!=='-'?(
                                                                 <div id="no_resi">
-                                                                    Resi: {v.resi} <small><a href="#">Lacak resi</a></small>
+                                                                    Resi: {v.resi}
                                                                 </div>
                                                             ):''
                                                         }

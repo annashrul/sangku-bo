@@ -79,8 +79,6 @@ class FormVoucher extends Component{
         parseData['max_uses_user']  = this.state.max_uses_user;
         parseData['deskripsi']      = this.state.deskripsi;
         parseData['is_fixed']      = "0";
-
-        console.log(parseData);
         if(parseData['title']===''){
             ToastQ.fire({icon:'error',title:`title tidak boleh kosong`});
             return;
@@ -110,6 +108,8 @@ class FormVoucher extends Component{
             ToastQ.fire({icon:'error',title:`deskripsi tidak boleh kosong`});
             return;
         }
+        parseData['periode_start'] = parseData['periode_start']+" 00:00:00";
+        parseData['periode_end'] = parseData['periode_end']+" 23:59:59";
         //
         if(this.props.detail.id===''){
             this.props.dispatch(postVoucher(parseData));

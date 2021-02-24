@@ -7,7 +7,9 @@ import moment from "moment";
 import {putContent, getContent} from "redux/actions/konten/konten.action";
 import {ModalToggle, ModalType} from "redux/actions/modal.action";
 import FormTestimoni from "../modals/konten/testimoni/form_testimoni"
+import DetailTestimoni from "../modals/konten/testimoni/detailTestimoni"
 import * as Swal from "sweetalert2";
+import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 
 moment.locale('id');// en
 
@@ -22,11 +24,14 @@ class IndexBerita extends Component{
             perpage:10,
             scrollPage:0,
             isScroll:false,
+            isModal:'form',
         };
         this.handleChange   = this.handleChange.bind(this);
         this.handlePage     = this.handlePage.bind(this);
         this.handleSearch   = this.handleSearch.bind(this);
         this.handleApprove   = this.handleApprove.bind(this);
+        this.handleDetail   = this.handleDetail.bind(this);
+        // this.handleData   = this.handleData.bind(this);
 
     }
 
@@ -100,27 +105,33 @@ class IndexBerita extends Component{
         let where = this.handleValidate();
         this.props.dispatch(getContent('testimoni',where));
     }
+    handleData(par){
+        return {
+            jobs: this.props.data.data[par].jobs,
+            caption: this.props.data.data[par].caption,
+            id_category: this.props.data.data[par].id_category,
+            category: this.props.data.data[par].category,
+            created_at: this.props.data.data[par].created_at,
+            id: this.props.data.data[par].id,
+            picture: this.props.data.data[par].picture,
+            title:this.props.data.data[par].title,
+            type:this.props.data.data[par].type,
+            type_no:this.props.data.data[par].type_no,
+            updated_at:this.props.data.data[par].updated_at,
+            video:this.props.data.data[par].video,
+            writer:this.props.data.data[par].writer,
+        };
+    }
     handleModal(e,par){
         if(par!==''){
             this.setState({
-                detail:{
-                    caption: this.props.data.data[par].caption,
-                    id_category: this.props.data.data[par].id_category,
-                    category: this.props.data.data[par].category,
-                    created_at: this.props.data.data[par].created_at,
-                    id: this.props.data.data[par].id,
-                    picture: this.props.data.data[par].picture,
-                    title:this.props.data.data[par].title,
-                    type:this.props.data.data[par].type,
-                    type_no:this.props.data.data[par].type_no,
-                    updated_at:this.props.data.data[par].updated_at,
-                    video:this.props.data.data[par].video,
-                    writer:this.props.data.data[par].writer,
-                }
+                isModal:'form',
+                detail:this.handleData(par)
             })
         }
         else{
             this.setState({
+                isModal:'form',
                 detail:{
                     id:''
                 }
@@ -129,6 +140,16 @@ class IndexBerita extends Component{
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
         this.props.dispatch(ModalType("formTestimoni"));
+    }
+    handleDetail(e,par){
+        e.preventDefault();
+        this.setState({
+            isModal:'detail',
+            detail:this.handleData(par)
+        });
+        const bool = !this.props.isOpen;
+        this.props.dispatch(ModalToggle(bool));
+        this.props.dispatch(ModalType("detailTestimoni"));
     }
 
     clearState(){
@@ -157,7 +178,7 @@ class IndexBerita extends Component{
             from,
             data
         } = this.props.data;
-
+        console.log(data);
         return(
             <Layout page={"Testimoni"}>
                 <div className="row">
@@ -175,7 +196,7 @@ class IndexBerita extends Component{
                                     <div className="col-12 col-xs-12 col-md-3">
                                         <div className="form-group">
                                             <label>Cari</label>
-                                            <input type="text" className="form-control" name="any" placeholder={"cari disini"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
+                                            <input type="text" className="form-control" name="any" placeholder={"cari disini"} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
                                     <div className="col-2 col-xs-2 col-md-4">
@@ -188,9 +209,9 @@ class IndexBerita extends Component{
                                 </div>
                                 <div className="row">
                                     <div className="col-md-12 col-sm-12 col-lg-12">
-                                        <div ClassName="table-responsive">
+                                        <div className="table-responsive">
                                             <table className="table table-bordered">
-                                                <thead class="thead-dark">
+                                                <thead className="thead-dark">
                                                     <tr>
                                                         <th style={{width:'1%'}}>No</th>
                                                         <th  style={{width:'15%'}}>Penulis</th>
@@ -201,49 +222,50 @@ class IndexBerita extends Component{
                                                         <th  style={{width:'10%'}}>Aksi</th>
                                                     </tr>
                                                 </thead>
+                                                <tbody>
                                                 {
                                                     !this.props.isLoading?typeof data === 'object' ? data.length>0 ? data.map((v,i)=>{
                                                         return(
-                                                        <tr>
-                                                            <td style={{textAlign:'center'}}>
-                                                                {i+1 + (10 * (parseInt(current_page,10)-1))}
-                                                            </td>
-                                                            <td>{v.writer}</td>
-                                                            <td>{v.jobs}</td>
-                                                            <td>{v.caption}</td>
-                                                            <td>{v.status===0?<span style={{padding:'5px'}} className="badge badge-danger">Tidak Aktif</span>:<span style={{padding:'5px'}} className="badge badge-success">Aktif/Terpublikasi</span>}</td>
-                                                            <td>{moment(v.created_at).format("lll")}</td>
-                                                            <td>
-                                                                <button onClick={(e)=>this.handleModal(e,i)} className={"btn btn-secondary btn-sm"} style={{marginRight:"10px"}}><i className={"fa fa-eye"}/></button>
-                                                                {v.status === 0?
-                                                                    <button onClick={(e)=>this.handleApprove(e,v.id,1)} className={"btn btn-success btn-sm"}><i className={"fa fa-check"}/></button>
-                                                                    :
-                                                                    <button onClick={(e)=>this.handleApprove(e,v.id,0)} className={"btn btn-danger btn-sm"}><i className={"fa fa-close"}/></button>
-                                                                }
-                                                            </td>
+                                                            <tr key={i}>
+                                                                <td style={{textAlign:'center'}}>
+                                                                    {i+1 + (10 * (parseInt(current_page,10)-1))}
+                                                                </td>
+                                                                <td>{v.writer}</td>
+                                                                <td>{v.jobs}</td>
+                                                                <td>{v.caption}</td>
+                                                                <td>{v.status===0?<span style={{padding:'5px'}} className="badge badge-danger">Tidak Aktif</span>:<span style={{padding:'5px'}} className="badge badge-success">Aktif/Terpublikasi</span>}</td>
+                                                                <td>{moment(v.created_at).format("lll")}</td>
+                                                                <td>
+                                                                    <button onClick={(e)=>this.handleDetail(e,i)} className={"btn btn-secondary btn-sm"} style={{marginRight:"10px"}}><i className={"fa fa-eye"}/></button>
+                                                                    {v.status === 0?
+                                                                        <button onClick={(e)=>this.handleApprove(e,v.id,1)} className={"btn btn-success btn-sm"}><i className={"fa fa-check"}/></button>
+                                                                        :
+                                                                        <button onClick={(e)=>this.handleApprove(e,v.id,0)} className={"btn btn-danger btn-sm"}><i className={"fa fa-close"}/></button>
+                                                                    }
+                                                                </td>
 
-                                                        </tr>
+                                                            </tr>
                                                         );
-                                                    }):"":"":(()=>{
+                                                    }):<tr><td colSpan={7}><img src={NOTIF_ALERT.NO_DATA} alt=""/></td></tr>:<tr><td colSpan={7}><img src={NOTIF_ALERT.NO_DATA} alt=""/></td></tr>:(()=>{
                                                         let container =[];
                                                         for(let x=0; x<8; x++){
                                                             container.push(
-                                                                <div key={x} className="col-xl-3 height-card box-margin break-992-none break-768-none">
-                                                                    <div className="card">
-                                                                        <img src="https://www.sustainablesanantonio.com/wp-content/plugins/ldd-directory-lite/public/images/noimage.png" className="card-img-top" alt="..."/>
-                                                                        <div className="card-body">
-                                                                            <h5 className="card-title"><Skeleton width={100}/></h5>
-                                                                            <p className="card-text"><Skeleton/></p>
-                                                                            <p className="card-text"><Skeleton/></p>
-                                                                            <p className="card-text"><Skeleton/></p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                <tr key={x}>
+                                                                    <td><Skeleton/></td>
+                                                                    <td><Skeleton/></td>
+                                                                    <td><Skeleton/></td>
+                                                                    <td><Skeleton/></td>
+                                                                    <td><Skeleton/></td>
+                                                                    <td><Skeleton/></td>
+                                                                    <td><Skeleton/></td>
+
+                                                                </tr>
                                                             )
                                                         }
                                                         return container;
                                                     })()
                                                 }
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -262,7 +284,11 @@ class IndexBerita extends Component{
                     </div>
                 </div>
                 {
-                    this.props.isOpen===true?<FormTestimoni detail={this.state.detail}/>:null
+                    this.state.isModal==='form'?<FormTestimoni detail={this.state.detail}/>:null
+                }
+                {
+                    this.state.isModal==='detail'?<DetailTestimoni detail={this.state.detail}/>:null
+
                 }
 
             </Layout>

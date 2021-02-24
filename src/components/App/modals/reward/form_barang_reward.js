@@ -8,6 +8,7 @@ import {
 } from 'reactstrap';
 import {ModalToggle} from "../../../../redux/actions/modal.action";
 import {rmComma, ToastQ, toCurrency} from "../../../../helper";
+import JenjangKarir from "../../../../components/common/jenjangKarir";
 import File64 from "components/common/File64";
 import {postBarangReward, putBarangReward} from "../../../../redux/actions/paket/barang_reward.action";
 import {fetchKarir} from "../../../../redux/actions/setting/general.action";
@@ -21,13 +22,12 @@ class FormBarangReward extends Component{
         this.handleChange = this.handleChange.bind(this);
         this.toggle = this.toggle.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.HandleChangeKarir = this.HandleChangeKarir.bind(this);
+        // this.HandleChangeKarir = this.HandleChangeKarir.bind(this);
         this.state={
             title:"",
             gambar:"",
             caption:"",
             id_karir:"",
-            data_karir:[]
         }
     }
 
@@ -51,22 +51,9 @@ class FormBarangReward extends Component{
     }
     componentWillReceiveProps(nextProps){
         this.getProps(nextProps);
-        console.log(nextProps.karir);
-        let karir=[];
-        if(nextProps.karir!==undefined){
-            if(nextProps.karir.length>0){
-                nextProps.karir.map((v,i)=>{
-                   karir.push({value:v.id,label:v.title});
-                });
-            }else{
-                karir=[];
-            }
-            this.setState({data_karir:karir});
-        }
     }
     componentWillMount(){
         this.getProps(this.props);
-        this.props.dispatch(fetchKarir());
     }
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
@@ -129,23 +116,26 @@ class FormBarangReward extends Component{
                             </div>
                             <div className="form-group">
                                 <label>Jenis Karir</label>
-                                {
-                                    typeof this.props.karir === 'object' ?
-                                        (
-                                            <Select
-                                                options={this.state.data_karir}
-                                                placeholder="Pilih Membership"
-                                                onChange={this.HandleChangeKarir}
-                                                value={
-                                                    this.state.data_karir.find(op => {
-                                                        return op.value === this.state.id_karir
-                                                    })
-                                                }
 
-                                            />
-                                        )
-                                        : <Skeleton height={40}/>
-                                }
+                                <JenjangKarir handleChange={this.HandleChangeKarir.bind(this)} id={this.state.id_karir}/>
+
+                                {/*{*/}
+                                    {/*typeof this.props.karir === 'object' ?*/}
+                                        {/*(*/}
+                                            {/*<Select*/}
+                                                {/*options={this.state.data_karir}*/}
+                                                {/*placeholder="Pilih Membership"*/}
+                                                {/*onChange={this.HandleChangeKarir}*/}
+                                                {/*value={*/}
+                                                    {/*this.state.data_karir.find(op => {*/}
+                                                        {/*return op.value === this.state.id_karir*/}
+                                                    {/*})*/}
+                                                {/*}*/}
+
+                                            {/*/>*/}
+                                        {/*)*/}
+                                        {/*: <Skeleton height={40}/>*/}
+                                {/*}*/}
 
                             </div>
                             <div className="form-group">
@@ -188,7 +178,6 @@ const mapStateToProps = (state) => {
         type: state.modalTypeReducer,
         isLoadingPost: state.barangRewardReducer.isLoadingPost,
         isError: state.barangRewardReducer.isError,
-        karir:state.generalReducer.karir
     }
 }
 export default connect(mapStateToProps)(FormBarangReward);

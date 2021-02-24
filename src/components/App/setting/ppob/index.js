@@ -11,6 +11,7 @@ import FormVoucher from "../../modals/masterdata/voucher/form_voucher"
 import {fetchKategori, fetchProduk,fetchOperator} from "redux/actions/setting/ppob.action";
 import * as Swal from "sweetalert2";
 import Select from 'react-select';
+import {putPPOB} from "../../../../redux/actions/setting/ppob.action";
 
 class PPOB extends Component{
     constructor(props){
@@ -22,15 +23,29 @@ class PPOB extends Component{
             data_operator:[],
             operator:'',
             status:'',
+            data_produk:[]
 
         };
         this.handleChange   = this.handleChange.bind(this);
         this.handlePage     = this.handlePage.bind(this);
         this.handleChangeKategori = this.handleChangeKategori.bind(this);
         this.handleChangeOperator = this.handleChangeOperator.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     static getDerivedStateFromProps(props, state) {
+        if (props.produk !== undefined && props.produk.length !== 0) {
+            if (props.produk !== state.prevprodukProps) {
+                let datum = []
+                props.produk.data.map(i => {
+                    datum.push(i);
+                })
+                return {
+                    prevprodukProps: props.produk,
+                    data_produk: datum
+                };
+            }
+        }
         if (props.kategori !== undefined && props.kategori.length !== 0) {
             if (props.kategori !== state.prevkategoriProps) {
                 const datum=[]
@@ -48,7 +63,6 @@ class PPOB extends Component{
                 };
             }
         }
-
         if (props.operator !== undefined && props.operator.length !== 0) {
             if (props.operator !== state.prevoperatorProps) {
                 const datum = []
@@ -64,6 +78,7 @@ class PPOB extends Component{
                 };
             }
         }
+        return null;
     }
 
     handlePage(num){
@@ -71,7 +86,6 @@ class PPOB extends Component{
         where+=`&page=${num}`;
         this.props.dispatch(fetchKategori(where));
     }
-
     handleValidate(){
         this.setState({
             isLoading:true
@@ -84,22 +98,31 @@ class PPOB extends Component{
         return where;
 
     }
-
     componentDidMount(){
         let where = this.handleValidate();
         this.props.dispatch(fetchKategori(where));
-    }
+        //
+        // if(localStorage.valuePPOB!==undefined){
+        //     this.handleChangeKategori({value:localStorage.valuePPOB,label:localStorage.labelPPOB})
+        //     this.setState({kategori:localStorage.valuePPOB});
+        // }
 
-    handleChange = (event) => {
+    }
+    componentWillMount(){
+
+    }
+    handleChange = (event,i) => {
+        this.state.data_produk[i].margin=event.target.value;
         this.setState({[event.target.name]: event.target.value});
     }
-
     handleChangeKategori(val) {
         this.props.dispatch(fetchProduk(`kategori=${val.value}`))
         this.setState({
             kategori: val.value,
             operator:''
         });
+        // localStorage.setItem("valuePPOB",val.value);
+        // localStorage.setItem("labelPPOB",val.label);
     }
     handleChangeOperator(val) {
         this.props.dispatch(fetchProduk(`operator=${val.value}`))
@@ -108,8 +131,13 @@ class PPOB extends Component{
         });
     }
 
+    handleSubmit(e,id,data={}){
+        e.preventDefault();
+        let where=`kategori=${this.state.kategori}`;
+        this.props.dispatch(putPPOB(id,data,where));
+    }
+
     render(){
-        console.log("object", this.props.produk);
         return(
             <Layout page={"Setting Margin PPOB"}>
                 <div className="row align-items-center">
@@ -175,28 +203,37 @@ class PPOB extends Component{
                                                         <th>Provider</th>
                                                         <th>Produk</th>
                                                         <th>HPP</th>
-                                                        <th>Margin</th>
+                                                        <th>Margin <small className={"txtRed bold text-right"} style={{float:"right"}}>( tekan enter untuk ubah data )</small></th>
                                                         <th>Status</th>
                                                         <th>Aksi</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {
-                                                        this.props.produk.data!==undefined && this.props.produk.data.length>0?
-                                                            this.props.produk.data.map(i=>{
+                                                        this.props.produk.data!==undefined && this.state.data_produk.length>0?
+                                                            this.state.data_produk.map((v,i)=>{
                                                                 return (
-                                                                    <tr>
+                                                                    <tr key={i}>
                                                                         <td>No</td>
-                                                                        <td>{i.provider}</td>
-                                                                        <td>{i.note}</td>
-                                                                        <td>{toCurrency(i.raw_price)}</td>
-                                                                        <td><input type="number" className="form-control" value={i.margin}/></td>
-                                                                        <td>{i.status===0?<span className="badge badge-danger">Tidak Aktif</span>:<span className="badge badge-success">Aktif</span>}</td>
-                                                                        <td><button className="badge badge-success"><i className="fa fa-check"/></button></td>
+                                                                        <td>{v.provider}</td>
+                                                                        <td>{v.note}</td>
+                                                                        <td>{toCurrency(v.raw_price)}</td>
+                                                                        <td><input type="number" className="form-control" name={'margin'} value={v.margin} onChange={(e)=>this.handleChange(e,i)} onKeyPress={
+                                                                            event => {
+                                                                                if (event.key === 'Enter') {
+                                                                                    this.handleSubmit(event,v.id,{'margin':v.margin});
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        /></td>
+                                                                        <td>{v.status===0?<span className="badge badge-danger">Tidak Aktif</span>:<span className="badge badge-success">Aktif</span>}</td>
+                                                                        <td><button onClick={(e)=>this.handleSubmit(e,v.id,{'status':v.status===0?1:0})} className="badge badge-success"><i className="fa fa-check"/></button></td>
                                                                     </tr>
 
                                                                 )})
-                                                            :''
+                                                            :<tr>
+                                                            <td colSpan={7}>No Data.</td>
+                                                            </tr>
                                                     }
                                                 </tbody>
                                             </table>

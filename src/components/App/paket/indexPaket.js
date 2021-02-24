@@ -10,7 +10,6 @@ import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import FormPaket from "../modals/paket/form_paket"
 import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
-import {fetchKategori} from "../../../redux/actions/kategori/kategori.action";
 import {BrowserView, MobileView,isBrowser, isMobile} from 'react-device-detect';
 
 class IndexPaket extends Component{
@@ -101,13 +100,10 @@ class IndexPaket extends Component{
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
         this.props.dispatch(ModalType("formPaket"));
-        // this.props.dispatch(fetchBarang("page=1"));
-        this.props.dispatch(fetchKategori("barang_registrasi"));
+        // this.props.dispatch(fetchKategori("membership"));
         if(param!==''){
             this.props.dispatch(detailPaket(param));
         }
-        // this.props.dispatch(fetchKategori("barang_registrasi"));
-
     }
     handleDelete(e,id){
         e.preventDefault();
@@ -315,8 +311,6 @@ const mapStateToProps = (state) => {
         isOpen:state.modalReducer,
         data:state.paketReducer.data,
         dataDetail:state.paketReducer.detail,
-        kategori:state.kategoriReducer.data,
-        // barang:state.barangReducer.data,
     }
 }
 
