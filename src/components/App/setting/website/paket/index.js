@@ -121,14 +121,24 @@ class Index extends Component{
             this.setState({
                 title: e.target.value
             })
-        }else{
-            const data = target === 'title1' ? this.state.step1 : target === 'title2' ? this.state.step2 : this.state.step3;
-            const datum= Object.assign({},data,{
-                title:e.target.value
-            })
-            this.setState({
-                [target === 'title1'?'step1':target === 'title2'?'step2':'step3']: datum
-            })
+        } else {
+            if (target === 'title1' || target === 'title2' || target === 'title3'){
+                const data = target === 'title1' ? this.state.step1 : target === 'title2' ? this.state.step2 : this.state.step3;
+                const datum= Object.assign({},data,{
+                    title:e.target.value
+                })
+                this.setState({
+                    [target === 'title1'?'step1':target === 'title2'?'step2':'step3']: datum
+                })
+            }else{
+                const data = target === 'price1' ? this.state.step1 : target === 'price2' ? this.state.step2 : this.state.step3;
+                const datum = Object.assign({}, data, {
+                    price: e.target.value
+                })
+                this.setState({
+                    [target === 'price1' ? 'step1' : target === 'price2' ? 'step2' : 'step3']: datum
+                })
+            }
         }
     }
 
@@ -150,6 +160,7 @@ class Index extends Component{
                     data={deskripsi:this.state.deskripsi1}
                 }
             }else if (type[1]==='title') data={title:this.state.step1.title}
+            else if (type[1]==='price') data={price:this.state.step1.price}
             else if (type[1] === 'gambar') {
                 if (this.state.newImage1 === '') {
                     ToastQ.fire({
@@ -172,6 +183,7 @@ class Index extends Component{
                     data={deskripsi:this.state.deskripsi2}
                 }
             }else if (type[1]==='title') data={title:this.state.step2.title}
+            else if (type[1]==='price') data={price:this.state.step2.price}
             else if (type[1] === 'gambar') {
                 if (this.state.newImage2 === '') {
                     ToastQ.fire({
@@ -194,6 +206,7 @@ class Index extends Component{
                     data={deskripsi:this.state.deskripsi3}
                 }
             }else if (type[1]==='title') data={title:this.state.step3.title}
+            else if (type[1]==='price') data={price:this.state.step3.price}
             else if (type[1] === 'gambar') {
                 if (this.state.newImage3 === '') {
                     ToastQ.fire({
@@ -221,7 +234,6 @@ class Index extends Component{
         }
 
         if(data!==null){
-            console.log(id);
             this.props.handleUpdate(e,data,id,type)
         }
     }
@@ -259,14 +271,23 @@ class Index extends Component{
                         <div className="col-md-4">
                             <h6 style={{marginTop:'20px'}}>Paket 1</h6>
                             <div className='form-group'>
-                                    <label>Judul <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'paket01_title')}>Simpan</button></label>
-                                    <div className="input-group mb-3">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text" id="basic-addon4"><i className="fa fa-building"/></span>
-                                        </div>
-                                        <input type="text" name='title1' onChange={this.handleChange} value={this.state.step1.title} className="form-control" placeholder="" />
+                                <label>Judul <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'paket01_title')}>Simpan</button></label>
+                                <div className="input-group mb-3">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon4"><i className="fa fa-building"/></span>
                                     </div>
+                                    <input type="text" name='title1' onChange={this.handleChange} value={this.state.step1.title} className="form-control" placeholder="" />
                                 </div>
+                            </div>
+                            <div className='form-group'>
+                                <label>Harga <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'paket01_price')}>Simpan</button></label>
+                                <div className="input-group mb-3">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon4"><i className="fa fa-building"/></span>
+                                    </div>
+                                    <input type="text" name='price1' onChange={this.handleChange} value={this.state.step1.price} className="form-control" placeholder="" />
+                                </div>
+                            </div>
                             <div className='form-group'>
                                 <label>Gambar <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'paket01_gambar')}>Simpan</button></label>
                                 <File64 multiple={ false }
@@ -299,14 +320,23 @@ class Index extends Component{
                             <h6 style={{marginTop:'20px'}}>Paket 2</h6>
 
                             <div className='form-group'>
-                                    <label>Judul <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'paket02_title')}>Simpan</button></label>
-                                    <div className="input-group mb-3">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text" id="basic-addon4"><i className="fa fa-building"/></span>
-                                        </div>
-                                        <input type="text" name='title2' onChange={this.handleChange} value={this.state.step2.title} className="form-control" placeholder="" />
+                                <label>Judul <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'paket02_title')}>Simpan</button></label>
+                                <div className="input-group mb-3">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon4"><i className="fa fa-building"/></span>
                                     </div>
+                                    <input type="text" name='title2' onChange={this.handleChange} value={this.state.step2.title} className="form-control" placeholder="" />
                                 </div>
+                            </div>
+                            <div className='form-group'>
+                                <label>Harga <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'paket02_price')}>Simpan</button></label>
+                                <div className="input-group mb-3">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon4"><i className="fa fa-building"/></span>
+                                    </div>
+                                    <input type="text" name='price2' onChange={this.handleChange} value={this.state.step2.price} className="form-control" placeholder="" />
+                                </div>
+                            </div>
                             <div className='form-group'>
                                     <label>Gambar <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'paket02_gambar')}>Simpan</button></label>
                                     <File64 multiple={ false }
@@ -339,14 +369,23 @@ class Index extends Component{
                             <h6 style={{marginTop:'20px'}}>Paket 3</h6>
 
                             <div className='form-group'>
-                                    <label>Judul <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'paket03_title')}>Simpan</button></label>
-                                    <div className="input-group mb-3">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text" id="basic-addon4"><i className="fa fa-building"/></span>
-                                        </div>
-                                        <input type="text" name='title3' onChange={this.handleChange} value={this.state.step3.title} className="form-control" placeholder="" />
+                                <label>Judul <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'paket03_title')}>Simpan</button></label>
+                                <div className="input-group mb-3">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon4"><i className="fa fa-building"/></span>
                                     </div>
+                                    <input type="text" name='title3' onChange={this.handleChange} value={this.state.step3.title} className="form-control" placeholder="" />
                                 </div>
+                            </div>
+                            <div className='form-group'>
+                                <label>Harga <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'paket02_price')}>Simpan</button></label>
+                                <div className="input-group mb-3">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon4"><i className="fa fa-building"/></span>
+                                    </div>
+                                    <input type="text" name='price3' onChange={this.handleChange} value={this.state.step3.price} className="form-control" placeholder="" />
+                                </div>
+                            </div>
                             <div className='form-group'>
                                     <label>Gambar <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'paket03_gambar')}>Simpan</button></label>
                                     <File64 multiple={ false }

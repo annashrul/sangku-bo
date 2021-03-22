@@ -37,6 +37,22 @@ class Index extends Component{
             prev:"",
             id_kota:'',
             id_prov:'',
+            dataTipeOTP:[{
+                value:'gabungan',
+                label:'Gabungan'
+            }, {
+                value: 'single',
+                label: 'Single Provider'
+            }],
+            type_otp: 'gabungan',
+            dataProvider:[{
+                value:'whatsapp',
+                label:'Whatsapp'
+            }, {
+                value: 'sms',
+                label: 'SMS'
+            }],
+            provider_otp: 'whatsapp'
         };
         this.handleChange = this.handleChange.bind(this)
         this.handleChangeKota = this.handleChangeKota.bind(this)
@@ -44,6 +60,8 @@ class Index extends Component{
         this.handleChangeKecamatan = this.handleChangeKecamatan.bind(this)
         this.handleEnterSubmit = this.handleEnterSubmit.bind(this)
         this.handleBtnSubmit = this.handleBtnSubmit.bind(this)
+        this.handleTypeOtp = this.handleTypeOtp.bind(this)
+        this.handleProviderOtp = this.handleProviderOtp.bind(this)
     }
 
     componentDidMount(){
@@ -83,6 +101,8 @@ class Index extends Component{
                     otp_message: props.data[1].otp_message,
                     aktivasi_message: props.data[1].aktivasi_message,
                     transaksi_message: props.data[1].transaksi_message,
+                    type_otp: props.data[0].type_otp,
+                    provider_otp: props.data[0].provider_otp
                 }
 
             }
@@ -176,6 +196,28 @@ class Index extends Component{
         this.props.dispatch(updateGeneral(data, type))
     }
 
+    
+    
+    handleTypeOtp(val) {
+        this.props.dispatch(updateGeneral({
+            type_otp: val.value
+        }, 'site'))
+
+        this.setState({
+            type_otp: val.value,
+        });
+    }
+
+    handleProviderOtp(val) {
+        this.props.dispatch(updateGeneral({
+            provider_otp: val.value
+        }, 'site'))
+
+        this.setState({
+            provider_otp: val.value,
+        });
+    }
+
     handleChangeKecamatan(val) {
         this.props.dispatch(updateGeneral({
             kecamatan_asal: val.value
@@ -251,6 +293,20 @@ class Index extends Component{
                                     </div>
                                 </div>
                                 <div className='form-group'>
+                                    <label>Email</label>
+                                    <div className="input-group mb-3">
+                                        <div className="input-group-prepend">
+                                            <span className="input-group-text" id="basic-addon4"><i className="fa fa-envelope"/></span>
+                                        </div>
+                                        <input type="text" name='email' onKeyPress={
+                                            (event)=>{
+                                                if (event.key === 'Enter')this.handleEnterSubmit(event)
+                                            }
+                                        } onChange={(event)=>this.handleChange(event)} value={this.state.email} className="form-control" placeholder="Email" />
+                                    </div>
+                                </div>
+                                
+                                <div className='form-group'>
                                     <label>Logo Perusahaan <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'logo')}>Simpan</button></label>
                                     <File64 multiple={ false }
                                             maxSize={2048} //in kb
@@ -268,7 +324,7 @@ class Index extends Component{
                                 </div>
                                 <div className='form-group'>
                                     <label>Alamat Perusahaan <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'address')}>Simpan</button></label>
-                                    <textarea rows={7} className="form-control" onChange={(event)=>this.handleChange(event)} name="address" value={this.state.address}></textarea>
+                                    <textarea rows={6} className="form-control" onChange={(event)=>this.handleChange(event)} name="address" value={this.state.address}></textarea>
                                 </div>
                                 <div className='form-group'>
                                     <label>Legalitas Perusahaan <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'legalitas')}>Simpan</button></label>
@@ -278,17 +334,18 @@ class Index extends Component{
 
                             <div className='col-md-6 col-sm-12'>
                                 
+                                
                                 <div className='form-group'>
-                                    <label>Email</label>
+                                    <label>Fax</label>
                                     <div className="input-group mb-3">
                                         <div className="input-group-prepend">
-                                            <span className="input-group-text" id="basic-addon4"><i className="fa fa-envelope"/></span>
+                                            <span className="input-group-text" id="basic-addon4"><i className="fa fa-phone-square"/></span>
                                         </div>
-                                        <input type="text" name='email' onKeyPress={
+                                        <input type="text" name='fax' onKeyPress={
                                             (event)=>{
                                                 if (event.key === 'Enter')this.handleEnterSubmit(event)
                                             }
-                                        } onChange={(event)=>this.handleChange(event)} value={this.state.email} className="form-control" placeholder="Email" />
+                                        } onChange={(event)=>this.handleChange(event)} value={this.state.fax} className="form-control" placeholder="Fax" />
                                     </div>
                                 </div>
                                 <div className='form-group'>
@@ -302,19 +359,6 @@ class Index extends Component{
                                                 if (event.key === 'Enter')this.handleEnterSubmit(event)
                                             }
                                         } onChange={(event)=>this.handleChange(event)} value={this.state.no_telp} className="form-control" placeholder="Telepon" />
-                                    </div>
-                                </div>
-                                <div className='form-group'>
-                                    <label>Fax</label>
-                                    <div className="input-group mb-3">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text" id="basic-addon4"><i className="fa fa-phone-square"/></span>
-                                        </div>
-                                        <input type="text" name='fax' onKeyPress={
-                                            (event)=>{
-                                                if (event.key === 'Enter')this.handleEnterSubmit(event)
-                                            }
-                                        } onChange={(event)=>this.handleChange(event)} value={this.state.fax} className="form-control" placeholder="Fax" />
                                     </div>
                                 </div>
                                 <div className='form-group'>
@@ -359,6 +403,43 @@ class Index extends Component{
 
                                         />
                                 </div>
+
+                                <div className='form-group'>
+                                    <label>Tipe OTP</label>
+                                        <Select
+                                            options={this.state.dataTipeOTP}
+                                            placeholder="Pilih Tipe OTP"
+                                            onChange={this.handleTypeOtp}
+                                            value={
+                                                this.state.dataTipeOTP.find(op => {
+                                                    return op.value === this.state.type_otp
+                                                })
+                                            }
+
+                                        />
+                                </div>
+
+                                {
+                                    this.state.type_otp!=='gabungan'?(
+                                        <div className='form-group'>
+                                            <label>Provider OTP</label>
+                                                <Select
+                                                    options={this.state.dataProvider}
+                                                    placeholder="Pilih Provider OTP"
+                                                    onChange={this.handleProviderOtp}
+                                                    value={
+                                                        this.state.dataProvider.find(op => {
+                                                            return op.value === this.state.provider_otp
+                                                        })
+                                                    }
+
+                                                />
+                                        </div>
+                                    ):''
+                                }
+
+
+                                
                                 <div className='form-group'>
                                     <label>Facebook</label>
                                     <div className="input-group mb-3">

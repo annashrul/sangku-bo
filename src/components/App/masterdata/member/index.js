@@ -249,22 +249,42 @@ class IndexMember extends Component{
         this.props.dispatch(getDetailAlamat(par));
         // this.setState({detail:{idUser:par}});
     }
-    handleUpdate(e,id,nama,status){
+    handleUpdate(e,id,nama,type,val){
         e.preventDefault();
-        Swal.fire({
-            title: 'Perhatian !!!',
-            html: `anda yakin akan ${status==0?'Menonaktifkan':'Mengaktifkan'} ${nama} ??`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: `Oke, ${status==0?'Nonaktifkan':'Aktifkan'}`,
-            cancelButtonText: 'Batal',
-        }).then((result) => {
-            if (result.value) {
-                this.props.dispatch(putMember({status:status},id));
-            }
-        })
+        if(type=='status'){
+            const status=val;
+            Swal.fire({
+                title: 'Perhatian !!!',
+                html: `anda yakin akan ${status==0?'Menonaktifkan':'Mengaktifkan'} ${nama} ??`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: `Oke, ${status==0?'Nonaktifkan':'Aktifkan'}`,
+                cancelButtonText: 'Batal',
+            }).then((result) => {
+                if (result.value) {
+                    this.props.dispatch(putMember({status:status},id));
+                }
+            })
+        }else if(type=='stokis'){
+              Swal.fire({
+                  title: 'Perhatian !!!',
+                  html: `anda yakin akan merubah keanggotaan member atas nama ${nama} ?`,
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: `Ya!`,
+                  cancelButtonText: 'Batal',
+              }).then((result) => {
+                  if (result.value) {
+                      this.props.dispatch(putMember({
+                          is_stockist: val
+                      }, id));
+                  }
+              })
+        }
     }
 
 
@@ -376,7 +396,8 @@ class IndexMember extends Component{
                                             <th className="text-black" rowSpan="2" style={headStyle}>#</th>
                                             <th className="text-black" rowSpan="2" style={headStyle}>Gambar</th>
                                             <th className="text-black" rowSpan="2" style={headStyle}>Nama</th>
-                                            <th className="text-black" rowSpan="2" style={headStyle}>Userid</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>USER ID</th>
+                                            <th className="text-black" rowSpan="2" style={headStyle}>Stokis</th>
                                             <th className="text-black" rowSpan="2" style={headStyle}>Membership</th>
                                             <th className="text-black" rowSpan="2" style={headStyle}>Karir</th>
                                             <th className="text-black" rowSpan="2" style={headStyle}>Status</th>
@@ -417,10 +438,55 @@ class IndexMember extends Component{
                                                                             Aksi
                                                                         </DropdownToggle>
                                                                         <DropdownMenu>
-                                                                            <DropdownItem onClick={(e)=>this.handleDetailTrx(e,v.id)}>Transaksi</DropdownItem>
-                                                                            <DropdownItem onClick={(e)=>this.handleAlamat(e,v.id)}>Alamat</DropdownItem>
-                                                                            <DropdownItem onClick={(e)=>this.handleBank(e,v.id)}>Bank</DropdownItem>
-                                                                            <DropdownItem onClick={(e)=>this.handleUpdate(e,v.id,v.full_name,v.status===0?1:0)}>{v.status===0?'Aktifkan':'Non-aktifkan'}</DropdownItem>
+                                                            <DropdownItem onClick={(e)=>this.handleDetailTrx(e,v.id)}>Transaksi</DropdownItem>
+                                                            <DropdownItem onClick={(e)=>this.handleAlamat(e,v.id)}>Alamat</DropdownItem>
+                                                            <DropdownItem onClick={(e)=>this.handleBank(e,v.id)}>Bank</DropdownItem>
+                                                            <DropdownItem onClick={(e)=>this.handleUpdate(e,v.id,v.full_name,'status',v.status===0?1:0)}>{v.status===0?'Aktifkan':'Non-aktifkan'}</DropdownItem>
+                                                        
+                                                            {
+                                                                v.is_stockist!==1?
+                                                                <DropdownItem 
+                                                                    onClick={
+                                                                        (e)=>this.handleUpdate(
+                                                                                e,
+                                                                                v.id,
+                                                                                v.full_name,
+                                                                                'stokis',
+                                                                                1)
+                                                                            }>
+                                                                                Ubah Menjadi Stockis Kabupaten/kota
+                                                                </DropdownItem>:''
+                                                            }
+                                                            {
+                                                            v.is_stockist!==2?
+                                                                <DropdownItem 
+                                                                    onClick={
+                                                                        (e)=>this.handleUpdate(
+                                                                                e,
+                                                                                v.id,
+                                                                                v.full_name,
+                                                                                'stokis',
+                                                                                2)
+                                                                            }>
+                                                                                Ubah Menjadi Stockis kecamatan
+                                                                </DropdownItem>:''
+                                                            }
+
+                                                            {
+                                                                v.is_stockist !== 0 ?
+                                                                <DropdownItem 
+                                                                    onClick={
+                                                                        (e)=>this.handleUpdate(
+                                                                                e,
+                                                                                v.id,
+                                                                                v.full_name,
+                                                                                'stokis',
+                                                                                0)
+                                                                            }>
+                                                                                Ubah Menjadi Member biasa/bukan stockis
+                                                                </DropdownItem>:''
+                                                            }
+
                                                                         </DropdownMenu>
                                                                     </UncontrolledButtonDropdown>
                                                                 </div>
@@ -430,6 +496,7 @@ class IndexMember extends Component{
                                                             </td>
                                                             <td style={headStyle}>{v.full_name}</td>
                                                             <td style={headStyle}>{v.referral_code}</td>
+                                                            <td style={headStyle}><span className="badge badge-dark" style={{padding:'5px'}}>{v.is_stockist===0?'Bukan Stokis':v.is_stockist===1?'Stockis Kota/Kab':'Stockis Kecamatan'}</span></td>
                                                             <td style={headStyle}>
                                                                 <img style={{width:'30px'}} src={v.membership_badge} onError={(e)=>{e.target.onerror = null; e.target.src=`${noImage()}`}} alt="member image"/>
                                                                 <br/>
