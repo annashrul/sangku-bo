@@ -171,11 +171,7 @@ class IndexBerita extends Component{
         const {
             total,
             per_page,
-            offset,
-            to,
-            last_page,
             current_page,
-            from,
             data
         } = this.props.data;
         console.log(data);
