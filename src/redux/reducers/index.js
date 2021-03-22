@@ -31,6 +31,7 @@ import {reportRewardReducer} from "./laporan/report_reward.reducer";
 import {claimReducer} from './laporan/claim.reducer'
 import {ppobReducer} from './laporan/ppob.reducer'
 import {reportBarangReducer} from "./laporan/report_barang.reducer";
+import {poinKelipatanRoReducer} from "./setting/poin_kelipatan_ro.reducer";
 
 export default combineReducers({
     modalReducer,
@@ -61,6 +62,7 @@ export default combineReducers({
     generalReducer,
     kurirReducer,
     bonusSettingReducer,
+    poinKelipatanRoReducer,
     banksReducer,
     claimReducer,
     ppobReducer,
