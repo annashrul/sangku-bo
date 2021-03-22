@@ -143,6 +143,7 @@ class Dashboard extends Component {
                 },
             }
         };
+        this.handleEvent = this.handleEvent.bind(this)
 
         // socket.on('refresh_dashboard',(data)=>{
         //     this.refreshData();
@@ -163,7 +164,6 @@ class Dashboard extends Component {
                 get_member_baru: data.get_member_baru,
             });
         });
-        this.HandleChangeLokasi = this.HandleChangeLokasi.bind(this);
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -227,24 +227,13 @@ class Dashboard extends Component {
         this.refreshData();
     }
 
-    HandleChangeLokasi(lk) {
-        let err = Object.assign({}, this.state.error, {
-            location: ""
-        });
-        this.setState({
-            location: lk.value,
-            error: err
-        })
-        this.refreshData(null, null)
-    }
-
     render() {
         return (
             <Layout page="Dashboard">
                 <div className="row align-items-center" style={{zoom:"80%"}}>
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                        <h5 className="mb-0 font-weight-bold">Dashboard</h5>
+                            <h5 className="mb-0 font-weight-bold">Dashboard</h5>
                         </div>
                     </div>
                     {/* Dashboard Info Area */}
@@ -258,6 +247,15 @@ class Dashboard extends Component {
                                 <button type="button" onClick={(e)=>this.handleSubmit(e)} className="btn btn-primary ml-1 float-right"><i className="fa fa-refresh"></i></button>
                             </div>
 
+                        </div>
+                    </div>
+                     <div className="col-md-12 col-sm-12 col-lg-12">
+                        <div className="form-group">
+                            <Filter
+                                startDate={this.state.startDate}
+                                endDate ={this.state.endDate}
+                                handleEvent={this.handleEvent}
+                            / >
                         </div>
                     </div>
 

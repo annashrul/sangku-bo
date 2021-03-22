@@ -8,16 +8,7 @@ import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import moment from "moment";
 import FormUserLevel from "../modals/masterdata/user_level/form_user_level"
-import DetailBank from "../modals/masterdata/member/detail_bank"
-import {getMember, putMember} from "../../../redux/actions/masterdata/member.action";
-import UncontrolledButtonDropdown from "reactstrap/es/UncontrolledButtonDropdown";
-import DropdownToggle from "reactstrap/es/DropdownToggle";
-import DropdownMenu from "reactstrap/es/DropdownMenu";
-import DropdownItem from "reactstrap/es/DropdownItem";
-import {getDetailAlamat} from "../../../redux/actions/masterdata/alamat.action";
-import {getDetailBank} from "../../../redux/actions/masterdata/bank.action";
 import * as Swal from "sweetalert2";
-import {getUserList} from "../../../redux/actions/masterdata/user_list.action";
 import {deleteUserLevel, getUserLevel} from "../../../redux/actions/masterdata/user_level.action";
 
 

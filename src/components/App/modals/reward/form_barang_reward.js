@@ -7,7 +7,7 @@ import {
     ModalFooter,
 } from 'reactstrap';
 import {ModalToggle} from "../../../../redux/actions/modal.action";
-import {rmComma, ToastQ, toCurrency} from "../../../../helper";
+import {ToastQ} from "../../../../helper";
 import JenjangKarir from "../../../../components/common/jenjangKarir";
 import File64 from "components/common/File64";
 import {postBarangReward, putBarangReward} from "../../../../redux/actions/paket/barang_reward.action";

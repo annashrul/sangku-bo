@@ -202,7 +202,7 @@ class IndexBerita extends Component{
                                     <div className="col-2 col-xs-2 col-md-4">
                                         <div className="form-group">
                                             <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
-                                            <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleModal(e,'')}><i className="fa fa-plus"/></button>
+                                            {/* <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleModal(e,'')}><i className="fa fa-plus"/></button> */}
                                         </div>
                                     </div>
 

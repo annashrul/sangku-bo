@@ -21,16 +21,6 @@ class Charts extends Component {
                         </DateRangePicker>
                     </div>
                 </div>
-                {
-                    this.props.isDaily===true?(
-                        <div className="col-md-2 col-sm-2 col-lg-2">
-                            <div className="form-group">
-                                <button className="btn btn-primary" style={{marginTop:"3px"}} onClick={this.props.handleDailyProfit}> {!this.props.isLoadingCheck?'Check':'Loading ......'}</button>
-                            </div>
-                        </div>
-                    ):""
-                }
-
             </div>
         )
     }

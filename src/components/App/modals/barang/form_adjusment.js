@@ -8,7 +8,7 @@ import {
 } from 'reactstrap';
 import {ModalToggle} from "../../../../redux/actions/modal.action";
 import {rmComma, ToastQ, toCurrency} from "../../../../helper";
-import {postBarang, putBarang} from "../../../../redux/actions/paket/barang.action";
+import {postBarang} from "../../../../redux/actions/paket/barang.action";
 
 
 class FormAdjusment extends Component{
@@ -106,8 +106,6 @@ class FormAdjusment extends Component{
 
     }
     render(){
-        console.log("form");
-        const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace:"nowrap"};
         return (
             <WrapperModal isOpen={this.props.isOpen && this.props.type === "formAdjusment"} size="md">
                 <ModalHeader toggle={this.toggle}>Form Adjusment</ModalHeader>

@@ -10,20 +10,24 @@ import {ModalToggle} from "../../../../redux/actions/modal.action";
 import {ToastQ} from "../../../../helper";
 import Select from 'react-select';
 import {generatePin} from "../../../../redux/actions/paket/pin.action";
+import {fetchPaket} from "../../../../redux/actions/paket/paket.action";
 
 
 class GeneratePin extends Component{
     constructor(props){
         super(props);
         this.handleChange = this.handleChange.bind(this);
-        this.handleChangePaket = this.handleChangePaket.bind(this);
+        this.handleChangeType = this.handleChangeType.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.toggle = this.toggle.bind(this);
+        this.handlePaket = this.handlePaket.bind(this)
         this.state={
             qty:0,
             prefix:"",
             type:0,
-            dataPaket:[{
+            paket:'',
+            dataPaket:[],
+            type_paket:[{
                 label:'Aktivasi',
                 value:0
             }, {
@@ -41,9 +45,27 @@ class GeneratePin extends Component{
     }
 
     componentWillMount(){
+        this.props.dispatch(fetchPaket(`tipe=${this.state.type===0?'aktivasi':'ro'}`))
     }
 
     componentWillReceiveProps(nextProps){
+        if (nextProps.paket.data !== this.state.paketBefore) {
+            const data=[]
+            let id_paket='';
+            nextProps.paket.data.map((v, i) => {
+                if(i===0) id_paket=v.id;
+                data.push({
+                    value: v.id,
+                    label: v.title
+                })
+            });
+            this.setState({
+                dataPaket:data,
+                paket: id_paket,
+                paketBefore: nextProps.paket
+            });
+        }
+
 
     }
 
@@ -53,10 +75,19 @@ class GeneratePin extends Component{
         });
     }
 
-    handleChangePaket(val){
+    handlePaket(val){
         this.setState({
-            type: val.value
+            paket: val.value
         })
+    }
+
+    handleChangeType(val){
+        this.setState({
+            type: val.value,
+            paket:''
+        })
+        this.props.dispatch(fetchPaket(`tipe=${val.value===0?'aktivasi':'ro'}`))
+
     }
     handleSubmit(e){
         e.preventDefault();
@@ -64,6 +95,13 @@ class GeneratePin extends Component{
         parsedata['qty'] = this.state.qty;
         parsedata['prefix'] = this.state.prefix;
         parsedata['type'] = this.state.type;
+        parsedata['paket'] = this.state.paket;
+
+        if(parsedata['paket']===''){
+            ToastQ.fire({icon:'error',title:`paket tidak boleh kosong`});
+            return;
+        }
+
         if(parsedata['type']===''){
             ToastQ.fire({icon:'error',title:`type tidak boleh kosong`});
             return;
@@ -99,12 +137,30 @@ class GeneratePin extends Component{
                                 {
 
                                     <Select
-                                        options={this.state.dataPaket}
+                                        options={this.state.type_paket}
                                         placeholder="Pilih Tipe"
-                                        onChange={this.handleChangePaket}
+                                        onChange={this.handleChangeType}
+                                        value={
+                                            this.state.type_paket.find(op => {
+                                                return op.value === this.state.type
+                                            })
+                                        }
+
+                                    />
+
+                                }
+                            </div>
+                            <div className="form-group">
+                                <label>Pilih Paket</label>
+                                {
+
+                                    <Select
+                                        options={this.state.dataPaket}
+                                        placeholder="Pilih Paket"
+                                        onChange={this.handlePaket}
                                         value={
                                             this.state.dataPaket.find(op => {
-                                                return op.value === this.state.type
+                                                return op.value === this.state.paket
                                             })
                                         }
 
@@ -120,7 +176,6 @@ class GeneratePin extends Component{
                                 <label>Prefix <small style={{color:'red',fontWeight:'bold'}}>( maksimal 2 huruf dan harus menggunakan huruf kapital (besar) )</small></label>
                                 <input maxLength={2} style={{textTransform:'uppercase'}} type="text" className={"form-control"} name={"prefix"} value={this.state.prefix} onChange={this.handleChange}/>
                                 <small id="emailHelp" class="form-text text-muted">Contoh hasil: {this.state.prefix===''?'**':this.state.prefix}9D75E00858.</small>
-
                             </div>
                         </div>
 

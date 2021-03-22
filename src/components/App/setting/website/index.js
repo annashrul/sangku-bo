@@ -7,8 +7,9 @@ import About from './about'
 import How from './howit'
 import Paket from './paket'
 import Download from './download'
+import Privacy from './privacy'
+import Tos from './tos'
 import {fetchLanding, updateLanding} from 'redux/actions/setting/general.action'
-import { toCurrency } from '../../../../helper';
 import Preloader from 'Preloader'
 
 class Website extends Component{
@@ -97,21 +98,21 @@ class Website extends Component{
                     id: snap[paket1].id,
                     title: snap[paket1].title,
                     deskripsi: snap[paket1].deskripsi,
-                    price: toCurrency(snap[paket1].price),
+                    price: (snap[paket1].price),
                     link: snap[paket1].link,
                     image: snap[paket1].image
                 }, {
                     id: snap[paket2].id,
                     title: snap[paket2].title,
                     deskripsi: snap[paket2].deskripsi,
-                    price: toCurrency(snap[paket2].price),
+                    price: (snap[paket2].price),
                     link: snap[paket2].link,
                     image: snap[paket2].image
                 }, {
                     id: snap[paket3].id,
                     title: snap[paket3].title,
                     deskripsi: snap[paket3].deskripsi,
-                    price: toCurrency(snap[paket3].price),
+                    price: (snap[paket3].price),
                     link: snap[paket3].link,
                     image: snap[paket3].image
                 }]
@@ -145,6 +146,8 @@ class Website extends Component{
                                     <a className={this.state.section==='how'?"nav-link active":"nav-link"}  onClick={(event)=>this.handleOnchange(event,'how')} href="#" >how it work</a>
                                     <a className={this.state.section==='paket'?"nav-link active":"nav-link"}   onClick={(event)=>this.handleOnchange(event,'paket')} href="#">paket</a>
                                     <a className={this.state.section==='download'?"nav-link active":"nav-link"}   onClick={(event)=>this.handleOnchange(event,'download')} href="#">download</a>
+                                    <a className={this.state.section==='privacy'?"nav-link active":"nav-link"}   onClick={(event)=>this.handleOnchange(event,'privacy')} href="#">Privacy Policy</a>
+                                    <a className={this.state.section==='tos'?"nav-link active":"nav-link"}   onClick={(event)=>this.handleOnchange(event,'tos')} href="#">Terms and Conditions</a>
                                 </div>
                             </div>
                         </div>
@@ -182,6 +185,17 @@ class Website extends Component{
                                     this.state.section==='download'?
                                     <Download 
                                         data={download}
+                                        handleUpdate={this.handleUpdate}
+                                    />
+                                    :
+                                    this.state.section==='privacy'?
+                                    <Privacy 
+                                        data={privacy}
+                                        handleUpdate={this.handleUpdate}
+                                    />:
+                                    this.state.section==='tos'?
+                                    <Tos 
+                                        data={terms}
                                         handleUpdate={this.handleUpdate}
                                     />
                                     :''
