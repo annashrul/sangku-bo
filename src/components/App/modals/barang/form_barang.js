@@ -79,27 +79,28 @@ class FormBarang extends Component{
         parseData['berat'] = rmComma(this.state.berat);
         parseData['stock'] = rmComma(this.state.stock);
         console.log(parseData)
-        if(parseData['title']===''){
+        console.log(isNaN(parseData['harga']))
+        if(parseData['title']===''||parseData['title']===undefined){
             ToastQ.fire({icon:'error',title:`nama tidak boleh kosong`});
             return;
         }
-        if(parseData['harga']===''){
+        if(parseData['harga']===''||isNaN(parseData['harga'])){
             ToastQ.fire({icon:'error',title:`harga tidak boleh kosong`});
             return;
         }
-        if(parseData['ppn']===''){
-            ToastQ.fire({icon:'error',title:`ppn tidak boleh kosong`});
-            return;
-        }
-        if(parseData['satuan']===''){
+        // if(parseData['ppn']===''){
+        //     ToastQ.fire({icon:'error',title:`ppn tidak boleh kosong`});
+        //     return;
+        // }
+        if(parseData['satuan']===''||parseData['satuan']===undefined){
             ToastQ.fire({icon:'error',title:`satuan tidak boleh kosong`});
             return;
         }
-        if(parseData['berat']===''){
+        if(parseData['berat']===''||isNaN(parseData['berat'])){
             ToastQ.fire({icon:'error',title:`berat tidak boleh kosong`});
             return;
         }
-        if(parseData['stock']===''){
+        if(parseData['stock']===''||isNaN(parseData['stock'])){
             ToastQ.fire({icon:'error',title:`stock tidak boleh kosong`});
             return;
         }
@@ -136,6 +137,7 @@ class FormBarang extends Component{
                             <div className="form-group">
                                 <label>Status</label>
                                 <select name="status" className="form-control" defaultValue={this.state.status} onChange={this.handleChange}>
+                                    <option value="">=== Pilih Status ===</option>
                                     <option value="1">Aktif</option>
                                     <option value="0">Tidak Aktif</option>
                                 </select>

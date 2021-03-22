@@ -99,7 +99,7 @@ class ReportRedeem extends Component{
                 </div>
                 <div className="row">
                     {
-                        !this.props.isLoading?data.length>0?this.state.dataPenjualan.map((v,i)=>{
+                        !this.props.isLoading?data!==undefined?data.length>0?this.state.dataPenjualan.map((v,i)=>{
                             return(
                                 <div className="col-md-6  box-margin" key={i}>
                                     <div className="card">
@@ -226,7 +226,7 @@ class ReportRedeem extends Component{
                                     </div>
                                 </div>
                             );
-                        }):"":(() => {
+                        }):"":"":(() => {
                             const list=[]
                             for (let x = 0; x < 10; x++) {
                                 list.push(
