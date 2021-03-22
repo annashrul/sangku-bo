@@ -87,16 +87,6 @@ class SideMenu extends Component {
                     this.state.arrDisplay.forEach(val=>{
                         this.handleLoop(akses.slice(val.range1,val.range2),val.state);
                     })
-                    // this.handleLoop(akses.slice(0,10),'isShowMember');
-                    // let slcVoucher=akses.slice(10,20);
-                    // this.handleLoop(akses.slice(20,30),'isShowStockist');
-                    // this.handleLoop(akses.slice(30,40),'isShowPenjualan');
-                    // this.handleLoop(akses.slice(40,50),'isShowTrx');
-                    // this.handleLoop(akses.slice(50,60),'isShowPaket');
-                    // this.handleLoop(akses.slice(60,70),'isShowContent');
-                    // this.handleLoop(akses.slice(70,80),'isShowReport');
-                    // this.handleLoop(akses.slice(80,90),'isShowMasterdata');
-                    // this.handleLoop(akses.slice(90,100),'isShowSetting');
                     akses.forEach((parent,i)=>{
                         toArray.push(parent);
                         // toArray=Object.assign(parent,)
