@@ -27,13 +27,9 @@ class Index extends Component{
     }
 
     componentWillReceiveProps(nextProps){
-        let datas=[];
         if(nextProps.data!==undefined||nextProps.data.length>0){
-            datas.push(nextProps.data);
             this.setState({data:[...nextProps.data]});
         }
-
-
     }
 
 
@@ -129,13 +125,20 @@ class Index extends Component{
                                     <tbody>
                                     <tr>
                                         <td>
-                                            <input type="text" className="form-control" name={"qty"} value={toCurrency(this.state.qty)} onChange={(event)=>this.handleChange(event,null)}/>
+                                            <div>
+                                                <input type="text" className="form-control" name={"qty"} value={toCurrency(this.state.qty)} onChange={(event)=>this.handleChange(event,null)}/>
+                                            </div>
                                         </td>
                                         <td>
-                                            <input type="text" className="form-control" name={"nilai_poin"} value={toCurrency(this.state.nilai_poin)} onChange={(event)=>this.handleChange(event,null)}/>
+                                            <div>
+                                                <input type="text" className="form-control" name={"nilai_poin"} value={toCurrency(this.state.nilai_poin)} onChange={(event)=>this.handleChange(event,null)}/>
+
+                                            </div>
                                         </td>
                                         <td style={headStyle}>
-                                            <button className="btn btn-primary btn-sm" onClick={(event)=>this.handleEnterSubmit(event,null)}><i className="fa fa-paper-plane"/></button>
+                                            <div>
+                                                <button className="btn btn-primary btn-sm" onClick={(event)=>this.handleEnterSubmit(event,null)}><i className="fa fa-paper-plane"/></button>
+                                            </div>
                                         </td>
                                     </tr>
                                     {
@@ -166,7 +169,7 @@ class Index extends Component{
                                                     </td>
                                                 </tr>
                                             );
-                                        }):"":<Preloader/>
+                                        }):"":<div><Preloader/></div>
                                     }
                                     </tbody>
                                 </table>

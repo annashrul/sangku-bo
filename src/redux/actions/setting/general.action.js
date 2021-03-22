@@ -1,6 +1,6 @@
 import axios from "axios"
 import Swal from "sweetalert2";
-import {GENERAL, HEADERS,NOTIF_ALERT} from "../_constants";
+import {GENERAL, HEADERS,NOTIF_ALERT,KURIR} from "../_constants";
 import {ModalToggle} from "../modal.action";
 import {ToastQ} from "helper"
 
@@ -16,7 +16,18 @@ export function setIsError(load) {
         load
     }
 }
-
+export function setLoadingKurir(data = []) {
+    return {
+        type: KURIR.LOADING,
+        data
+    }
+}
+export function setKurir(data = []) {
+    return {
+        type: KURIR.SUCCESS,
+        data
+    }
+}
 export function setData(data = []) {
     return {
         type: GENERAL.SUCCESS,
@@ -358,4 +369,83 @@ export const updateLanding = (data, id, title) => {
 
             })
     }
+}
+
+export const fetchKurir = ()=> {
+    return (dispatch) => {
+        dispatch(setLoadingKurir(true));
+        axios.get(HEADERS.URL + `transaction/kurir`)
+            .then(function (response) {
+                const data = response.data;
+                dispatch(setKurir(data));
+                dispatch(setLoadingKurir(false));
+            })
+            .catch(function (error) {
+                dispatch(setLoadingKurir(false));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Network Failed!.',
+                        'Please check your connection',
+                        'error'
+                    );
+                }
+            })
+
+    }
+};
+
+
+export const updateKurir = (data,id) => async dispatch =>{
+    Swal.fire({
+        title: 'Tunggu sebentar.',
+        html: NOTIF_ALERT.CHECKING,
+        onBeforeOpen: () => {
+            Swal.showLoading()
+        },
+        onClose: () => {}
+    })
+
+    axios.put(HEADERS.URL+`transaction/kurir/${id}`,data)
+        .then(response=>{
+            setTimeout(
+                function () {
+                    Swal.close() ;
+                    const data = (response.data);
+                    if (data.status === 'success') {
+                        Swal.fire({
+                            title: 'Success',
+                            icon: 'success',
+                            text: NOTIF_ALERT.SUCCESS,
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'failed',
+                            icon: 'error',
+                            text: NOTIF_ALERT.FAILED,
+                        });
+                    }
+                    dispatch(fetchKurir());
+                },800)
+
+        }).catch(error =>{
+        Swal.close()
+        if (error.message === 'Network Error') {
+            Swal.fire(
+                'Network Failed!.',
+                'Please check your connection',
+                'error'
+            );
+        }
+        else {
+            Swal.fire({
+                title: 'failed',
+                icon: 'error',
+                text: error.response.data.msg,
+            });
+            if (error.response) {
+
+            }
+        }
+
+    });
 }

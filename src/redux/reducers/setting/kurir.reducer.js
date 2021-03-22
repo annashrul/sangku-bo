@@ -34,11 +34,11 @@ export const kurirReducer = (state = initialState, action) => {
                 msg: action.data.msg,
                 provinsi: action.data.result,
             });
-        case KURIR.FAILED:
+        case KURIR.SUCCESS:
             return Object.assign({}, state, {
                 status: action.data.status,
                 msg: action.data.msg,
-                data: action.data.data,
+                data: action.data.result,
             });
         case KURIR.LOADING:
             return Object.assign({}, state, {

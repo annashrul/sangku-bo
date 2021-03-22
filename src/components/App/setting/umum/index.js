@@ -9,6 +9,7 @@ import Plafon from './plafon'
 import Karir from './karir'
 import PoinKelipatanRo from './poin_kelipatan_ro'
 import Stokis from './stokis'
+import Kurir from './kurir'
 
 class IndexPin extends Component{
     constructor(props){
@@ -39,6 +40,7 @@ class IndexPin extends Component{
                                 <Tab>Konfigurasi Karir</Tab>
                                 <Tab>Poin Kelipatan RO</Tab>
                                 <Tab>Konfigurasi Stokis</Tab>
+                                <Tab>Kurir</Tab>
                             </TabList>
 
                             <TabPanel>
@@ -58,6 +60,9 @@ class IndexPin extends Component{
                             </TabPanel>
                                 <TabPanel>
                                     <Stokis/>
+                                </TabPanel>
+                                <TabPanel>
+                                    <Kurir/>
                                 </TabPanel>
                         </Tabs>
                     </div>

@@ -1,51 +1,43 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
 import {fetchPlafon,updatePlafon} from 'redux/actions/setting/general.action'
+import {fetchKonfigurasiStokis, updateKonfigurasiStokis} from "../../../../../redux/actions/setting/stokis.action";
+import Preloader from "../../../../../Preloader";
+import {rmComma, toCurrency} from "../../../../../helper";
 class Index extends Component{
     constructor(props){
         super(props);
         this.state={
-
+            data:[]
         };
         this.handleChange = this.handleChange.bind(this)
         this.handleEnterSubmit = this.handleEnterSubmit.bind(this)
     }
 
     componentDidMount(){
-        this.props.dispatch(fetchPlafon());
+        this.props.dispatch(fetchKonfigurasiStokis());
     }
-
-    static getDerivedStateFromProps(props, state) {
-        if(props.plafon!==undefined && props.plafon.length!==0){
-            if (props.plafon !== state.prevplafonProps) {
-                let data = state
-                data=Object.assign({}, data, {
-                    prevplafonProps: props.plafon,
-                });
-                props.plafon.map(i=>{
-                    data=Object.assign({}, data, {
-                        [i.membership+'|plafon']: i.plafon,
-                        [i.membership+'|flush_in']: i.flush_in
-                    });
-                })
-                return data;
-            }
+    componentWillReceiveProps(nextProps){
+        if(nextProps.data!==undefined||nextProps.data.length>0){
+            this.setState({data:[...nextProps.data]});
         }
+    }
+
+
+    handleChange = (e,i) => {
+        let column = e.target.name;
+        let value = e.target.value;
+        let data = [...this.state.data];
+        data[i] = {...data[i], [column]: value};
+        this.setState({data:data});
 
     }
 
-    handleChange = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value,
-        });
-    }
-
-    handleEnterSubmit = (event, id, title) => {
-        const key_data = event.target.name;
+    handleEnterSubmit = (event, id) => {
         const data = {
-            [key_data.split('|')[1]]: event.target.value,
+            [event.target.name]:rmComma(event.target.value),
         }
-        this.props.dispatch(updatePlafon(data, id,title))
+        this.props.dispatch(updateKonfigurasiStokis(data, id))
     }
 
 
@@ -63,53 +55,34 @@ class Index extends Component{
                     </div>
                     <div className="row">
                         <div className='col-md-6 offset-md-3 col-sm-12'>
+
                             {
-                                this.props.plafon.length>0?
-                                    this.props.plafon.map(i=>(
-                                        <div>
-                                            <h6>Plafon {i.membership}</h6>
-                                            <div className='form-group'>
-                                                <label>Plafon</label>
-                                                <div className="input-group mb-3">
-                                                    <div className="input-group-prepend">
-                                                        <span className="input-group-text" id="basic-addon4">Rp</span>
-                                                    </div>
-                                                    <input type="number" name={i.membership+'|plafon'} onKeyPress={
-                                                        (event)=>{
-                                                            if (event.key === 'Enter')this.handleEnterSubmit(event,i.id,i.membership)
-                                                        }
-                                                    }
-                                                           onChange={(event)=>this.handleChange(event)}
-                                                           value={this.state[i.membership+'|plafon']}
-                                                           className="form-control"
-                                                    />
+                                !this.props.isLoading?this.state.data.length>0?this.state.data.map((v,i)=>{
+                                    return (
+                                        <div className="row" key={i}>
+                                            <div className="col-md-6">
+                                                <div className="form-group">
+                                                    <label htmlFor="">Tipe</label>
+                                                    <input type="text" className="form-control" name={"type"} value={v.type===1?'Kota/Kabupate':'Kecamatan'} readOnly={true}/>
                                                 </div>
                                             </div>
-                                            <div className='form-group'>
-                                                <label>Flush In</label>
-                                                <div className="input-group mb-3">
-                                                    <input type="number" name={i.membership+'|flush_in'} onKeyPress={
-                                                        (event)=>{
-                                                            if (event.key === 'Enter')this.handleEnterSubmit(event,i.id,i.membership)
-                                                        }
-                                                    }
-                                                           onChange={(event)=>this.handleChange(event)}
-                                                           value={this.state[i.membership+'|flush_in']}
-                                                           className="form-control"
-                                                    />
-                                                    <div className="input-group-prepend">
-                                                        <span className="input-group-text" id="basic-addon4">Pair</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <hr/>
+                                            <div className="col-md-6">
+                                                <div className="form-group">
+                                                    <label htmlFor="">Potongan</label>
+                                                    <input type="text" className="form-control" name={"potongan"} value={toCurrency(v.potongan)} onChange={(event)=>this.handleChange(event,i)}
+                                                           onKeyPress={
+                                                               (event)=>{
+                                                                   if (event.key === 'Enter')this.handleEnterSubmit(event,v.id)
+                                                               }
+                                                           }
 
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
-
-                                    ))
-                                    :''
+                                    );
+                                }):"":<Preloader/>
                             }
-
 
                         </div>
 
@@ -123,9 +96,9 @@ class Index extends Component{
 }
 const mapStateToProps = (state) => {
     return {
-        isLoading: state.generalReducer.isLoading,
+        isLoading: state.konfigurasiStokisReducer.isLoading,
         isOpen:state.modalReducer,
-        plafon:state.generalReducer.plafon,
+        data:state.konfigurasiStokisReducer.data,
     }
 }
 
