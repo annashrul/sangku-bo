@@ -84,7 +84,7 @@ class Index extends Component{
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className='col-md-5 col-sm-12'>
+                                        <div className='col-md-6 col-sm-12'>
                                             <h4 className="margin-bottom-20" style={{marginTop:'30px',marginBottom:'20px'}}>Konfigurasi Bonus Aktivasi/Registrasi</h4>
                                             {
                                                 this.props.bonus.length>0?
@@ -115,7 +115,7 @@ class Index extends Component{
                                             }
                                     
                                         </div>
-                                        <div className='col-md-5 offset-md-2 col-sm-12'>
+                                        <div className='col-md-6 col-sm-12'>
                                             <h4 className="margin-bottom-20" style={{marginTop:'30px',marginBottom:'20px'}}>Konfigurasi Bonus Royalti Generasi/Repeat Order</h4>
 
                                             {

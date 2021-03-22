@@ -1,5 +1,5 @@
 import {
-    KURIR
+    POIN_KELIPATAN_RO
 } from "../../actions/_constants";
 
 const initialState = {
@@ -8,47 +8,32 @@ const initialState = {
     status: "",
     msg: "",
     data: [],
-    kecamatan: [],
-    kota: [],
-    provinsi: [],
     detail: []
 }
 
-export const kurirReducer = (state = initialState, action) => {
+export const poinKelipatanRoReducer = (state = initialState, action) => {
     switch (action.type) {
-        case KURIR.KECAMATAN:
-            return Object.assign({}, state, {
-                status: action.data.status,
-                msg: action.data.msg,
-                kecamatan: action.data.result,
-            });
-        case KURIR.KOTA:
-            return Object.assign({}, state, {
-                status: action.data.status,
-                msg: action.data.msg,
-                kota: action.data.result,
-            });
-        case KURIR.PROVINSI:
-            return Object.assign({}, state, {
-                status: action.data.status,
-                msg: action.data.msg,
-                provinsi: action.data.result,
-            });
-        case KURIR.SUCCESS:
+        case POIN_KELIPATAN_RO.SUCCESS:
             return Object.assign({}, state, {
                 status: action.data.status,
                 msg: action.data.msg,
                 data: action.data.result,
             });
-        case KURIR.LOADING:
+        case POIN_KELIPATAN_RO.FAILED:
+            return Object.assign({}, state, {
+                status: action.data.status,
+                msg: action.data.msg,
+                data: action.data.data,
+            });
+        case POIN_KELIPATAN_RO.LOADING:
             return Object.assign({}, state, {
                 isLoading: action.load
             });
-        case KURIR.LOADING_DETAIL:
+        case POIN_KELIPATAN_RO.LOADING_DETAIL:
             return Object.assign({}, state, {
                 isLoadingDetail: action.load
             });
-        case KURIR.IS_ERROR:
+        case POIN_KELIPATAN_RO.IS_ERROR:
             return Object.assign({}, state, {
                 isError: action.load
             });

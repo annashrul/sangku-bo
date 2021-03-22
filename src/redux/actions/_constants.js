@@ -406,6 +406,28 @@ export const BONUS_SETTING = {
   DETAIL: `DETAIL_${bonusSetting}`,
   EDIT: `EDIT_${bonusSetting}`
 }
+/****************
+ POIN_KELIPATAN_RO
+ *****************/
+let poinKelipatanRoSetting = 'POIN_KELIPATAN_RO';
+export const POIN_KELIPATAN_RO = {
+    LOADING: `SET_${poinKelipatanRoSetting}_LOADING`,
+    IS_ERROR: `SET_${poinKelipatanRoSetting}_IS_ERROR`,
+    SUCCESS: `BONUS_${poinKelipatanRoSetting}_SUCCESS`,
+    FAILED: `FAILED_${poinKelipatanRoSetting}`,
+    EDIT: `EDIT_${poinKelipatanRoSetting}`
+}
+/****************
+ KONFIGURASI_STOCKIST
+ *****************/
+let konfigurasiStockist = 'KONFIGURASI_STOCKIST';
+export const KONFIGURASI_STOCKIST = {
+    LOADING: `SET_${konfigurasiStockist}_LOADING`,
+    IS_ERROR: `SET_${konfigurasiStockist}_IS_ERROR`,
+    SUCCESS: `BONUS_${konfigurasiStockist}_SUCCESS`,
+    FAILED: `FAILED_${konfigurasiStockist}`,
+    EDIT: `EDIT_${konfigurasiStockist}`
+}
 
 /****************
  KURIR
