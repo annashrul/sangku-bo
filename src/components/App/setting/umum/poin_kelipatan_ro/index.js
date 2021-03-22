@@ -142,7 +142,7 @@ class Index extends Component{
                                         </td>
                                     </tr>
                                     {
-                                        !this.props.isLoading?this.state.data.length>0?this.state.data.map((v,i)=>{
+                                        typeof this.state.data==='object'?this.state.data.length>0?this.state.data.map((v,i)=>{
                                             return(
                                                 <tr key={i}>
                                                     <td>

@@ -57,7 +57,7 @@ class Index extends Component{
                         <div className='col-md-6 offset-md-3 col-sm-12'>
 
                             {
-                                !this.props.isLoading?this.state.data.length>0?this.state.data.map((v,i)=>{
+                                typeof this.state.data==='object'?this.state.data.length>0?this.state.data.map((v,i)=>{
                                     return (
                                         <div className="row" key={i}>
                                             <div className="col-md-6">

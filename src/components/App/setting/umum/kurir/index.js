@@ -18,11 +18,7 @@ class Index extends Component{
     componentDidMount(){
         this.props.dispatch(fetchKurir());
     }
-    componentWillReceiveProps(nextProps){
-        if(nextProps.data!==undefined||nextProps.data.length>0){
-            this.setState({data:[...nextProps.data]});
-        }
-    }
+
 
 
     handleUpdate = (e,stat, id,txt) => {
@@ -75,7 +71,7 @@ class Index extends Component{
                                     </thead>
                                     <tbody>
                                     {
-                                        !this.state.isLoading?this.state.data.length>0?this.state.data.map((v,i)=>{
+                                        typeof this.props.data==='object'?this.props.data.length>0?this.props.data.map((v,i)=>{
                                             let btn='';
                                             let txtBtn='';
                                             let iconBtn='';
