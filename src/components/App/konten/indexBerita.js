@@ -250,7 +250,7 @@ class IndexBerita extends Component{
                 </div>
                 <div className="row">
                     <div style={{width:isMobile?"100%":"75%",zoom:'85%',display: 'flex', alignItems: 'flex-start',marginRight:'5px'}}>
-                        <div className="card">
+                        <div className="card w-100">
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-8 col-xs-8 col-md-3">
