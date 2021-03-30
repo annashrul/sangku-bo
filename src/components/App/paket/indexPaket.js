@@ -198,6 +198,7 @@ class IndexPaket extends Component{
                                             <th className="text-black" style={headStyle}>Nama</th>
                                             <th className="text-black" style={headStyle}>Harga</th>
                                             <th className="text-black" style={headStyle}>PPN (%)</th>
+                                            <th className="text-black" style={headStyle}>Jumlah PIN</th>
                                             {
                                                 this.state.tipe!=='ro'?(<th className="text-black" style={headStyle}>Membership</th>):''
                                             }
@@ -234,6 +235,7 @@ class IndexPaket extends Component{
                                                             <td style={headStyle}>{v.title}</td>
                                                             <td style={headStyle}>Rp {toCurrency(v.harga)}</td>
                                                             <td style={headStyle}>{v.ppn}</td>
+                                                            <td style={headStyle}>{v.jumlah_pin}</td>
                                                             {
                                                                 this.state.tipe!=='ro'?(<td style={headStyle}>{v.kategori}</td>):''
                                                             }
