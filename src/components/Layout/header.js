@@ -4,7 +4,7 @@ import { logoutUser } from "redux/actions/authActions";
 import PropTypes from "prop-types";
 import {setEcaps} from 'redux/actions/site.action'
 import {setMobileEcaps} from 'redux/actions/site.action'
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import isMobile from 'react-device-detect';
 import BgAuth from "assets/logo.png"
 import {
@@ -67,6 +67,12 @@ class Header extends Component {
         })
     }
     componentWillMount(){
+        this.unlisten = this.props.history.listen((location, action) => {
+            this.props.setMobileEcaps(false);
+        });
+    }
+    componentWillUnmount() {
+        this.unlisten();
     }
 
     handleUpdate=(e,id,param)=>{
@@ -209,4 +215,4 @@ const mapStateToProps = ({auth,siteReducer}) =>{
 }
 
 
-export default connect(mapStateToProps,{logoutUser,setEcaps,setMobileEcaps})(Header);
+export default withRouter(connect(mapStateToProps,{logoutUser,setEcaps,setMobileEcaps})(Header));
