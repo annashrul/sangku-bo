@@ -11,6 +11,13 @@ export function setLoading(load) {
     }
 }
 
+export function setLoadingExcel(load) {
+    return {
+        type: PENARIKAN.LOADING_EXCEL,
+        load
+    }
+}
+
 
 export function setLoadingDetail(load) {
     return {
@@ -38,6 +45,12 @@ export function setData(data = []) {
     }
 }
 
+export function setExcel(data = []) {
+    return {
+        type: PENARIKAN.SUCCESS_EXCEL,
+        data
+    }
+}
 export function setDataEdit(data = []) {
     return {
         type: PENARIKAN.EDIT,
@@ -84,6 +97,35 @@ export const getPenarikan = (where='') => {
 
     }
 };
+
+export const getExcelPenarikan = (where) => {
+    return (dispatch) => {
+        dispatch(setLoadingExcel(true));
+        let url = 'transaction/withdrawal';
+        if(where){
+            url+=`?${where}`;
+        }
+
+        axios.get(HEADERS.URL + `${url}`)
+            .then(function (response) {
+                const data = response.data;
+                dispatch(setExcel(data));
+                dispatch(setLoadingExcel(false));
+            })
+            .catch(function (error) {
+                dispatch(setLoadingExcel(false));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Network Failed!.',
+                        'Please check your connection',
+                        'error'
+                    );
+                }
+            })
+
+    }
+};
+
 
 
 export const postPenarikan = (data,id) => async dispatch =>{

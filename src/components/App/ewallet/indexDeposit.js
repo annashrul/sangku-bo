@@ -2,13 +2,13 @@ import React,{Component} from 'react';
 import {connect} from "react-redux";
 import Layout from 'components/Layout';
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
-import Paginationq, {rangeDate,noImage, rmComma, ToastQ, toCurrency, toRp} from "../../../helper";
+import Paginationq, {rangeDate,noImage, rmComma, ToastQ, toCurrency, toRp, toExcel} from "../../../helper";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import moment from "moment";
 import FormPenarikanBonus from '../modals/laporan/form_penarikan_bonus';
-import {getDeposit, postDeposit} from "../../../redux/actions/ewallet/deposit.action";
+import {getDeposit, getExcelDeposit, postDeposit} from "../../../redux/actions/ewallet/deposit.action";
 import Select from 'react-select';
 import * as Swal from "sweetalert2";
 
@@ -171,6 +171,50 @@ class IndexDeposit extends Component{
         })
 
     }
+    componentDidUpdate(prevProps, prevState) {
+        if(prevProps.dataExcel.data!==this.props.dataExcel.data){
+            this.getExcel(this.props);
+        }
+    }
+    getExcel(props){
+        if(props.dataExcel.data!==undefined){
+            if(props.dataExcel.data.length>0){
+                let content=[];
+                console.log(props.dataExcel.data);
+                props.dataExcel.data.map((v,i)=>{
+                    content.push([
+                        v.kd_trx,
+                        v.full_name,
+                        v.acc_name+' BANK '+v.bank_name,
+                        v.acc_no,
+                        parseInt(v.amount,10)===0?0:toCurrency(parseInt(v.amount)),
+                        v.status===0?'PENDING':v.status===1?'SUCCESS':'GAGAL',
+                        moment(v.created_at).format("YYYY/MM/DD HH:mm:ss")
+                    ]);
+                });
+                toExcel(
+                    'LAPORAN DEPOSIT',
+                    `SEMUA PERIODE`,
+                    [
+                        'KDOE TRX',
+                        'NAMA',
+                        'BANK AKUN TUJUAN',
+                        'BANK REKENING TUJUAN',
+                        'JUMLAH',
+                        'STATUS',
+                        'TANGGAL DIBUAT',
+                    ],
+                    content,
+                )
+            }
+        }
+
+    }
+    printDocumentXLsx(e,param){
+        e.preventDefault();
+        let where=this.handleValidate();
+        this.props.dispatch(getExcelDeposit(`perpage=${param}&${where}`));
+    }
 
     render(){
         const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
@@ -180,6 +224,7 @@ class IndexDeposit extends Component{
         const {
             total,
             per_page,
+            last_page,
             current_page,
         } = this.props.data;
         // console.log(typeof data);
@@ -231,6 +276,9 @@ class IndexDeposit extends Component{
                                         <div className="form-group">
                                             <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
                                             <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleAdd(e)}><i className="fa fa-plus"/></button>
+                                            <button style={{marginTop:"27px",marginLeft:"5px"}} className="btn btn-primary"  onClick={(e => this.printDocumentXLsx(e,per_page*last_page))}>
+                                                <i className="fa fa-print"/> {!this.props.isLoadingExcel?'Export':'loading...'}
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -283,7 +331,7 @@ class IndexDeposit extends Component{
                                                             <td style={columnStyle}>{v.full_name}</td>
                                                             <td style={columnStyle}>{v.acc_name}<br/><div style={{paddingTop:'5px'}}>BANK {v.bank_name}</div></td>
                                                             <td style={columnStyle}>{v.acc_no}</td>
-                                                            <td style={numStyle}>Rp {parseInt(v.amount)===0?0:toCurrency(parseInt(v.amount))} .-</td>
+                                                            <td style={numStyle}>Rp {parseInt(v.amount,10)===0?0:toCurrency(parseInt(v.amount))} .-</td>
                                                             <td style={columnStyle}>{status}</td>
                                                             <td style={columnStyle}>{moment(v.created_at).format("YYYY/MM/DD HH:mm:ss")}</td>
                                                         </tr>
@@ -350,10 +398,13 @@ class IndexDeposit extends Component{
     }
 }
 const mapStateToProps = (state) => {
+    console.log("state.depositReducer.dataExcel",state.depositReducer.dataExcel);
     return {
         isLoading: state.pinReducer.isLoading,
         isOpen:state.modalReducer,
         data:state.depositReducer.data,
+        dataExcel:state.depositReducer.dataExcel,
+        isLoadingExcel:state.depositReducer.isLoadingExcel,
     }
 }
 

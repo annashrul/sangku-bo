@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {connect} from "react-redux";
 import Layout from 'components/Layout';
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
-import Paginationq, {rangeDate,noImage, rmComma, ToastQ, toCurrency, toRp} from "../../../helper";
+import Paginationq, {rangeDate,noImage, rmComma, ToastQ, toCurrency, toRp, toExcel} from "../../../helper";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
@@ -11,7 +11,7 @@ import FormPenarikanBonus from '../modals/laporan/form_penarikan_bonus';
 import {getDeposit, postDeposit} from "../../../redux/actions/ewallet/deposit.action";
 import Select from 'react-select';
 import * as Swal from "sweetalert2";
-import {getPenarikan, postPenarikan} from "../../../redux/actions/ewallet/penarikan.action";
+import {getExcelPenarikan, getPenarikan, postPenarikan} from "../../../redux/actions/ewallet/penarikan.action";
 
 class IndexPenarikan extends Component{
     constructor(props){
@@ -128,6 +128,53 @@ class IndexPenarikan extends Component{
 
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if(prevProps.dataExcel.data!==this.props.dataExcel.data){
+            this.getExcel(this.props);
+        }
+    }
+    getExcel(props){
+        if(props.dataExcel.data!==undefined){
+            if(props.dataExcel.data.length>0){
+                let content=[];
+                console.log(props.dataExcel.data);
+                props.dataExcel.data.map((v,i)=>{
+                    content.push([
+                        v.kd_trx,
+                        v.full_name,
+                        v.bank_name,
+                        v.acc_name,
+                        v.acc_no,
+                        `Rp ${v.charge===null||parseInt(v.charge)===0?0:toCurrency(parseInt(v.charge))} .-`,
+                        `Rp ${parseInt(v.amount)===0?0:toCurrency(parseInt(v.amount))} .-`,
+                        v.status===0?'PENDING':v.status===1?'SUCCESS':'GAGAL'
+                    ]);
+                });
+                toExcel(
+                    'LAPORAN PENARIKAN',
+                    `SEMUA PERIODE`,
+                    [
+                        'KODE TRX',
+                        'NAMA',
+                        'BANK NAMA',
+                        'BANK AKUN',
+                        'BANK REKENING',
+                        'BIAYA ADMIN',
+                        'JUMLAH',
+                        'STATUS',
+                    ],
+                    content,
+                )
+            }
+        }
+
+    }
+    printDocumentXLsx(e,param){
+        e.preventDefault();
+        let where=this.handleValidate();
+        this.props.dispatch(getExcelPenarikan(`perpage=${param}&${where}`));
+    }
+
     render(){
         const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const numStyle ={verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
@@ -192,6 +239,9 @@ class IndexPenarikan extends Component{
                                         <div className="form-group">
                                             <button style={{marginTop:"27px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
                                             <button style={{marginTop:"27px",marginLeft:"5px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleAdd(e)}><i className="fa fa-plus"/></button>
+                                            <button style={{marginTop:"27px",marginLeft:"5px"}} className="btn btn-primary"  onClick={(e => this.printDocumentXLsx(e,per_page*last_page))}>
+                                                <i className="fa fa-print"/> {!this.props.isLoadingExcel?'Export':'loading...'}
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -313,6 +363,8 @@ const mapStateToProps = (state) => {
         isLoading: state.penarikanReducer.isLoading,
         isOpen:state.modalReducer,
         data:state.penarikanReducer.data,
+        dataExcel:state.penarikanReducer.dataExcel,
+        isLoadingExcel:state.penarikanReducer.isLoadingExcel,
     }
 }
 
