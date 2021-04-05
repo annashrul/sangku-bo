@@ -303,11 +303,13 @@ export const REPORT_REWARD = {
  *****************/
 let prefDeposit='DEPOSIT';
 export const DEPOSIT = {
-    LOADING: `SET_${prefDeposit}_LOADING`,
+    LOADING: `SET_${prefDeposit}_LOADING_EXCEL`,
+    LOADING_EXCEL: `SET_${prefDeposit}_LOADING`,
     LOADING_DETAIL: `SET_${prefDeposit}_LOADING_DETAIL`,
     LOADING_POST: `SET_${prefDeposit}_LOADING_POST`,
     IS_ERROR: `SET_${prefDeposit}_IS_ERROR`,
     SUCCESS: `SUCCESS_${prefDeposit}`,
+    SUCCESS_EXCEL: `SUCCESS_${prefDeposit}_EXCEL`,
     FAILED: `FAILED_${prefDeposit}`,
     DETAIL: `DETAIL_${prefDeposit}`,
     EDIT: `EDIT_${prefDeposit}`
@@ -318,10 +320,12 @@ export const DEPOSIT = {
 let prefPenarikan='PENARIKAN';
 export const PENARIKAN = {
     LOADING: `SET_${prefPenarikan}_LOADING`,
+    LOADING_EXCEL: `SET_${prefPenarikan}_LOADING_EXCEL`,
     LOADING_DETAIL: `SET_${prefPenarikan}_LOADING_DETAIL`,
     LOADING_POST: `SET_${prefPenarikan}_LOADING_POST`,
     IS_ERROR: `SET_${prefPenarikan}_IS_ERROR`,
     SUCCESS: `SUCCESS_${prefPenarikan}`,
+    SUCCESS_EXCEL: `SUCCESS_${prefPenarikan}_EXCEL`,
     FAILED: `FAILED_${prefPenarikan}`,
     DETAIL: `DETAIL_${prefPenarikan}`,
     EDIT: `EDIT_${prefPenarikan}`
@@ -352,10 +356,12 @@ export const REPORT_BARANG = {
 let prefBonus='BONUS';
 export const BONUS = {
     LOADING: `SET_${prefBonus}_LOADING`,
+    LOADING_EXCEL: `SET_${prefBonus}_LOADING_EXCEL`,
     LOADING_DETAIL: `SET_${prefBonus}_LOADING_DETAIL`,
     LOADING_POST: `SET_${prefBonus}_LOADING_POST`,
     IS_ERROR: `SET_${prefBonus}_IS_ERROR`,
     SUCCESS: `SUCCESS_${prefBonus}`,
+    SUCCESS_EXCEL: `SUCCESS_${prefBonus}_EXCEL`,
     FAILED: `FAILED_${prefBonus}`,
     DETAIL: `DETAIL_${prefBonus}`,
     EDIT: `EDIT_${prefBonus}`

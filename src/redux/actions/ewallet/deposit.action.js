@@ -12,6 +12,13 @@ export function setLoading(load) {
 }
 
 
+export function setLoadingExcel(load) {
+    return {
+        type: DEPOSIT.LOADING_EXCEL,
+        load
+    }
+}
+
 export function setLoadingDetail(load) {
     return {
         type: DEPOSIT.LOADING_DETAIL,
@@ -38,6 +45,12 @@ export function setData(data = []) {
     }
 }
 
+export function setExcel(data = []) {
+    return {
+        type: DEPOSIT.SUCCESS_EXCEL,
+        data
+    }
+}
 export function setDataEdit(data = []) {
     return {
         type: DEPOSIT.EDIT,
@@ -73,6 +86,35 @@ export const getDeposit = (where='') => {
             })
             .catch(function (error) {
                 dispatch(setLoading(false));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Network Failed!.',
+                        'Please check your connection',
+                        'error'
+                    );
+                }
+            })
+
+    }
+};
+
+
+export const getExcelDeposit = (where) => {
+    return (dispatch) => {
+        dispatch(setLoadingExcel(true));
+        let url = 'transaction/deposit';
+        if(where){
+            url+=`?${where}`;
+        }
+
+        axios.get(HEADERS.URL + `${url}`)
+            .then(function (response) {
+                const data = response.data;
+                dispatch(setExcel(data));
+                dispatch(setLoadingExcel(false));
+            })
+            .catch(function (error) {
+                dispatch(setLoadingExcel(false));
                 if (error.message === 'Network Error') {
                     Swal.fire(
                         'Network Failed!.',

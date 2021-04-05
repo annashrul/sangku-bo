@@ -2,13 +2,13 @@ import React,{Component} from 'react';
 import {connect} from "react-redux";
 import Layout from 'components/Layout';
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
-import Paginationq, {rangeDate,noImage, rmComma, ToastQ, toCurrency, toRp} from "../../../helper";
+import Paginationq, {rangeDate,noImage, rmComma, ToastQ, toCurrency, toRp, toExcel} from "../../../helper";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import moment from "moment";
 import GeneratePin from "../modals/pin/generate_pin"
-import {getBonus, postPenarikan} from "../../../redux/actions/laporan/bonus.action";
+import {getBonus, postPenarikan, getExcelBonus} from "../../../redux/actions/laporan/bonus.action";
 import FormPenarikanBonus from '../modals/laporan/form_penarikan_bonus';
 
 class IndexBonus extends Component{
@@ -63,6 +63,46 @@ class IndexBonus extends Component{
         this.props.dispatch(getBonus(`page=1${tipe}`));
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if(prevProps.dataExcel!==this.props.dataExcel){
+            this.getExcel(this.props);
+        }
+    }
+    getExcel(props){
+        if(props.dataExcel!==undefined){
+            if(props.dataExcel.length>0){
+                let content=[];
+                console.log(props.dataExcel);
+                props.dataExcel.map((v,i)=>{
+                    content.push([
+                        v.note.toUpperCase(),
+                        v.percentage+'%',
+                        parseInt(v.trx_in,10)===0?0:toCurrency(v.trx_in),
+                        parseInt(v.trx_out,10)===0?0:toCurrency(v.trx_out),
+                        parseInt(v.total,10)===0?0:toCurrency(v.total)
+                    ]);
+                });
+                toExcel(
+                    'LAPORAN TRANSAKSI BONUS '+(this.state.tipe==='aktivasi'?'AKTIVASI':'RO'),
+                    `SEMUA DATA`,
+                    [
+                        'Jenis',
+                        'Persentase',
+                        'Transaksi Masuk',
+                        'Transaksi Keluar',
+                        'Transaksi Saldo saat ini'
+                    ],
+                    content,
+                )
+            }
+        }
+
+    }
+    printDocumentXLsx(e){
+        e.preventDefault();
+        const tipe = this.state.tipe==='aktivasi'?'':'&type=ro'
+        this.props.dispatch(getExcelBonus(`${tipe}`));
+    }
 
     render(){
         const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
@@ -78,6 +118,9 @@ class IndexBonus extends Component{
                         <div className="dashboard-header-title mb-3" style={{textAlign:'right'}}>
                             <button style={{marginTop:"27px"}} type="button" className={this.state.tipe==='aktivasi'?"btn btn-success mb-2 mr-2":"btn btn-outline-success mb-2 mr-2"} onClick={(e)=>this.handleTipe(e,'aktivasi')}>Bonus Aktivasi/Registrasi</button>
                             <button style={{marginTop:"27px"}} type="button" className={this.state.tipe==='ro'?"btn btn-success mb-2 mr-2":"btn btn-outline-success mb-2 mr-2"}  onClick={(e)=>this.handleTipe(e,'ro')}>Bonus Royalti/Repeat Order</button>
+                            <button style={{marginTop:"27px",marginLeft:"5px"}} className="btn btn-primary mb-2 mr-2"  onClick={(e => this.printDocumentXLsx(e))}>
+                                <i className="fa fa-print"/> {!this.props.isLoadingExcel?'Export '+(this.state.tipe==='aktivasi'?'AKTIVASI':'RO'):'loading...'}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -107,9 +150,9 @@ class IndexBonus extends Component{
                                                         <tr key={i}>
                                                             <td>{v.note.toUpperCase()}</td>
                                                             <td>{v.percentage} %</td>
-                                                            <td>{parseInt(v.trx_in)===0?0:toCurrency(v.trx_in)}</td>
-                                                            <td>{parseInt(v.trx_out)===0?0:toCurrency(v.trx_out)}</td>
-                                                            <td>{parseInt(v.total)===0?0:toCurrency(v.total)}</td>
+                                                            <td>{parseInt(v.trx_in,10)===0?0:toCurrency(v.trx_in)}</td>
+                                                            <td>{parseInt(v.trx_out,10)===0?0:toCurrency(v.trx_out)}</td>
+                                                            <td>{parseInt(v.total,10)===0?0:toCurrency(v.total)}</td>
                                                             <td><button onClick={(e)=>this.handleModal(e,v.kode)} className={"btn btn-primary btn-block"}>Tarik Saldo</button></td>
                                                         </tr>
                                                     );
@@ -157,6 +200,8 @@ const mapStateToProps = (state) => {
         isLoading: state.pinReducer.isLoading,
         isOpen:state.modalReducer,
         data:state.bonusReducer.data,
+        dataExcel:state.bonusReducer.dataExcel,
+        isLoadingExcel:state.bonusReducer.isLoadingExcel,
     }
 }
 

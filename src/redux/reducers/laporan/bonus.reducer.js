@@ -11,6 +11,7 @@ const initialState = {
     status: "",
     msg: "",
     data: [],
+    dataExcel: [],
     approval: [],
     edit:[],
     detail:[],
@@ -24,6 +25,13 @@ export const bonusReducer = (state = initialState, action) => {
                 status: action.data.status,
                 msg: action.data.msg,
                 data: action.data.result,
+            });
+        case BONUS.SUCCESS_EXCEL:
+            console.log("REDUCER BONUS EXCEL",action.data.result);
+            return Object.assign({}, state, {
+                status: action.data.status,
+                msg: action.data.msg,
+                dataExcel: action.data.result,
             });
         
         case BONUS.DETAIL:
@@ -45,6 +53,10 @@ export const bonusReducer = (state = initialState, action) => {
         case BONUS.LOADING_DETAIL:
             return Object.assign({}, state, {
                 isLoadingDetail: action.load
+            });
+        case BONUS.LOADING_EXCEL:
+            return Object.assign({}, state, {
+                isLoadingExcel: action.load
             });
         case BONUS.LOADING_POST:
             return Object.assign({}, state, {

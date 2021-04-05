@@ -11,6 +11,12 @@ export function setLoading(load) {
     }
 }
 
+export function setLoadingExcel(load) {
+    return {
+        type: BONUS.LOADING_EXCEL,
+        load
+    }
+}
 
 export function setLoadingDetail(load) {
     return {
@@ -38,6 +44,12 @@ export function setData(data = []) {
     }
 }
 
+export function setExcel(data = []) {
+    return {
+        type: BONUS.SUCCESS_EXCEL,
+        data
+    }
+}
 export function setDataEdit(data = []) {
     return {
         type: BONUS.EDIT,
@@ -73,6 +85,34 @@ export const getBonus = (where='') => {
             })
             .catch(function (error) {
                 dispatch(setLoading(false));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Network Failed!.',
+                        'Please check your connection',
+                        'error'
+                    );
+                }
+            })
+
+    }
+};
+
+export const getExcelBonus = (where) => {
+    return (dispatch) => {
+        dispatch(setLoadingExcel(true));
+        let url = 'transaction/bonus';
+        if(where){
+            url+=`?${where}`;
+        }
+
+        axios.get(HEADERS.URL + `${url}`)
+            .then(function (response) {
+                const data = response.data;
+                dispatch(setExcel(data));
+                dispatch(setLoadingExcel(false));
+            })
+            .catch(function (error) {
+                dispatch(setLoadingExcel(false));
                 if (error.message === 'Network Error') {
                     Swal.fire(
                         'Network Failed!.',
