@@ -132,7 +132,7 @@ class IndexUserLevel extends Component{
             from,
             data
         } = this.props.data;
-        console.log(data);
+        // console.log(data);
         let totSaldo=0;
         let totPenarikan=0;
         return(

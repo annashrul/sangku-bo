@@ -69,7 +69,7 @@ class DetailLaporanBarang extends Component{
         if(props.dataExcel.data!==undefined){
             if(props.dataExcel.data.length>0){
                 let content=[];
-                console.log(props);
+                // console.log(props);
                 props.dataExcel.data.map((v,i)=>{
                     content.push([
                         v.kd_trx,

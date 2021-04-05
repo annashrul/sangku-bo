@@ -42,7 +42,7 @@ class Index extends Component{
 
     render(){
         const headStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
-        console.log(this.props.data);
+        // console.log(this.props.data);
         return(
             <div className="card">
                 <div className="card-body">
@@ -133,7 +133,7 @@ class Index extends Component{
     }
 }
 const mapStateToProps = (state) => {
-    console.log("NU AINF",state.kurirReducer);
+    // console.log("NU AINF",state.kurirReducer);
 
     return {
         isLoading: state.kurirReducer.isLoading,

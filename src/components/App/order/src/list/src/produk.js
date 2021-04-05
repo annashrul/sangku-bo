@@ -21,7 +21,7 @@ class Produk extends Component{
     }
 
     rowBottom(title,value){
-        console.log(value);
+        // console.log(value);
         return (
             <div className="col-md-6 col-sm-12" style={{margin:'0px',padding:'0px'}}>
                 <p className="order-items" style={{padding:0,margin:0}}><small>{title}</small><br /><small>Rp</small> {toCurrency(value)}</p>

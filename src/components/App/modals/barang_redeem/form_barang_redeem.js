@@ -40,7 +40,7 @@ class FormBarangRedeem extends Component{
         })
     }
     getProps(props){
-        console.log(props);
+        // console.log(props);
         this.setState({
             title:props.detail.title,
             harga:props.detail.harga,
@@ -77,7 +77,7 @@ class FormBarangRedeem extends Component{
         parseData['stock'] = rmComma(this.state.stok);
         parseData['deskripsi'] = this.state.deskripsi;
         parseData['gambar'] = this.state.gambar!==""?this.state.gambar.base64:'-';
-        console.log(parseData)
+        // console.log(parseData)
 
         if(parseData['title']===''){
             ToastQ.fire({icon:'error',title:`title tidak boleh kosong`});
@@ -111,7 +111,7 @@ class FormBarangRedeem extends Component{
 
     }
     render(){
-        // console.log(this.props.detail)
+        // // console.log(this.props.detail)
         const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace:"nowrap"};
         return (
             <WrapperModal isOpen={this.props.isOpen && this.props.type === "formBarangRedeem"} size="lg">

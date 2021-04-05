@@ -31,7 +31,6 @@ class FormPaket extends Component{
         this.state={
             any:'',
             isSelected:false,
-            kategori_data:[],
             kategori: "",
             id:"",
             title:"",
@@ -89,7 +88,7 @@ class FormPaket extends Component{
         let barang=[];
 
         if(typeof param.barang.data==='object'){
-            console.log("data",param.barang.data);
+            // console.log("data",param.barang.data);
             if(param.barang.data.length>0){
                 for(let i=0;i<param.barang.data.length;i++){
                     barang.push({
@@ -167,7 +166,6 @@ class FormPaket extends Component{
         this.setState({
             any:'',
             isSelected:false,
-            kategori_data:[],
             kategori:"",
             id:"",
             title:"",
@@ -203,13 +201,6 @@ class FormPaket extends Component{
             error: err,
             isSelected:false,
         });
-        if (event.target.name==='type'){
-            this.setState({
-                kategori: "3a385e1d-21f7-4c73-9554-c818f0078c6f",
-                point_volume: "1",
-            })
-
-        }
     }
     handleValidation(e){
         e.preventDefault();
@@ -362,7 +353,7 @@ class FormPaket extends Component{
 
 
     render(){
-        console.log("FORM PAKET",this.state.kategori);
+        // console.log("FORM PAKET",this.state.kategori);
 
         if(this.state.isScroll===true)this.handleScroll();
         const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace:"nowrap"};
@@ -508,7 +499,7 @@ class FormPaket extends Component{
                             </div>
 
                             <div className="row">
-                                <div className={parseInt(this.state.type,10)===0?"col-md-6 col-sm-12":"col-md-12 col-sm-12"}>
+                                <div className={"col-md-6 col-sm-12"}>
                                 <div className="form-group">
                                     <label>Deskripsi</label>
                                     <textarea type="text" rows="6" className="form-control" name="deskripsi" onChange={this.handleChange} >
@@ -516,30 +507,16 @@ class FormPaket extends Component{
                                     </textarea>
                                 </div>
                                 </div>
-                                <div className="col-md-6 col-sm-12" style={parseInt(this.state.type,10)===0?{display:'block'}:{display:'none'}}>
+                                <div className="col-md-6 col-sm-12">
                                     <div className="row">
                                         <div className="col-md-12 col-sm-12">
                                             <div className="form-group">
                                                 <label>Jenis Membership</label>
-                                                <Membership handleChange={this.HandleChangeCategory.bind(this)} id={this.state.kategori}/>
-                                                {/*{*/}
-                                                    {/*typeof this.props.kategori.data === 'object' ?*/}
-                                                        {/*(*/}
-                                                            {/*<Select*/}
-                                                                {/*options={this.state.kategori_data}*/}
-                                                                {/*placeholder="Pilih Membership"*/}
-                                                                {/*onChange={this.HandleChangeCategory}*/}
-                                                                {/*value={*/}
-                                                                {/*this.state.kategori_data.find(op => {*/}
-                                                                    {/*return op.value === this.state.kategori*/}
-                                                                {/*})*/}
-                                                            {/*}*/}
-
-                                                            {/*/>*/}
-                                                        {/*)*/}
-                                                    {/*: <Skeleton height={40}/>*/}
-                                                {/*}*/}
-
+                                                <Membership
+                                                handleChange={this.HandleChangeCategory.bind(this)}
+                                                id={this.state.kategori}
+                                                type={this.state.type===0?"membership":"barang_ro"}
+                                                />
                                             </div>
                                         </div>
                                         <div className="col-md-12 col-sm-12">

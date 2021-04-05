@@ -98,7 +98,7 @@ class IndexDeposit extends Component{
         if(any!==null&&any!==undefined&&any!==""){
             where+=`&q=${any}`;
         }
-        console.log(where);
+        // console.log(where);
         return where;
 
     }
@@ -151,7 +151,7 @@ class IndexDeposit extends Component{
     }
 
     handleApproval(e,id,status){
-        console.log(btoa(id));
+        // console.log(btoa(id));
         e.preventDefault();
         Swal.fire({
             title: 'Perhatian !!!',
@@ -182,7 +182,7 @@ class IndexDeposit extends Component{
             per_page,
             current_page,
         } = this.props.data;
-        // console.log(typeof data);
+        // // console.log(typeof data);
         return(
             <Layout page={"Deposit"}>
                 <div className="row align-items-center">

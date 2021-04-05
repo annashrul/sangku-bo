@@ -50,7 +50,7 @@ class Index extends Component{
     }
 
     handleEnterSubmit = (event,i) => {
-        console.log("anying")
+        // console.log("anying")
         if(i!==null){
             let data = [...this.state.data];
             let parseData={
@@ -74,7 +74,7 @@ class Index extends Component{
             }
             this.props.dispatch(insertDataPoinKeliparanRO(parseData));
             this.setState({qty:'0',nilai_poin:'0'});
-            console.log(parseData)
+            // console.log(parseData)
         }
 
     }
@@ -186,7 +186,7 @@ class Index extends Component{
     }
 }
 const mapStateToProps = (state) => {
-    // console.log("STATE AING",state);
+    // // console.log("STATE AING",state);
     return {
         isLoading: state.poinKelipatanRoReducer.isLoading,
         isOpen:state.modalReducer,

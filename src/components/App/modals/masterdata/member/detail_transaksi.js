@@ -20,7 +20,7 @@ class DetailTransaksi extends Component{
     };
 
     componentWillReceiveProps(nextProps){
-        console.log("props alamat",nextProps);
+        // console.log("props alamat",nextProps);
     }
 
 

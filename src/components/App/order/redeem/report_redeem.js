@@ -68,8 +68,8 @@ class ReportRedeem extends Component{
 
     handleResi(e, kdtrx, resi,isLacak=false) {
         e.preventDefault()
-        console.log(btoa(kdtrx));
-        console.log(resi);
+        // console.log(btoa(kdtrx));
+        // console.log(resi);
         this.props.dispatch(putReportRedeem(btoa(kdtrx),{"resi":resi},"page=1"));
         // this.setState({
         //     dataTrx: [],
@@ -77,7 +77,7 @@ class ReportRedeem extends Component{
         // })
         // if(!isLacak) this.props.dispatch(updateResi(kdtrx, resi));
         // else this.props.dispatch(lacakResi(kdtrx, resi, kurir));
-        // console.log(resi);
+        // // console.log(resi);
     }
     render(){
 
@@ -87,7 +87,7 @@ class ReportRedeem extends Component{
             current_page,
             data
         } = this.props.data;
-        console.log(data);
+        // console.log(data);
         return (
             <Layout page="Report Redeem" headers="Report Redeem" >
                 <div className="row">

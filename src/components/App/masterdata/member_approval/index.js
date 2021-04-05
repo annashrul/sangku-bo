@@ -113,7 +113,7 @@ class IndexUserList extends Component{
     }
 
     render(){
-        console.log("this.props.approval", this.props.approval);
+        // console.log("this.props.approval", this.props.approval);
 
         const headStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const {

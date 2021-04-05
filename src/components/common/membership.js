@@ -15,9 +15,50 @@ class Membership extends Component{
         };
         this.HandleChangeMembership=this.HandleChangeMembership.bind(this);
     }
+
+    static getDerivedStateFromProps(props, state) {
+        // console.log(state.beforeType);
+        // console.log(props.type);
+        if (state.beforeType !== props.type) {
+            props.dispatch(fetchKategori(props.type));
+            return {
+                beforeType: props.type
+            }
+        }
+        if (state.beforeId!==props.id) {
+            return{
+                kategori:props.id,
+                beforeId:props.id
+            }
+        }
+
+        if (props.kategori !== state.beforeKategori) {
+            let kategori_data = [];
+            if (props.id === 'semua') {
+                kategori_data.push({
+                    value: '-',
+                    label: 'Semua'
+                });
+            } else {
+                kategori_data = [];
+            }
+            if (props.kategori.data !== undefined) {
+                props.kategori.data.map((v, i) => {
+                    kategori_data.push({
+                        value: v.id,
+                        label: v.title
+                    });
+                });
+            }
+            return{
+                kategori_data: kategori_data,
+                beforeKategori: props.kategori
+            }
+
+        }
+
+    }
     componentWillMount(){
-        // this.getProps(this.props);
-        this.props.dispatch(fetchKategori("membership"));
         this.getProps(this.props);
     }
     componentDidMount(){
@@ -27,23 +68,6 @@ class Membership extends Component{
         if(props.id!==''){
             this.setState({kategori:props.id});
         }
-
-    }
-    componentWillReceiveProps(nextProps){
-        this.getProps(nextProps);
-        let kategori_data=[];
-        if(nextProps.id==='semua'){
-            kategori_data.push({value:'-',label:'Semua'});
-        }else{
-            kategori_data=[];
-        }
-        if(nextProps.kategori.data!==undefined){
-            nextProps.kategori.data.map((v,i)=>{
-                kategori_data.push({value:v.id,label:v.title});
-            });
-        }
-        this.setState({kategori_data:kategori_data});
-
 
     }
     HandleChangeMembership(val){

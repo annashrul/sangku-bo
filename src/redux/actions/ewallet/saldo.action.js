@@ -131,11 +131,11 @@ export const getExcelLaporanSaldo = (where = '') => {
         if (where !== '') {
             url += `?${where}`;
         }
-        console.log(url);
+        // console.log(url);
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
-                console.log("RESPONSE EXCEL",response);
+                // console.log("RESPONSE EXCEL",response);
                 dispatch(setExcel(data));
                 dispatch(setLoadingExcel(false));
             })

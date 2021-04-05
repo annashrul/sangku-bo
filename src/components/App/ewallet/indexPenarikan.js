@@ -61,7 +61,7 @@ class IndexPenarikan extends Component{
         if(any!==null&&any!==undefined&&any!==""){
             where+=`&q=${any}`;
         }
-        console.log(where);
+        // console.log(where);
         return where;
 
     }
@@ -107,7 +107,7 @@ class IndexPenarikan extends Component{
 
 
     handleApproval(e,id,status){
-        console.log(btoa(id));
+        // console.log(btoa(id));
         e.preventDefault();
         Swal.fire({
             title: 'Perhatian !!!',
@@ -143,7 +143,7 @@ class IndexPenarikan extends Component{
             from,
             data
         } = this.props.data;
-        console.log("DATA",data);
+        // console.log("DATA",data);
         return(
             <Layout page={"Penarikan"}>
                 <div className="row align-items-center">

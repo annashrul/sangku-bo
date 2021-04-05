@@ -32,11 +32,11 @@ class IndexBarang extends Component{
 
     }
     componentDidMount(){
-        console.log('componentDidMount');
+        // console.log('componentDidMount');
 
     }
     componentWillMount(){
-        console.log('componentWillMount');
+        // console.log('componentWillMount');
         this.props.dispatch(fetchBarang(`page=1`));
     }
     handleChange = (event) => {

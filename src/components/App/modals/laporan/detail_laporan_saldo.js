@@ -50,9 +50,9 @@ class DetailLaporanSaldo extends Component{
             data,
             summary
         } = this.props.data;
-        console.log(summary);
+        // console.log(summary);
         let totTrxIn=0,totTrxOut=0,totSaldoAwal=0;
-        console.log(data);
+        // console.log(data);
 
 
 

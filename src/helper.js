@@ -51,7 +51,7 @@ export const toExcel=(title='',periode='',head=[],content=[],foot=[])=>{
     let raw = content;
     let body = header.concat(raw);
     let data = footer===undefined||footer===[]?body:body.concat(footer);
-    console.log(`=========================> ${data} <==========================`);
+    // console.log(`=========================> ${data} <==========================`);
     let ws = XLSX.utils.json_to_sheet(data, {skipHeader:true});
     let merge = [
         {s: {r:0, c:0},e: {r:0, c:head.length}},

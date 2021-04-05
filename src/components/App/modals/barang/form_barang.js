@@ -78,8 +78,8 @@ class FormBarang extends Component{
         parseData['status'] = this.state.status;
         parseData['berat'] = rmComma(this.state.berat);
         parseData['stock'] = rmComma(this.state.stock);
-        console.log(parseData)
-        console.log(isNaN(parseData['harga']))
+        // console.log(parseData)
+        // console.log(isNaN(parseData['harga']))
         if(parseData['title']===''||parseData['title']===undefined){
             ToastQ.fire({icon:'error',title:`nama tidak boleh kosong`});
             return;

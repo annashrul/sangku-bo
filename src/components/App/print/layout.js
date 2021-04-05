@@ -38,7 +38,7 @@ class Print3ply extends Component {
             save: true, // default true: Save as file
             output: '', // default '', jsPDF output type
             smart: true // default true: Smartly adjust content width
-        }, output => { console.log('finish!', output); });
+        }, output => { // console.log('finish!', output); });
     }
     render() {
         return (

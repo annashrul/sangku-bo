@@ -28,7 +28,7 @@ class IndexBarangReward extends Component{
     }
 
     componentWillReceiveProps(nextProps){
-        console.log(nextProps);
+        // console.log(nextProps);
     }
     handlePage(num){
         let where = this.handleValidate();
@@ -108,7 +108,7 @@ class IndexBarangReward extends Component{
             from,
             data
         } = this.props.data;
-        console.log(localStorage.getItem("logos"));
+        // console.log(localStorage.getItem("logos"));
         return(
             <Layout page={"Barang Reward"}>
                 <div className="row align-items-center">

@@ -52,7 +52,7 @@ class FormUserList extends Component{
 
         if(nextProps.dataLevel.data!==undefined){
             if(nextProps.dataLevel.data.length>0){
-                console.log(nextProps.dataLevel.data);
+                // console.log(nextProps.dataLevel.data);
                 nextProps.dataLevel.data.map((v,i)=>{
                     data.push({value:v.id,label:v.level});
                     // this.setState({
@@ -105,7 +105,7 @@ class FormUserList extends Component{
 
         // if(parseData['password'])
 
-        console.log(parseData);
+        // console.log(parseData);
         if(parseData['name']===''){
             ToastQ.fire({icon:'error',title:`nama tidak boleh kosong`});
             return;

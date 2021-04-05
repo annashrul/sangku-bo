@@ -87,7 +87,7 @@ class IndexReportBarang extends Component{
                     totDibatalkan=totDibatalkan+parseInt(v.dibatalkan,10);
                     totOmset=totOmset+parseInt(v.total_omset,10);
                 });
-                console.log(content);
+                // console.log(content);
                 toExcel(
                     'LAPORAN TRASANSAKSI BARANG',
                     `${this.state.dateFrom} - ${this.state.dateTo}`,

@@ -96,7 +96,7 @@ export const postPenarikan = (data,id) => async dispatch =>{
         onClose: () => {}
     });
     const url = HEADERS.URL + `transaction/withdrawal/${id}`;
-    console.log(data);
+    // console.log(data);
     axios.post(url,data)
         .then(response=>{
             setTimeout(

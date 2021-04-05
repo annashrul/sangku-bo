@@ -39,7 +39,7 @@ class FormBarangReward extends Component{
         })
     }
     getProps(props){
-        console.log(props);
+        // console.log(props);
         if(props.detail.id!==''){
             this.setState({
                 title:props.detail.title,
@@ -79,7 +79,7 @@ class FormBarangReward extends Component{
         parseData['caption'] = this.state.caption;
         parseData['id_karir'] = this.state.id_karir;
         parseData['gambar'] = this.state.gambar!==""?this.state.gambar.base64:'-';
-        console.log(parseData);
+        // console.log(parseData);
 
         if(parseData['title']===''||parseData['title']===undefined){
             ToastQ.fire({icon:'error',title:`title tidak boleh kosong`});
@@ -102,7 +102,7 @@ class FormBarangReward extends Component{
 
     }
     render(){
-        // console.log(this.props.detail)
+        // // console.log(this.props.detail)
         const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace:"nowrap"};
         return (
             <WrapperModal isOpen={this.props.isOpen && this.props.type === "formBarangReward"} size="md">

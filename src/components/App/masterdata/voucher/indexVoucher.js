@@ -155,9 +155,9 @@ class IndexVoucher extends Component{
                                             stts='badge-success';
                                             txtStts='Aktif';
                                         }
-                                        // console.log("TANGGAL DARI",moment(v.periode_start).format('yyyy-MM-DD'));
-                                        // console.log("TANGGAL SAMPAI",moment(v.periode_end).format('yyyy-MM-DD'));
-                                        // console.log("TANGGAL SEKARANG",moment(new Date()).format('yyyy-MM-DD'));
+                                        // // console.log("TANGGAL DARI",moment(v.periode_start).format('yyyy-MM-DD'));
+                                        // // console.log("TANGGAL SAMPAI",moment(v.periode_end).format('yyyy-MM-DD'));
+                                        // // console.log("TANGGAL SEKARANG",moment(new Date()).format('yyyy-MM-DD'));
 
                                     return(
                                         <div key={i} className="col-md-3 col-lg-3 col-xl-3 box-margin">

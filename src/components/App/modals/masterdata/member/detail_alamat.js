@@ -22,7 +22,7 @@ class DetailAlamat extends Component{
     };
 
     componentWillReceiveProps(nextProps){
-        console.log("props alamat",nextProps);
+        // console.log("props alamat",nextProps);
     }
 
 

@@ -65,7 +65,7 @@ export function setDataFailed(data = []) {
 export const fetchProduk = (where='') => {
     return (dispatch) => {
         dispatch(setLoading(true));
-        // console.log(HEADERS.URL + `transaction/produk/list?${where}`);
+        // // console.log(HEADERS.URL + `transaction/produk/list?${where}`);
         axios.get(HEADERS.URL + `transaction/produk/list?${where}`)
             .then(function (response) {
                 const data = response.data;

@@ -78,7 +78,7 @@ class IndexMember extends Component{
         if(props.dataExcel.data!==undefined){
             if(props.dataExcel.data.length>0){
                 let content=[];
-                console.log(props.dataExcel.data);
+                // console.log(props.dataExcel.data);
                 props.dataExcel.data.map((v,i)=>{
                     content.push([
                         v.full_name,
@@ -132,7 +132,7 @@ class IndexMember extends Component{
         this.props.dispatch(getExcelMember(`perpage=${param}&${where}`));
     }
     handleSearchBy(val){
-        console.log(val.value);
+        // console.log(val.value);
         this.setState({
             searchBy:val.value,
         })
@@ -219,7 +219,7 @@ class IndexMember extends Component{
     handleSearch(e){
         e.preventDefault();
         let where = this.handleValidate();
-        console.log(where);
+        // console.log(where);
         this.props.dispatch(getMember(where));
     }
     handleBank(e,par){

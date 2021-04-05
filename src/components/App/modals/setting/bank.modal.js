@@ -45,7 +45,7 @@ class FormUserList extends Component{
 
     static getDerivedStateFromProps(props, state) {
         if (props.data !== undefined && props.data.length !== 0) {
-            console.log(props.data);
+            // console.log(props.data);
             if (props.data !== state.prevdataProps) {
                 return {
                     prevdataProps: props.data,

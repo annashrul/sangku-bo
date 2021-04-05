@@ -104,7 +104,7 @@ class IndexBarangRedeem extends Component{
             from,
             data
         } = this.props.data;
-        // console.log(data);
+        // // console.log(data);
         return(
             <Layout page={"Barang Redeem"}>
                 <div className="row align-items-center">

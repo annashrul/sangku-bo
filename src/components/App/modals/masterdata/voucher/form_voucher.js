@@ -46,7 +46,7 @@ class FormVoucher extends Component{
     getProps(props){
         if(props.detail.id!==''){
             let detail=props.detail;
-            console.log(moment(detail.periode_start).format('yyyy-MM-DD'));
+            // console.log(moment(detail.periode_start).format('yyyy-MM-DD'));
             this.setState({
                 title:detail.title,
                 periode_start:moment(detail.periode_start).format('yyyy-MM-DD'),

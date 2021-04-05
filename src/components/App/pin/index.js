@@ -29,7 +29,7 @@ class IndexPin extends Component{
     componentWillReceiveProps(nextProps) {
         const path = nextProps.match.params.pin
         if(path!==this.state.last){
-            console.log('pin!',path);
+            // console.log('pin!',path);
             if(path==='ro'){
                 this.setState({type:1,last:path})
                 this.props.dispatch(getPin(`page=1&type=1`));

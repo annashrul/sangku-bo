@@ -147,9 +147,8 @@ class Index extends Component{
         let data=null;
         let id='';
         const type = tipe.split("_");
-        console.log(type);
+        // console.log(type);
         if(type[0]==='paket01'){
-            console.log({title: this.state.step1});
             if (type[1] === 'deskripsi') {
                 if (this.state.deskripsi1 === '') {
                     ToastQ.fire({

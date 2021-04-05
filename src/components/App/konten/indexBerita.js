@@ -200,8 +200,8 @@ class IndexBerita extends Component{
         });
         let perpage = parseInt(this.props.kategori.per_page,10);
         let lengthBrg = parseInt(this.props.kategori.data.length,10);
-        console.log("perpage",perpage);
-        console.log("lengthBrg",lengthBrg);
+        // console.log("perpage",perpage);
+        // console.log("lengthBrg",lengthBrg);
         if(perpage===lengthBrg || perpage<lengthBrg){
             this.props.dispatch(fetchKategori(`berita?page=1&perpage=${this.state.perpage}`));
             this.setState({scrollPage:this.state.scrollPage+5});
