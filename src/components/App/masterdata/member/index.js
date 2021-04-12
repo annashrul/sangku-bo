@@ -58,6 +58,7 @@ class IndexMember extends Component{
         this.handleKarir      = this.handleKarir.bind(this);
         this.handleMembership      = this.handleMembership.bind(this);
         this.handleStatus      = this.handleStatus.bind(this);
+        this.handleResetPin      = this.handleResetPin.bind(this);
     }
     handleKarir(val){
         this.setState({jenjangKarir:val.label});
@@ -286,6 +287,64 @@ class IndexMember extends Component{
               })
         }
     }
+    handleResetPin(e,id){
+        e.preventDefault();
+        let proping = this.props;
+        Swal.fire({
+            title: 'Reset PIN?',
+            focusConfirm: true,
+            html: 
+                '<input class="form-control form-control-lg font-18 py-4" id="pinModal" maxlength="6"" type="password" placeholder="Masukan 6 digit angka PIN baru" />'+
+                '<small class="text-danger d-none" id="pinModalErr">Error</small>',
+            type: 'warning',
+            showCancelButton: true,
+            cancelButtonColor: 'grey',
+            confirmButtonText: 'Reset!',
+            allowOutsideClick: true,
+            allowOutsideClick: false,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                  resolve(
+                    document.getElementById('pinModal').value
+                  )
+                })
+            },
+              onOpen: function () {
+                // $('#swal-input1').focus()
+                document.getElementById('pinModal').focus()
+              }
+            }).then(function (result) {
+                if(result.isConfirmed){
+                    if (!result) return null;
+                           if(result.value === ""){
+                                return Swal.fire({
+                                    title:"PIN tidak boleh kosong!",
+                                    type:"danger"
+                                })
+                            }
+                            else if(String(result.value).length<6){
+                               return Swal.fire({
+                                   title:"PIN tidak boleh kurang dari 6 digit!",
+                                   type:"danger"
+                               })
+                           }
+                            else if(isNaN(String(result.value).replace(/[0-9]/g, ''))){
+                               return Swal.fire({
+                                   title:"PIN harus berupa angka saja!",
+                                   type:"danger"
+                               })
+                           }
+                    // alert(JSON.stringify(result))
+                    proping.dispatch(putMember({pin: result.value}, id));
+                }
+            }).catch(Swal.noop)
+            //   inputValidator: (value) => {
+            //     if (!value) {
+            //       return 'You need to write something!'
+            //     }
+            //   }
+        
+    }
 
 
     render(){
@@ -438,6 +497,7 @@ class IndexMember extends Component{
                                                                             Aksi
                                                                         </DropdownToggle>
                                                                         <DropdownMenu>
+                                                            <DropdownItem onClick={(e)=>this.handleResetPin(e,v.id)}>Reset PIN</DropdownItem>
                                                             <DropdownItem onClick={(e)=>this.handleDetailTrx(e,v.id)}>Transaksi</DropdownItem>
                                                             <DropdownItem onClick={(e)=>this.handleAlamat(e,v.id)}>Alamat</DropdownItem>
                                                             <DropdownItem onClick={(e)=>this.handleBank(e,v.id)}>Bank</DropdownItem>
