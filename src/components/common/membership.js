@@ -17,8 +17,8 @@ class Membership extends Component{
     }
 
     static getDerivedStateFromProps(props, state) {
-        // console.log(state.beforeType);
-        // console.log(props.type);
+        console.log(state.beforeType);
+        console.log(props.type);
         if (state.beforeType !== props.type) {
             props.dispatch(fetchKategori(props.type));
             return {

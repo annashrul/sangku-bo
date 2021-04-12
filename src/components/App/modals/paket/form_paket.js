@@ -513,9 +513,9 @@ class FormPaket extends Component{
                                             <div className="form-group">
                                                 <label>Jenis Membership</label>
                                                 <Membership
-                                                handleChange={this.HandleChangeCategory.bind(this)}
-                                                id={this.state.kategori}
-                                                type={this.state.type===0?"membership":"barang_ro"}
+                                                    handleChange={this.HandleChangeCategory.bind(this)}
+                                                    id={this.state.kategori}
+                                                    type={parseInt(this.state.type)===0?"membership":"barang_ro"}
                                                 />
                                             </div>
                                         </div>

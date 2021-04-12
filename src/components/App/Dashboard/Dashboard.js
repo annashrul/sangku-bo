@@ -15,7 +15,13 @@ import Chart from './src/charts'
 import Clock from "../../common/clock";
 import Default from 'assets/default.png';
 
-const socket = socketIOClient(HEADERS.URL);
+const socket = socketIOClient(HEADERS.URL, {
+    withCredentials: true,
+    secure: true,
+    extraHeaders: {
+        "my-custom-header": "abcd"
+    }
+});
 
 class Dashboard extends Component {
     constructor(props) {

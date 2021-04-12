@@ -5,7 +5,6 @@ import BgAuth from "../../../../assets/logo.png"
 import './login.css'
 import {loginUser} from '../../../../redux/actions/authActions';
 import Swal from 'sweetalert2'
-import {HEADERS} from '../../../../redux/actions/_constants'
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -30,33 +29,7 @@ class Login extends Component {
         if(this.props.auth.isAuthenticated){
             this.props.history.push('/')
         }
-        // this.initFetch(false);
     }
-
-    // initFetch(check){
-    //     fetch(HEADERS.URL + `site/get`)
-    //     .then(res => res.json())
-    //     .then(
-    //         (data) => {
-    //             localStorage.setItem("logos",data.result.logo)
-    //             localStorage.setItem("site_title", data.result.site_name)
-    //             document.title = `${data.result.site_name}`;
-    //             this.setState({
-    //                 logo: data.result.logo,
-    //                 width:data.result.width
-    //             })
-    //             const favicon = this.getFaviconEl(); // Accessing favicon element
-    //             favicon.href = data.result.site_url;
-    //         },
-    //         (error) => {
-    //             this.setState({
-    //                 isLoaded: true,
-    //                 error
-    //             });
-    //         }
-    //     )
-    // }
-
 
     componentWillReceiveProps = (nextProps)=>{
         this.getProps(nextProps)
