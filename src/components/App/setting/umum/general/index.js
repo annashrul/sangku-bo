@@ -596,11 +596,11 @@ class Index extends Component{
                                         <div className="input-group-append">
                                             <span className="input-group-text">Rp</span>
                                         </div>
-                                        <input type="number" name='max_lvl_sponsor' onKeyPress={
+                                        <input type="number" name='tf_min' onKeyPress={
                                             (event)=>{
                                                 if (event.key === 'Enter')this.handleEnterSubmit(event)
                                             }
-                                        } onChange={(event)=>this.handleChange(event)} value={this.state.max_lvl_sponsor} className="form-control" placeholder="Minimal Transer" />
+                                        } onChange={(event)=>this.handleChange(event)} value={this.state.tf_min} className="form-control" placeholder="Minimal Transer" />
                                     </div>
                                 </div>
                             </div>
