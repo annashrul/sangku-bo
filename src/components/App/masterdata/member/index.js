@@ -24,6 +24,7 @@ import {getExcelMember} from "../../../../redux/actions/masterdata/member.action
 import {toExcel} from "../../../../helper";
 import Membership from "../../../common/membership";
 import JenjangKarir from "../../../common/jenjangKarir";
+import FormMemberBank from '../../modals/masterdata/member/form_member_bank';
 
 class IndexMember extends Component{
     constructor(props){
@@ -51,6 +52,7 @@ class IndexMember extends Component{
         this.handleSearch   = this.handleSearch.bind(this);
         this.handleAlamat   = this.handleAlamat.bind(this);
         this.handleBank   = this.handleBank.bind(this);
+        this.handleBankEdit   = this.handleBankEdit.bind(this);
         this.handleDetailTrx   = this.handleDetailTrx.bind(this);
         this.handleUpdate   = this.handleUpdate.bind(this);
         this.handleSearchBy      = this.handleSearchBy.bind(this);
@@ -59,6 +61,7 @@ class IndexMember extends Component{
         this.handleMembership      = this.handleMembership.bind(this);
         this.handleStatus      = this.handleStatus.bind(this);
         this.handleResetPin      = this.handleResetPin.bind(this);
+        this.handleMemberRename      = this.handleMemberRename.bind(this);
     }
     handleKarir(val){
         this.setState({jenjangKarir:val.label});
@@ -223,6 +226,15 @@ class IndexMember extends Component{
         // console.log(where);
         this.props.dispatch(getMember(where));
     }
+    handleBankEdit(e,par,name){
+        e.preventDefault();
+        localStorage.setItem("isBankEdit","true");
+        const bool = !this.props.isOpen;
+        this.props.dispatch(ModalToggle(bool));
+        this.props.dispatch(ModalType("formMemberBank"));
+        this.setState({detail:{id:par,member_name:name}});
+        this.props.dispatch(getDetailBank(par));
+    }
     handleBank(e,par){
         e.preventDefault();
         localStorage.setItem("isBank","true");
@@ -336,6 +348,51 @@ class IndexMember extends Component{
                            }
                     // alert(JSON.stringify(result))
                     proping.dispatch(putMember({pin: result.value}, id));
+                }
+            }).catch(Swal.noop)
+            //   inputValidator: (value) => {
+            //     if (!value) {
+            //       return 'You need to write something!'
+            //     }
+            //   }
+        
+    }
+    handleMemberRename(e,id,name_old){
+        e.preventDefault();
+        let proping = this.props;
+        Swal.fire({
+            title: 'Ubah Nama Member',
+            focusConfirm: true,
+            html: 
+                '<input class="form-control form-control-lg font-18 py-4" id="nameModal" value="'+name_old+'" type="text" />',
+            type: 'warning',
+            showCancelButton: true,
+            cancelButtonColor: 'grey',
+            confirmButtonText: 'Ubah!',
+            allowOutsideClick: true,
+            allowOutsideClick: false,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                  resolve(
+                    document.getElementById('nameModal').value
+                  )
+                })
+            },
+              onOpen: function () {
+                // $('#swal-input1').focus()
+                document.getElementById('nameModal').focus()
+              }
+            }).then(function (result) {
+                if(result.isConfirmed){
+                    if (!result) return null;
+                           if(result.value === ""){
+                                return Swal.fire({
+                                    title:"Nama tidak boleh kosong!",
+                                    type:"danger"
+                                })
+                            }
+                    // alert(JSON.stringify(result))
+                    proping.dispatch(putMember({full_name: result.value}, id));
                 }
             }).catch(Swal.noop)
             //   inputValidator: (value) => {
@@ -500,6 +557,8 @@ class IndexMember extends Component{
                                                             <DropdownItem onClick={(e)=>this.handleResetPin(e,v.id)}>Reset PIN</DropdownItem>
                                                             <DropdownItem onClick={(e)=>this.handleDetailTrx(e,v.id)}>Transaksi</DropdownItem>
                                                             <DropdownItem onClick={(e)=>this.handleAlamat(e,v.id)}>Alamat</DropdownItem>
+                                                            <DropdownItem onClick={(e)=>this.handleMemberRename(e,v.id,v.full_name)}>Edit Nama Member</DropdownItem>
+                                                            <DropdownItem onClick={(e)=>this.handleBankEdit(e,v.id,v.full_name)}>Edit Bank</DropdownItem>
                                                             <DropdownItem onClick={(e)=>this.handleBank(e,v.id)}>Bank</DropdownItem>
                                                             <DropdownItem onClick={(e)=>this.handleUpdate(e,v.id,v.full_name,'status',v.status===0?1:0)}>{v.status===0?'Aktifkan':'Non-aktifkan'}</DropdownItem>
                                                         
@@ -650,6 +709,12 @@ class IndexMember extends Component{
                 {
                     localStorage.isBank === "true"?<DetailBank
                     detail={this.props.detailBank}
+                    />:null
+                }
+                {
+                    localStorage.isBankEdit === "true"?<FormMemberBank
+                    detail={this.state.detail}
+                    detailBank={this.props.detailBank}
                     />:null
                 }
                 {

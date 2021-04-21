@@ -377,7 +377,7 @@ class Index extends Component{
                                 </div>
                             </div>
                             <div className='form-group'>
-                                <label>Harga <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'paket02_price')}>Simpan</button></label>
+                                <label>Harga <button className="badge badge-success" onClick={(event)=>this.handleBtnSubmit(event,'paket03_price')}>Simpan</button></label>
                                 <div className="input-group mb-3">
                                     <div className="input-group-prepend">
                                         <span className="input-group-text" id="basic-addon4"><i className="fa fa-building"/></span>

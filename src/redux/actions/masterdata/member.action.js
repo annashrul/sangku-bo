@@ -179,6 +179,7 @@ export const putMember = (data,id) => {
                 setTimeout(
                     function () {
                         Swal.close() ;
+                        dispatch(ModalToggle(false));
                         const data = (response.data);
                         if (data.status === 'success') {
                             Swal.fire({
