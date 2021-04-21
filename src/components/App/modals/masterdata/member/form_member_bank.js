@@ -10,10 +10,14 @@ import {
   putUserLevel,
 } from "../../../../../redux/actions/masterdata/user_level.action";
 import Select, { components } from "react-select";
-import { fetchDataBank } from "../../../../../redux/actions/setting/bank.action";
+import {
+  fetchDataBank,
+  postBankMember,
+} from "../../../../../redux/actions/setting/bank.action";
 import Skeleton from "react-loading-skeleton";
 import { putBankMember } from "../../../../../redux/actions/setting/bank.action";
 import Swal from "sweetalert2";
+import Preloader from "Preloader";
 const { Option } = components;
 const IconOption = (props) => (
   <Option {...props}>
@@ -54,7 +58,7 @@ class FormMemberBank extends Component {
   clearState() {
     this.setState({
       full_name: "",
-      bank_data: [],
+      //   bank_data: [],
       bank_name: "",
       bank_no: "",
       bank_id: "",
@@ -91,6 +95,8 @@ class FormMemberBank extends Component {
         bank_no: nextProps.detailBank[0].acc_no,
         bank_id: nextProps.detailBank[0].id,
       });
+    } else {
+      this.clearState();
     }
     console.log("nextProps.detailBank", nextProps.detailBank);
   };
@@ -165,12 +171,14 @@ class FormMemberBank extends Component {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Lanjut, Ubah",
+        confirmButtonText: "Lanjut",
         cancelButtonText: "Batal",
       }).then(
         function (result) {
           if (result.value) {
-            this.props.dispatch(putBankMember(parseDetail, id));
+            if (this.props.detailBank !== undefined)
+              this.props.dispatch(putBankMember(parseDetail, id));
+            else this.props.dispatch(postBankMember(parseDetail));
           }
         }.bind(this)
       );
@@ -186,101 +194,105 @@ class FormMemberBank extends Component {
         size="lg"
       >
         <ModalHeader toggle={this.toggle}>
-          {this.props.detail.id === ""
+          {this.props.detailBank === undefined
             ? "Tambah Member Bank"
             : "Ubah Member Bank"}
         </ModalHeader>
         <ModalBody>
-          <div className="row">
-            <div className="col-12">
-              <div
-                className="img-thumbnail rounded-lg p-2"
-                style={{ borderColor: "#e8ebf1" }}
-              >
-                {/* <hr/> */}
-                <small className="text-muted">Data Bank</small>
+          {this.props.isLoadingDetail ? (
+            <Preloader />
+          ) : (
+            <div className="row">
+              <div className="col-12">
+                <div
+                  className="img-thumbnail rounded-lg p-2"
+                  style={{ borderColor: "#e8ebf1" }}
+                >
+                  {/* <hr/> */}
+                  <small className="text-muted">Data Bank</small>
 
-                <div className="form-group">
-                  <label>Nama Pemilik Bank</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="full_name"
-                    value={this.state.full_name}
-                    onChange={this.handleChange}
-                  />
+                  <div className="form-group">
+                    <label>Nama Pemilik Bank</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="full_name"
+                      value={this.state.full_name}
+                      onChange={this.handleChange}
+                    />
 
-                  <div
-                    className="invalid-feedback"
-                    style={
-                      this.state.error.full_name !== ""
-                        ? { display: "block" }
-                        : { display: "none" }
-                    }
-                  >
-                    {this.state.error.full_name}
+                    <div
+                      className="invalid-feedback"
+                      style={
+                        this.state.error.full_name !== ""
+                          ? { display: "block" }
+                          : { display: "none" }
+                      }
+                    >
+                      {this.state.error.full_name}
+                    </div>
                   </div>
-                </div>
-                <div className="form-group">
-                  <label>Nama Bank</label>
-                  {typeof this.state.bank_data === "object" ? (
-                    this.state.bank_data.length > 0 ? (
-                      <Select
-                        // defaultValue={this.state.bank_data[0]}
-                        placeholder="=========Pilih Bank=========="
-                        options={this.state.bank_data}
-                        components={{ Option: IconOption }}
-                        onChange={this.HandleChangeBank}
-                        value={this.state.bank_data.find((op) => {
-                          return op.label === this.state.bank_name;
-                        })}
-                      />
+                  <div className="form-group">
+                    <label>Nama Bank</label>
+                    {typeof this.state.bank_data === "object" ? (
+                      this.state.bank_data.length > 0 ? (
+                        <Select
+                          // defaultValue={this.state.bank_data[0]}
+                          placeholder="=========Pilih Bank=========="
+                          options={this.state.bank_data}
+                          components={{ Option: IconOption }}
+                          onChange={this.HandleChangeBank}
+                          value={this.state.bank_data.find((op) => {
+                            return op.label === this.state.bank_name;
+                          })}
+                        />
+                      ) : (
+                        <Skeleton style={{ width: "100%", height: "40px" }} />
+                      )
                     ) : (
                       <Skeleton style={{ width: "100%", height: "40px" }} />
-                    )
-                  ) : (
-                    <Skeleton style={{ width: "100%", height: "40px" }} />
-                  )}
-                  <div
-                    className="invalid-feedback"
-                    style={
-                      this.state.error.bank_name !== ""
-                        ? { display: "block" }
-                        : { display: "none" }
-                    }
-                  >
-                    {this.state.error.bank_name}
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>Nomor Rekening Bank</label>
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    name="bank_no"
-                    maxLength="17"
-                    value={this.state.bank_no}
-                    onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
-                        event.preventDefault();
+                    )}
+                    <div
+                      className="invalid-feedback"
+                      style={
+                        this.state.error.bank_name !== ""
+                          ? { display: "block" }
+                          : { display: "none" }
                       }
-                    }}
-                    onChange={this.handleChange}
-                  />
-                  <div
-                    className="invalid-feedback"
-                    style={
-                      this.state.error.bank_no !== ""
-                        ? { display: "block" }
-                        : { display: "none" }
-                    }
-                  >
-                    {this.state.error.bank_no}
+                    >
+                      {this.state.error.bank_name}
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label>Nomor Rekening Bank</label>
+                    <input
+                      type="text"
+                      className="form-control form-control-lg"
+                      name="bank_no"
+                      maxLength="17"
+                      value={this.state.bank_no}
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onChange={this.handleChange}
+                    />
+                    <div
+                      className="invalid-feedback"
+                      style={
+                        this.state.error.bank_no !== ""
+                          ? { display: "block" }
+                          : { display: "none" }
+                      }
+                    >
+                      {this.state.error.bank_no}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </ModalBody>
         <ModalFooter>
           <div className="form-group" style={{ textAlign: "right" }}>

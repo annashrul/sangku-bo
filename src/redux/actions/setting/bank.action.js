@@ -213,6 +213,56 @@ export const putBankMember = (data, id) => {
       });
   };
 };
+export const postBankMember = (data) => {
+  return (dispatch) => {
+    dispatch(setLoading(true));
+    dispatch(setIsError(false));
+    const url = HEADERS.URL + `bank_member`;
+    axios
+      .post(url, data)
+      .then(function (response) {
+        const data = response.data;
+        if (data.status === "success") {
+          Swal.fire({
+            title: "Success",
+            icon: "success",
+            text: NOTIF_ALERT.SUCCESS,
+          });
+          dispatch(setIsError(true));
+          dispatch(ModalToggle(false));
+        } else {
+          Swal.fire({
+            title: "failed",
+            icon: "error",
+            text: NOTIF_ALERT.FAILED,
+          });
+          dispatch(ModalToggle(true));
+          dispatch(setIsError(false));
+        }
+        dispatch(setLoading(false));
+      })
+      .catch(function (error) {
+        dispatch(setLoading(false));
+        dispatch(setIsError(false));
+        if (error.message === "Network Error") {
+          Swal.fire(
+            "Network Failed!.",
+            "Please check your connection",
+            "error"
+          );
+        } else {
+          Swal.fire({
+            title: "failed",
+            icon: "error",
+            text: error.response.data.msg,
+          });
+
+          if (error.response) {
+          }
+        }
+      });
+  };
+};
 export const putBankList = (data, id) => {
   return (dispatch) => {
     dispatch(setLoading(true));
