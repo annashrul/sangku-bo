@@ -739,13 +739,13 @@ class IndexMember extends Component {
                                           >
                                             Reset PIN
                                           </DropdownItem>
-                                          <DropdownItem
+                                          {/* <DropdownItem
                                             onClick={(e) =>
                                               this.handleDetailTrx(e, v.id)
                                             }
                                           >
                                             Transaksi
-                                          </DropdownItem>
+                                          </DropdownItem> */}
                                           <DropdownItem
                                             onClick={(e) =>
                                               this.handleAlamat(e, v.id)
@@ -1048,6 +1048,7 @@ class IndexMember extends Component {
           <FormMemberBank
             detail={this.state.detail}
             detailBank={this.props.detailBank}
+            isLoadingDetail={this.props.isLoadingDetail}
           />
         ) : null}
         {localStorage.isDetail === "true" ? (
@@ -1067,6 +1068,7 @@ const mapStateToProps = (state) => {
     detailAlamat: state.alamatReducer.data,
     detailBank: state.bankReducer.data,
     kategori: state.kategoriReducer.data,
+    isLoadingDetail: state.bankReducer.isLoadingDetail,
   };
 };
 
