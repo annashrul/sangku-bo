@@ -157,13 +157,25 @@ export const KATEGORI = {
  *****************/
 let prefPin = "PIN";
 export const PIN = {
+  SET_PIN_AKTIVASI: `SET_PIN_AKTIVASI`,
+  SET_PIN_RO: `SET_PIN_RO`,
+
+  LOADING_PIN_AKTIVASI: `LOADING_PIN_AKTIVASI`,
+  LOADING_PIN_RO: `LOADING_PIN_RO`,
+
+  SET_LOG_PIN: `SET_LOG_PIN`,
+  LOADING_LOG_PIN: `LOADING_LOG_PIN`,
+
+  SET_DETAIL_PIN: `SET_DETAIL_PIN`,
+  LOADING_DETAIL_PIN: `LOADING_DETAIL_PIN`,
+
+  LOADING_KATEGORI: `SET_${prefPin}_LOADING_KATEGORI`,
+  KATEGORI: `SET_${prefPin}_KATEGORI`,
+
   LOADING: `SET_${prefPin}_LOADING`,
   LOADING_POST: `SET_${prefPin}_LOADING_POST`,
   IS_ERROR: `SET_${prefPin}_IS_ERROR`,
   SUCCESS: `SUCCESS_${prefPin}`,
-  FAILED: `FAILED_${prefPin}`,
-  DETAIL: `DETAIL_${prefPin}`,
-  EDIT: `EDIT_${prefPin}`,
 };
 /****************
  MEMBER

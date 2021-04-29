@@ -15,8 +15,6 @@ class Membership extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    console.log(state.beforeType);
-    console.log(props.type);
     if (state.beforeType !== props.type) {
       props.dispatch(fetchKategori(props.type));
       return {
@@ -77,8 +75,6 @@ class Membership extends Component {
     this.props.handleChange({ value: val.value, label: val.label });
   }
   render() {
-    console.log(this.props.id);
-    console.log(this.state.kategori);
     return this.state.kategori_data.length > 0 ? (
       <Select
         options={this.state.kategori_data}
