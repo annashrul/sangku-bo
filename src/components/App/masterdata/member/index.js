@@ -14,7 +14,6 @@ import { ModalToggle, ModalType } from "redux/actions/modal.action";
 import Skeleton from "react-loading-skeleton";
 import moment from "moment";
 import DetailAlamat from "../../modals/masterdata/member/detail_alamat";
-import DetailBank from "../../modals/masterdata/member/detail_bank";
 import DetailTransaksi from "../../modals/masterdata/member/detail_transaksi";
 import { getMember, putMember } from "redux/actions/masterdata/member.action";
 import UncontrolledButtonDropdown from "reactstrap/es/UncontrolledButtonDropdown";
@@ -27,11 +26,11 @@ import * as Swal from "sweetalert2";
 import { fetchKategori } from "../../../../redux/actions/kategori/kategori.action";
 import Select from "react-select";
 import { getExcelMember } from "../../../../redux/actions/masterdata/member.action";
-import { toExcel } from "../../../../helper";
+import { generateNo, toExcel } from "../../../../helper";
 import Membership from "../../../common/membership";
 import JenjangKarir from "../../../common/jenjangKarir";
 import FormMemberBank from "../../modals/masterdata/member/form_member_bank";
-
+import DetailPinMember from "../../modals/masterdata/member/detail_pin_member";
 class IndexMember extends Component {
   constructor(props) {
     super(props);
@@ -54,6 +53,7 @@ class IndexMember extends Component {
         { value: 0, label: "Tidak Aktif" },
         { value: 1, label: "Aktif" },
       ],
+      isModalDetailPin: false,
     };
     this.handleEvent = this.handleEvent.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -71,6 +71,13 @@ class IndexMember extends Component {
     this.handleStatus = this.handleStatus.bind(this);
     this.handleResetPin = this.handleResetPin.bind(this);
     this.handleMemberRename = this.handleMemberRename.bind(this);
+    this.handleDetailPin = this.handleDetailPin.bind(this);
+  }
+  componentWillUnmount() {
+    this.setState({
+      isModalDetailPin: false,
+      detail: {},
+    });
   }
   handleKarir(val) {
     this.setState({ jenjangKarir: val.label });
@@ -91,7 +98,6 @@ class IndexMember extends Component {
     if (props.dataExcel.data !== undefined) {
       if (props.dataExcel.data.length > 0) {
         let content = [];
-        // console.log(props.dataExcel.data);
         props.dataExcel.data.map((v, i) => {
           content.push([
             v.full_name,
@@ -428,6 +434,14 @@ class IndexMember extends Component {
     //   }
   }
 
+  handleDetailPin(e, id) {
+    e.preventDefault();
+    this.setState({ isModalDetailPin: true, detail: { id: id } });
+    const bool = !this.props.isOpen;
+    this.props.dispatch(ModalToggle(bool));
+    this.props.dispatch(ModalType("detailPinMember"));
+  }
+
   render() {
     const headStyle = {
       verticalAlign: "middle",
@@ -456,7 +470,7 @@ class IndexMember extends Component {
           <div className="col-12 box-margin">
             <div className="card">
               <div className="card-body">
-                <div className="row" style={{ zoom: "80%" }}>
+                <div className="row" style={{ zoom: "85%" }}>
                   <div className="col-md-10">
                     <div className="row">
                       <div className="col-12 col-xs-12 col-md-2">
@@ -539,23 +553,29 @@ class IndexMember extends Component {
                             <i className="fa fa-search" />
                           </button>
                           <button
-                            style={{ marginTop: "28px", marginRight: "5px" }}
+                            style={{ marginTop: "28px" }}
                             className="btn btn-primary"
                             onClick={(e) =>
                               this.printDocumentXLsx(e, per_page * last_page)
                             }
                           >
-                            <i className="fa fa-print" />{" "}
-                            {!this.props.isLoadingExcel
-                              ? "Export"
-                              : "loading..."}
+                            {!this.props.isLoadingExcel ? (
+                              <i className="fa fa-print" />
+                            ) : (
+                              <div
+                                className="spinner-border  spinner-border-sm text-light"
+                                role="status"
+                              >
+                                <span className="sr-only">Loading...</span>
+                              </div>
+                            )}
                           </button>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div style={{ overflowX: "auto", zoom: "90%" }}>
+                <div style={{ overflowX: "auto" }}>
                   <table className="table table-hover table-bordered">
                     <thead className="bg-light">
                       <tr>
@@ -572,6 +592,13 @@ class IndexMember extends Component {
                           style={headStyle}
                         >
                           #
+                        </th>
+                        <th
+                          className="text-black"
+                          rowSpan="2"
+                          style={headStyle}
+                        >
+                          Auto WD
                         </th>
                         <th
                           className="text-black"
@@ -645,22 +672,12 @@ class IndexMember extends Component {
                         </th>
                         <th
                           className="text-black"
-                          rowSpan="2"
+                          colSpan="2"
                           style={headStyle}
                         >
                           Jumlah
-                          <br />
-                          Sponsor
                         </th>
-                        <th
-                          className="text-black"
-                          rowSpan="2"
-                          style={headStyle}
-                        >
-                          Jumlah
-                          <br />
-                          PIN
-                        </th>
+
                         <th
                           className="text-black"
                           colSpan="2"
@@ -687,12 +704,18 @@ class IndexMember extends Component {
                           rowSpan="2"
                           style={headStyle}
                         >
-                          Point
+                          Poin
                           <br />
                           RO
                         </th>
                       </tr>
                       <tr>
+                        <th className="text-black" style={headStyle}>
+                          sponsor
+                        </th>
+                        <th className="text-black" style={headStyle}>
+                          pin
+                        </th>
                         <th className="text-black" style={headStyle}>
                           Kiri
                         </th>
@@ -715,15 +738,38 @@ class IndexMember extends Component {
                               totSaldo = totSaldo + parseInt(v.saldo, 10);
                               totPenarikan =
                                 totPenarikan + parseInt(v.total_payment, 10);
+                              let stokisTxt = "";
+                              let stokisCol = "";
+                              let autoWDTxt = "";
+                              let autoWDCol = "";
+                              if (v.auto_wd === 0) {
+                                autoWDTxt = "Tidak Aktif";
+                                autoWDCol = "badge-danger";
+                              } else {
+                                autoWDTxt = "Aktif";
+                                autoWDCol = "badge-success";
+                              }
+                              if (v.is_stockist === 0) {
+                                stokisTxt = "Bukan Stokis";
+                                stokisCol = "badge-danger";
+                              } else if (v.is_stockist === 1) {
+                                stokisTxt = "Master Stokis";
+                                stokisCol = "badge-primary";
+                              } else {
+                                stokisTxt = "Stokis";
+                                stokisCol = "badge-success";
+                              }
 
                               return (
-                                <tr key={i}>
+                                <tr
+                                  key={i}
+                                  style={{
+                                    backgroundColor:
+                                      i % 2 === 0 ? "#EEEEEE" : "white",
+                                  }}
+                                >
                                   <td style={headStyle}>
-                                    <span className="circle">
-                                      {i +
-                                        1 +
-                                        10 * (parseInt(current_page, 10) - 1)}
-                                    </span>
+                                    {generateNo(i, current_page)}
                                   </td>
                                   <td style={headStyle}>
                                     <div className="btn-group">
@@ -739,13 +785,6 @@ class IndexMember extends Component {
                                           >
                                             Reset PIN
                                           </DropdownItem>
-                                          {/* <DropdownItem
-                                            onClick={(e) =>
-                                              this.handleDetailTrx(e, v.id)
-                                            }
-                                          >
-                                            Transaksi
-                                          </DropdownItem> */}
                                           <DropdownItem
                                             onClick={(e) =>
                                               this.handleAlamat(e, v.id)
@@ -775,13 +814,7 @@ class IndexMember extends Component {
                                           >
                                             Edit Bank
                                           </DropdownItem>
-                                          {/* <DropdownItem
-                                            onClick={(e) =>
-                                              this.handleBank(e, v.id)
-                                            }
-                                          >
-                                            Bank
-                                          </DropdownItem> */}
+
                                           <DropdownItem
                                             onClick={(e) =>
                                               this.handleUpdate(
@@ -810,8 +843,7 @@ class IndexMember extends Component {
                                                 )
                                               }
                                             >
-                                              Ubah Menjadi Stockis
-                                              Kabupaten/kota
+                                              Ubah Menjadi Master Stockis
                                             </DropdownItem>
                                           ) : (
                                             ""
@@ -828,7 +860,7 @@ class IndexMember extends Component {
                                                 )
                                               }
                                             >
-                                              Ubah Menjadi Stockis kecamatan
+                                              Ubah Menjadi Stockis
                                             </DropdownItem>
                                           ) : (
                                             ""
@@ -857,6 +889,14 @@ class IndexMember extends Component {
                                     </div>
                                   </td>
                                   <td style={headStyle}>
+                                    <span
+                                      className={`badge ${autoWDCol}`}
+                                      style={{ padding: "5px" }}
+                                    >
+                                      {autoWDTxt}
+                                    </span>
+                                  </td>
+                                  <td style={headStyle}>
                                     <img
                                       style={{ width: "30px" }}
                                       src={v.picture}
@@ -871,14 +911,10 @@ class IndexMember extends Component {
                                   <td style={headStyle}>{v.referral_code}</td>
                                   <td style={headStyle}>
                                     <span
-                                      className="badge badge-dark"
+                                      className={`badge ${stokisCol}`}
                                       style={{ padding: "5px" }}
                                     >
-                                      {v.is_stockist === 0
-                                        ? "Bukan Stokis"
-                                        : v.is_stockist === 1
-                                        ? "Stockis Kota/Kab"
-                                        : "Stockis Kecamatan"}
+                                      {stokisTxt}
                                     </span>
                                   </td>
                                   <td style={headStyle}>
@@ -925,52 +961,89 @@ class IndexMember extends Component {
                                     )}
                                   </td>
                                   <td style={headStyle}>{v.mobile_no}</td>
-                                  <td style={numberStyle}>
-                                    Rp{" "}
+                                  <td
+                                    style={numberStyle}
+                                    className="text-danger"
+                                  >
+                                    Rp
                                     {v.saldo === "0"
                                       ? 0
-                                      : toCurrency(parseInt(v.saldo, 10))}{" "}
+                                      : toCurrency(parseInt(v.saldo, 10))}
                                     .-
                                   </td>
-                                  <td style={numberStyle}>
-                                    Rp{" "}
+                                  <td
+                                    style={numberStyle}
+                                    className="text-danger"
+                                  >
+                                    Rp
                                     {v.total_payment === "0"
                                       ? 0
                                       : toCurrency(
                                           parseInt(v.total_payment, 10)
-                                        )}{" "}
+                                        )}
                                     .-
                                   </td>
-                                  <td style={numberStyle}>{v.sponsor}</td>
-                                  <td style={numberStyle}>{v.pin}</td>
-                                  <td style={numberStyle}>{v.left_pv}</td>
-                                  <td style={numberStyle}>{v.right_pv}</td>
-                                  <td style={numberStyle}>
+                                  <td
+                                    style={numberStyle}
+                                    className="text-danger"
+                                  >
+                                    {v.sponsor}
+                                  </td>
+                                  <td
+                                    style={numberStyle}
+                                    className="text-danger"
+                                    onClick={(e) =>
+                                      this.handleDetailPin(e, v.id)
+                                    }
+                                  >
+                                    <u style={{ cursor: "pointer" }}>{v.pin}</u>
+                                  </td>
+                                  <td
+                                    style={numberStyle}
+                                    className="text-danger"
+                                  >
+                                    {v.left_pv}
+                                  </td>
+                                  <td
+                                    style={numberStyle}
+                                    className="text-danger"
+                                  >
+                                    {v.right_pv}
+                                  </td>
+                                  <td
+                                    style={numberStyle}
+                                    className="text-danger"
+                                  >
                                     {v.left_reward_point}
                                   </td>
-                                  <td style={numberStyle}>
+                                  <td
+                                    style={numberStyle}
+                                    className="text-danger"
+                                  >
                                     {v.right_reward_point}
                                   </td>
-                                  <td style={headStyle}>
-                                    Rp{" "}
+                                  <td style={headStyle} className="text-danger">
+                                    Rp
                                     {v.plafon === "0"
                                       ? 0
                                       : toCurrency(parseInt(v.plafon, 10))}
                                   </td>
-                                  <td style={headStyle}>{v.point_ro}</td>
+                                  <td style={headStyle} className="text-danger">
+                                    {v.point_ro}
+                                  </td>
                                 </tr>
                               );
                             })
                           ) : (
                             <tr>
-                              <td colSpan={19} style={headStyle}>
+                              <td colSpan={21} style={headStyle}>
                                 <img src={NOTIF_ALERT.NO_DATA} />
                               </td>
                             </tr>
                           )
                         ) : (
                           <tr>
-                            <td colSpan={19} style={headStyle}>
+                            <td colSpan={21} style={headStyle}>
                               <img src={NOTIF_ALERT.NO_DATA} />
                             </td>
                           </tr>
@@ -981,6 +1054,8 @@ class IndexMember extends Component {
                           for (let x = 0; x < 10; x++) {
                             container.push(
                               <tr key={x}>
+                                <td>{<Skeleton />}</td>
+                                <td>{<Skeleton />}</td>
                                 <td>{<Skeleton />}</td>
                                 <td>{<Skeleton />}</td>
                                 <td>{<Skeleton />}</td>
@@ -1039,11 +1114,9 @@ class IndexMember extends Component {
         {localStorage.isAlamat === "true" ? (
           <DetailAlamat detail={this.props.detailAlamat} />
         ) : null}
-        {/* {
-                    localStorage.isBank === "true"?<DetailBank
-                    detail={this.props.detailBank}
-                    />:null
-                } */}
+        {this.state.isModalDetailPin ? (
+          <DetailPinMember detail={this.state.detail} />
+        ) : null}
         {localStorage.isBankEdit === "true" ? (
           <FormMemberBank
             detail={this.state.detail}

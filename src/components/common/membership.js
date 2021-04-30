@@ -78,7 +78,7 @@ class Membership extends Component {
     return this.state.kategori_data.length > 0 ? (
       <Select
         options={this.state.kategori_data}
-        placeholder="Pilih Membership"
+        placeholder="Pilih"
         onChange={this.HandleChangeMembership}
         value={this.state.kategori_data.find((op) => {
           return op.value === this.state.kategori;

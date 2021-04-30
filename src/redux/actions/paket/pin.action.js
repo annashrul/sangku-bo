@@ -226,15 +226,19 @@ export const getPin = (where) => {
       });
   };
 };
-export const getKategoriPin = (where) => {
+export const getKategoriPin = (where, isOther = true) => {
   return (dispatch) => {
     dispatch(setLoadingKategori(true));
     let url = "transaction/pin_available";
     if (where) {
       url += `?${where}`;
     }
-    let exp = `${where}`.split("&");
-    exp = `${exp}`.split("=");
+    let exp = "";
+    if (isOther) {
+      exp = `${where}`.split("&");
+      exp = `${exp}`.split("=");
+    }
+
     axios
       .get(HEADERS.URL + `${url}`)
       .then(function (response) {
