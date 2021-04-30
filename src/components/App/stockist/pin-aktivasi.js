@@ -6,6 +6,7 @@ import {
   getPinAktivasi,
 } from "../../../redux/actions/paket/pin.action";
 import WidgetPin from "./widget/widgetPin";
+import Preloader from "../../../Preloader";
 
 class PinAktivasi extends Component {
   constructor(props) {
@@ -67,6 +68,7 @@ class PinAktivasi extends Component {
 
   render() {
     const { total, per_page, current_page, data } = this.props.data;
+
     return (
       <WidgetPin
         dataKategori={this.state.dataKategori}
@@ -76,6 +78,7 @@ class PinAktivasi extends Component {
           this.handleOnchange(i);
         }}
         pagin={{ per_page, total, current_page }}
+        isLoadingWidget={this.props.isLoading}
       />
     );
   }

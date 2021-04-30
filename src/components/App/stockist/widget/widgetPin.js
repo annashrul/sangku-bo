@@ -11,6 +11,7 @@ import GeneratePin from "../../modals/pin/generate_pin";
 import { getLogPin } from "../../../../redux/actions/paket/pin.action";
 import moment from "moment";
 import MutasiPin from "../../modals/pin/mutasiPin";
+import Preloader from "../../../../Preloader";
 
 class WidgetPin extends Component {
   constructor(props) {
@@ -23,9 +24,11 @@ class WidgetPin extends Component {
     };
     this.handleAdd = this.handleAdd.bind(this);
     this.handleMutasi = this.handleMutasi.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
   }
   componentWillUnmount() {
     this.setState({
+      detail: {},
       isModalMutasi: false,
       isModalForm: false,
     });
@@ -43,7 +46,10 @@ class WidgetPin extends Component {
   handleMutasi(e, i) {
     this.setState({
       isModalMutasi: true,
-      detail: { id: this.props.dataPin[i].id_paket },
+      detail: {
+        id: this.props.dataPin[i].id_paket,
+        q: `jenis_transaksi=ORDER&id_paket=${this.props.dataPin[i].id_paket}`,
+      },
     });
     const bool = !this.props.isOpen;
     this.props.dispatch(ModalToggle(bool));
@@ -51,6 +57,11 @@ class WidgetPin extends Component {
   }
   handlePage(page) {
     this.props.dispatch(getLogPin(`page=${page}`));
+  }
+  handleOnChange(event, i) {
+    event.preventDefault();
+    this.setState({ section: i });
+    this.props.handleOnchange(i);
   }
 
   render() {
@@ -67,9 +78,10 @@ class WidgetPin extends Component {
       whiteSpace: "nowrap",
     };
     const { total, per_page, current_page, data } = this.props.data;
-
+    console.log(typeof this.props.dataPin);
     return (
       <Layout page={"PIN"}>
+        {this.props.isLoadingWidget ? <Preloader /> : null}
         <div className="row">
           <div className="col-2 col-xs-2 col-md-2">
             <button
@@ -92,9 +104,7 @@ class WidgetPin extends Component {
                                 : "nav-link"
                             }
                             onClick={(event) => {
-                              event.preventDefault();
-                              this.setState({ section: i });
-                              this.props.handleOnchange(i);
+                              this.handleOnChange(event, i);
                             }}
                             style={{ marginBottom: "10px" }}
                             href="#"

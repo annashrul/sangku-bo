@@ -1,21 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import WrapperModal from "../_wrapper.modal";
-import { ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { ModalHeader, ModalBody } from "reactstrap";
 import { ModalToggle } from "../../../../redux/actions/modal.action";
 import Paginationq, {
   categoryPin,
   generateNo,
-  ToastQ,
   toCurrency,
 } from "../../../../helper";
-import Select from "react-select";
-import {
-  generatePin,
-  getDetailPin,
-} from "../../../../redux/actions/paket/pin.action";
-import { fetchPaket } from "../../../../redux/actions/paket/paket.action";
+import { getDetailPin } from "../../../../redux/actions/paket/pin.action";
 import moment from "moment";
+import Preloader from "../../../../Preloader";
 
 class MutasiPin extends Component {
   constructor(props) {
@@ -27,12 +22,19 @@ class MutasiPin extends Component {
   getProps(props) {
     console.log(props);
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.detail.q !== this.props.detail.q) {
+      this.props.dispatch(getDetailPin(this.props.detail.q));
+    }
+  }
+
+  componentDidMount() {
+    this.props.dispatch(getDetailPin(this.props.detail.q));
+  }
   componentWillMount() {
     this.getProps(this.props);
-    this.props.dispatch(getDetailPin(`id_paket=${this.props.detail.id}`));
-  }
-  componentWillReceiveProps(nextProps) {
-    this.getProps(nextProps);
+    this.props.dispatch(getDetailPin(this.props.detail.q));
   }
 
   toggle = (e) => {
@@ -41,9 +43,7 @@ class MutasiPin extends Component {
     this.props.dispatch(ModalToggle(bool));
   };
   handlePage(page) {
-    this.props.dispatch(
-      getDetailPin(`id_paket=${this.props.detail.id}&page=${page}`)
-    );
+    this.props.dispatch(getDetailPin(`${this.props.detail.q}&page=${page}`));
   }
   render() {
     const columnStyle = {
@@ -59,6 +59,7 @@ class MutasiPin extends Component {
       >
         <ModalHeader toggle={this.toggle}>Order Pin</ModalHeader>
         <ModalBody>
+          {this.props.isLoading ? <Preloader /> : null}
           <div style={{ overflowX: "auto" }}>
             <table className="table table-hover">
               <thead className="bg-light">
@@ -116,7 +117,9 @@ class MutasiPin extends Component {
                           >
                             {toCurrency(parseInt(v.jumlah, 10))}
                           </td>
-                          <td style={columnStyle}>{v.note}</td>
+                          <td style={columnStyle} className="text-left">
+                            {v.note}
+                          </td>
                           <td style={columnStyle} className="text-left">
                             {moment(v.created_at).format("YYYY-MM-DD HH:mm")}
                           </td>

@@ -75,6 +75,7 @@ class PinRo extends Component {
           this.handleOnchange(i);
         }}
         pagin={{ per_page, total, current_page }}
+        isLoadingWidget={this.props.isLoading}
       />
     );
   }

@@ -31,6 +31,8 @@ import Membership from "../../../common/membership";
 import JenjangKarir from "../../../common/jenjangKarir";
 import FormMemberBank from "../../modals/masterdata/member/form_member_bank";
 import DetailPinMember from "../../modals/masterdata/member/detail_pin_member";
+import MutasiPin from "../../modals/pin/mutasiPin";
+
 class IndexMember extends Component {
   constructor(props) {
     super(props);
@@ -54,6 +56,7 @@ class IndexMember extends Component {
         { value: 1, label: "Aktif" },
       ],
       isModalDetailPin: false,
+      isModalMutasi: false,
     };
     this.handleEvent = this.handleEvent.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -72,10 +75,12 @@ class IndexMember extends Component {
     this.handleResetPin = this.handleResetPin.bind(this);
     this.handleMemberRename = this.handleMemberRename.bind(this);
     this.handleDetailPin = this.handleDetailPin.bind(this);
+    this.handleMutasi = this.handleMutasi.bind(this);
   }
   componentWillUnmount() {
     this.setState({
       isModalDetailPin: false,
+      isModalMutasi: false,
       detail: {},
     });
   }
@@ -441,6 +446,18 @@ class IndexMember extends Component {
     this.props.dispatch(ModalToggle(bool));
     this.props.dispatch(ModalType("detailPinMember"));
   }
+  handleMutasi(e, id) {
+    this.setState({
+      isModalMutasi: true,
+      detail: {
+        id: id,
+        q: `id_member=${id}`,
+      },
+    });
+    const bool = !this.props.isOpen;
+    this.props.dispatch(ModalToggle(bool));
+    this.props.dispatch(ModalType("mutasiPin"));
+  }
 
   render() {
     const headStyle = {
@@ -778,6 +795,13 @@ class IndexMember extends Component {
                                           Aksi
                                         </DropdownToggle>
                                         <DropdownMenu>
+                                          <DropdownItem
+                                            onClick={(e) =>
+                                              this.handleMutasi(e, v.id)
+                                            }
+                                          >
+                                            Mutasi PIN
+                                          </DropdownItem>
                                           <DropdownItem
                                             onClick={(e) =>
                                               this.handleResetPin(e, v.id)
@@ -1126,6 +1150,9 @@ class IndexMember extends Component {
         ) : null}
         {localStorage.isDetail === "true" ? (
           <DetailTransaksi detail={this.props.detailAlamat} />
+        ) : null}
+        {this.state.isModalMutasi ? (
+          <MutasiPin detail={this.state.detail} />
         ) : null}
       </Layout>
     );

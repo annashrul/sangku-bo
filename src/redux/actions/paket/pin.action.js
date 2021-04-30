@@ -94,10 +94,11 @@ export function setDataKategori(data = []) {
 export const getDetailPin = (where) => {
   return (dispatch) => {
     dispatch(setLoadingDetail(true));
-    let url = "pin/mutasi?jenis_transaksi=ORDER";
+    let url = "pin/mutasi";
     if (where) {
-      url += `&${where}`;
+      url += `?${where}`;
     }
+    console.log(url);
     axios
       .get(HEADERS.URL + `${url}`)
       .then(function (response) {
