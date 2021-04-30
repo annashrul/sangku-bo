@@ -125,12 +125,7 @@ class WidgetPin extends Component {
                             />
                           </div>
                         </th>
-                        <th
-                          className="text-black text-left"
-                          style={columnStyle}
-                        >
-                          Paket
-                        </th>
+
                         <th
                           className="text-black text-right"
                           style={columnStyle}
@@ -171,9 +166,6 @@ class WidgetPin extends Component {
                         this.props.dataPin.map((v, i) => {
                           return (
                             <tr key={i}>
-                              <td style={columnStyle}>
-                                {generateNo(i, this.props.pagin.current_page)}
-                              </td>
                               <td style={columnStyle} className="text-left">
                                 {v.paket}
                               </td>
