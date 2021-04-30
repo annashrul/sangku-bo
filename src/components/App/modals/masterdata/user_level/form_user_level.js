@@ -223,6 +223,13 @@ class FormUserLevel extends Component {
               parent: "laporan",
               isChecked: false,
             },
+            {
+              id: 803,
+              label: "whatsapp",
+              path: "/laporan/whatsapp",
+              parent: "laporan",
+              isChecked: false,
+            },
           ],
         },
         {

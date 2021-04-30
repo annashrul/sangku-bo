@@ -71,6 +71,8 @@ export const DASHBOARD = {
  SITE SECTION
  *****************/
 export const SITE = {
+  LOADING_WA: "SET_SITE_LOADING_WA",
+  DATA_WA: "SET_SITE_DATA_WA",
   LOADING: "SET_SITE_LOADING",
   SUCCESS: "SET_SITE_SUCCESS",
   SUCCESS_LIST: "SET_SITE_SUCCESS_LIST",
@@ -238,6 +240,7 @@ export const CONTENT = {
   DETAIL: `DETAIL_${prefContent}`,
   EDIT: `EDIT_${prefContent}`,
 };
+
 /****************
  USER_LIST
  *****************/

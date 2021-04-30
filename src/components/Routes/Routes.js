@@ -22,6 +22,7 @@ import Penjualan from "../App/order";
 import ReportRedeem from "../App/order/redeem/report_redeem";
 import ReportReward from "../App/order/reward/indexReportReward";
 import ReportBarang from "../App/laporan/indexReportBarang";
+import Whatsapp from "../App/laporan/whatsapp";
 import Claim from "../App/order/claim";
 import Bonus from "../App/laporan/indexBonus";
 import Deposit from "../App/ewallet/indexDeposit";
@@ -170,6 +171,12 @@ const Routes = (
       />
       <PrivateRoute path="/pengaturan/bank" exact strict component={Bank} />
       <PrivateRoute path="/pengaturan/ppob" exact strict component={Ppob} />
+      <PrivateRoute
+        path="/laporan/whatsapp"
+        exact
+        strict
+        component={Whatsapp}
+      />
 
       {/* PRINT SECTION START */}
       <PrivateRoute
