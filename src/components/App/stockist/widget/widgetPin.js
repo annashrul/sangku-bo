@@ -78,7 +78,8 @@ class WidgetPin extends Component {
       whiteSpace: "nowrap",
     };
     const { total, per_page, current_page, data } = this.props.data;
-    console.log(typeof this.props.dataPin);
+    const { section } = this.state;
+    console.log(this.state.section);
     return (
       <Layout page={"PIN"}>
         {this.props.isLoadingWidget ? <Preloader /> : null}
@@ -99,9 +100,7 @@ class WidgetPin extends Component {
                         return (
                           <a
                             className={
-                              this.state.section === i
-                                ? "nav-link active"
-                                : "nav-link"
+                              section === i ? "nav-link active" : "nav-link"
                             }
                             onClick={(event) => {
                               this.handleOnChange(event, i);
@@ -126,10 +125,19 @@ class WidgetPin extends Component {
                   <table className="table table-hover">
                     <thead className="bg-light">
                       <tr>
-                        <th className="text-black" style={columnStyle}>
+                        <th
+                          className={`text-black ${
+                            section === 0
+                              ? "gray"
+                              : section === 1
+                              ? "yellow1"
+                              : "baseColor1"
+                          }`}
+                          style={columnStyle}
+                        >
                           <div>
                             <img
-                              style={{ height: "40px" }}
+                              style={{ height: "30px" }}
                               src={this.props.logo}
                               alt=""
                             />
@@ -137,36 +145,39 @@ class WidgetPin extends Component {
                         </th>
 
                         <th
-                          className="text-black text-right"
+                          className="text-white text-right baseColor"
                           style={columnStyle}
                         >
                           Jumlah Awal
                         </th>
                         <th
-                          className="text-black text-right"
+                          className="text-white text-right baseColor"
                           style={columnStyle}
                         >
                           Total Beli
                         </th>
                         <th
-                          className="text-black text-right"
+                          className="text-white text-right baseColor"
                           style={columnStyle}
                         >
                           Total Diaktivasi
                         </th>
                         <th
-                          className="text-black text-right"
+                          className="text-white text-right baseColor"
                           style={columnStyle}
                         >
                           Belum Diaktivasi
                         </th>
                         <th
-                          className="text-black text-right"
+                          className="text-white text-right yellow"
                           style={columnStyle}
                         >
                           Sisa PIN
                         </th>
-                        <th className="text-black" style={columnStyle}>
+                        <th
+                          className="text-white baseColor"
+                          style={columnStyle}
+                        >
                           #
                         </th>
                       </tr>
@@ -175,7 +186,15 @@ class WidgetPin extends Component {
                       {this.props.dataPin.length > 0 ? (
                         this.props.dataPin.map((v, i) => {
                           return (
-                            <tr key={i}>
+                            <tr
+                              key={i}
+                              style={{
+                                backgroundColor:
+                                  i % 2 === 0
+                                    ? "rgb(231,230,230)"
+                                    : "rgb(217,225,242)",
+                              }}
+                            >
                               <td style={columnStyle} className="text-left">
                                 {v.paket}
                               </td>
